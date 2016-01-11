@@ -1,0 +1,32 @@
+
+$carousel-height: 320px;
+$carousel-padding-topDown: 15px;
+
+.wfx-carousel {
+  padding-top: $carousel-padding-topDown;
+  padding-bottom: $carousel-padding-topDown;
+  margin: 0 auto 20px;
+  box-shadow: 0px 1px 3px #999;
+
+  .wfx-carousel-control {
+    background-image: none;
+    width: 5%;
+  }
+
+  .carousel-indicators {
+    bottom: 15px;
+  }
+
+  .carousel-caption {
+    padding-bottom: 0;
+  }
+
+  .wfx-carousel-item {
+    height: $carousel-height;
+  }
+
+  .wfx-carousel-img {
+    margin: 0 auto;
+    height: $carousel-height !important;
+  }
+}

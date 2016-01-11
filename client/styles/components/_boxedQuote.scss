@@ -1,0 +1,17 @@
+@import "../base/colors";
+
+$wfx-boxedQuote-padding: 20px;
+
+#wfx-boxedQuote {
+  margin-bottom: $wfx-boxedQuote-padding;
+}
+
+.wfx-boxedQuote-innerBox {
+  box-shadow: 0px 1px 3px #999;
+  padding: $wfx-boxedQuote-padding;
+  color: $color-text-title;
+}
+
+.wfx-boxedQuote-quoteBlock {
+  margin: 0 0 0 15px;
+}

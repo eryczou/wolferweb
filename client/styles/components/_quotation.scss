@@ -1,0 +1,51 @@
+@import "../base/colors";
+
+
+$quotation-min-height: 150px;
+$quotation-padding-topBottom: 20px;
+$quotation-margin-top: 5px;
+
+$quotation-row-height: 120px;
+$quotation-mainFont-size: 20px;
+$quotation-headShoot-size: 110px;
+
+#wfx-quotation {
+  position: relative;
+  width: 100%;
+  min-height: $quotation-min-height;
+  padding-top: $quotation-padding-topBottom;
+  padding-bottom: $quotation-padding-topBottom;
+  background-color: $color-primary;
+  margin-top: $quotation-margin-top;
+
+  .wfx-quotation-left {
+    min-height: $quotation-row-height;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .wfx-quotation-right {
+    min-height: $quotation-row-height;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .wfx-quotation-quoteBlock {
+    margin: 0;
+
+    .wfx-quotation-mainText {
+      font-size: $quotation-mainFont-size;
+    }
+  }
+
+  .wfx-quotation-headImg {
+    width: $quotation-headShoot-size;
+    height: $quotation-headShoot-size;
+    display: block;
+    margin: 0 auto;
+  }
+
+
+}

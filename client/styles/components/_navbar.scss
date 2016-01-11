@@ -1,0 +1,48 @@
+@import "../base/colors";
+@import "../base/variables";
+
+$wfx-topNavbar-height: 40px;
+
+.wfx-navbar-wrapper {
+  z-index: $wfx-zIndex-highest;
+  width: 100%;
+  height: $wfx-topNavbar-height;
+  background-color: $color-bg-secondary;
+}
+
+.wfx-navbar {
+  height: $wfx-topNavbar-height;
+  min-height: $wfx-topNavbar-height;
+  background-color: $color-bg-secondary;
+  margin-bottom: 0;
+}
+
+.wfx-navbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.wfx-navbar-brand {
+  margin-left: 0 !important;
+  padding: 1px 30px 0 0px;
+  height: 100%;
+}
+
+.wfx-navbar-logo {
+  width: 60px;
+  height: 76px;
+}
+
+.wfx-navbar-link {
+  color: $color-text-secondary !important;
+  height: $wfx-topNavbar-height;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  font-size: 20px;
+}
+
+.wfx-navbar-button {
+  margin: 8px 15px 0 0;
+  padding: 4px 5px;
+}

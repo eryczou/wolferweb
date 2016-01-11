@@ -1,0 +1,14 @@
+@import "../base/colors";
+@import "../base/variables";
+
+$wfx-sidebar-width: 270px;
+
+.wfx-sidebar {
+  width: $wfx-sidebar-width;
+  height: 100%;
+  position: fixed;
+  z-index: $wfx-zIndex-highest;
+  right: 0;
+  top: 40px;
+  background-color: rgba(200, 200, 200, 0.9);
+}

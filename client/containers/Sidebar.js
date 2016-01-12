@@ -1,4 +1,5 @@
 import React from 'react';
+import { Motion, spring } from 'react-motion';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as SidebarActions from '../actions/sidebar'
@@ -9,29 +10,42 @@ class Sidebar extends React.Component {
 
   constructor(props) {
     super(props);
+    this.toggleSidebar = this.toggleSidebar.bind(this);
     this.showSidebar = this.showSidebar.bind(this);
   }
 
-  showSidebar(toggleState) {
+  toggleSidebar(e) {
+    this.props.toggleSidebar();
+    e.preventDefault();
+  }
+
+  showSidebar(isToggled) {
     return (
-      <div className={ 'wfx-sidebar ' + (toggleState?'wfx-show':'wfx-hidden')} onClick={this.props.toggle} >
-        <Login />
-      </div>
+      <Motion style={{ width: spring(this.props.isToggled? 40 : 270, [150, 15]) }} >
+        {
+          ({width}) =>
+            <div className='wfx-sidebar'
+                 onClick={this.toggleSidebar}
+                 style={{ width }} >
+              <Login />
+            </div>
+        }
+      </Motion>
     );
   }
 
   render() {
     return (
       <div>
-        {this.showSidebar(this.props.display)}
+        {this.showSidebar(this.props.isToggled)}
       </div>
-  )
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
-    display: state.sidebar.toggle
+    isToggled: state.sidebar.isToggled
   }
 }
 

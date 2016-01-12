@@ -2,12 +2,13 @@ import 'immutable';
 import { TOGGLE_SIDEBAR } from '../actions/sidebar'
 
 const initialState = {
-  toggle: true
+  isToggled: false
 };
 
 function toggleSidebar(state){
-  const toggle = !state.toggle;
-  return Object.assign({}, state, toggle);
+  console.log('chen' + state);
+  const isToggled = !state.isToggled;
+  return Object.assign({}, state, { isToggled });
 }
 
 export default function sidebar(state = initialState, action) {

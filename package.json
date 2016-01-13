@@ -18,15 +18,37 @@
   "scripts": {
     "clean": "rm -rf public",
     "compile": "node -r dotenv/config --harmony bin/compile",
-    "start": "node -r dotenv/config bin/server --hot",
-    "dev": "nodemon -r dotenv/config bin/server --hot",
-    "dev:nw": "npm run dev -- --nw",
+    "start": "better-npm-run start",
+    "dev": "better-npm-run dev",
     "dev:no-debug": "npm run dev -- --no_debug",
-    "test": "node -r dotenv/config ./node_modules/karma/bin/karma start bin/karma.js",
+    "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
-    "deploy": "npm run test && npm run clean && npm run compile",
+    "deploy": "better-npm-run deploy",
     "lint": "eslint . ./",
     "lint:fix": "npm run lint -- --fix"
+  },
+  "betterScripts": {
+    "dev": {
+      "command": "nodemon -r dotenv/config bin/server",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "deploy": {
+      "command": "npm run clean && npm run compile",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "start": {
+      "command": "node -r dotenv/config bin/server"
+    },
+    "test": {
+      "command": "node -r dotenv/config ./node_modules/karma/bin/karma start bin/karma.js",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -34,7 +56,9 @@
   },
   "dependencies": {
     "async": "^1.5.1",
+    "better-npm-run": "0.0.5",
     "body-parser": "^1.14.2",
+    "bootstrap-sass": "^3.3.6",
     "colors": "^1.1.2",
     "compression": "^1.6.0",
     "debug": "^2.2.0",
@@ -43,6 +67,7 @@
     "history": "^1.17.0",
     "immutable": "^3.7.6",
     "isomorphic-fetch": "^2.2.0",
+    "jquery": "^2.2.0",
     "mongoose": "^4.3.4",
     "morgan": "^1.6.1",
     "react": "^0.14.5",

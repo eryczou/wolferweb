@@ -15,6 +15,7 @@ $wfx-topNavbar-height: 40px;
   min-height: $wfx-topNavbar-height;
   background-color: $color-bg-secondary;
   margin-bottom: 0;
+  border: none;
 }
 
 .wfx-navbar-fixed {
@@ -24,8 +25,8 @@ $wfx-topNavbar-height: 40px;
 }
 
 .wfx-navbar-brand {
-  margin-left: 0 !important;
-  padding: 1px 30px 0 0px;
+  margin-left: -10px !important;
+  padding: 1px 40px 0 0;
   height: 100%;
 }
 
@@ -43,6 +44,6 @@ $wfx-topNavbar-height: 40px;
 }
 
 .wfx-navbar-button {
-  margin: 8px 15px 0 0;
+  margin: 8px 10px 0 0;
   padding: 4px 5px;
 }

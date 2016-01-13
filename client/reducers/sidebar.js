@@ -2,7 +2,7 @@ import 'immutable';
 import { TOGGLE_SIDEBAR } from '../actions/sidebar'
 
 const initialState = {
-  isToggled: false
+  isToggled: true
 };
 
 function toggleSidebar(state){

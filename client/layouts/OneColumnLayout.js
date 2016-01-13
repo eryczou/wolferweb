@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../containers/Sidebar';
 
@@ -23,7 +23,7 @@ function OneColumnLayout ({ children }) {
 }
 
 OneColumnLayout.propTypes = {
-  children: React.PropTypes.element
+  children: PropTypes.element
 };
 
 export default OneColumnLayout;

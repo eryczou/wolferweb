@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
-import '../styles/mainLess.less';
+// jquery and bootstrap are not supporting es6
+global.$ = global.jQuery = require('jquery');
+require('bootstrap-sass');
+import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss';
+import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 import '../styles/main.scss';
 
 export default class Root extends React.Component {
   static propTypes = {
-    history: React.PropTypes.object.isRequired,
-    routes: React.PropTypes.element.isRequired,
-    store: React.PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    routes: PropTypes.element.isRequired,
+    store: PropTypes.object.isRequired
   };
 
   get content () {

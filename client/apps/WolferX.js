@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import OneColumnLayout from '../layouts/OneColumnLayout';
 
 class WolferX extends React.Component {
@@ -10,7 +9,7 @@ class WolferX extends React.Component {
 
   render() {
     return (
-      <div className="wfx-app-container wfx-theme-sciFiDark">
+      <div className='wfx-app-container wfx-theme-sciFiDark'>
         {this.props.children}
       </div>
     );

@@ -9,25 +9,33 @@ class Blog extends React.Component {
     return (
       <div id='wfx-blog'>
         <div className='$color-text-primary'>
-          <h1 className='wfx-blog-mainTitle'>The blog of WolferX</h1>
+          <h1 className='wfx-blog-mainTitle'>WolferX</h1>
           <p className='wfx-blog-content'>
-            We are <strong>Close To New Orleans</strong> and next door to the Wal-Mart.
-            Many free utilities for your convenience: <strong>free wifi</strong>
-            , <strong>free parking</strong>, <strong>free fax</strong>, and <strong>free breakfast</strong>.
+            WolferX is <strong>end-to-end</strong> web application solution.<br/>
           </p>
           <h3 className='wfx-blog-subTitle'>
-            Guest Room
+            Architecture
           </h3>
           <p className='wfx-blog-content'>
-            Well-decorated and spacious guest rooms for your comfort after a long driving.
-            The amenities include: <strong>Television</strong>, <strong>Microwave</strong>, <strong>Refrigerator</strong>, <strong>24-hours hot shower</strong>.
+            Nginx, Reactjs, Nodejs, Tomcat, Jersey, Cassandra, and MongoDB.
           </p>
           <h3 className='wfx-blog-subTitle'>
-            DINING OPTIONS
+            Philosophy
           </h3>
           <p className='wfx-blog-content'>
-            A new restaurant plaza recently opened very close to our location.
-            Hooters, Waffle House, Outback Steakhouse and many other choices are waiting for you.
+            Deploy the <strong>best practice</strong> of engineering to every issues that will be encountered during web app implementation.
+          </p>
+          <h3 className='wfx-blog-subTitle'>
+            Atmosphere
+          </h3>
+          <p className='wfx-blog-content'>
+            Here is for meet up! for group up! for talk and learn, for <strong>not being alone when engineering something up</strong>.
+          </p>
+          <h3 className='wfx-blog-subTitle'>
+            Goal
+          </h3>
+          <p className='wfx-blog-content'>
+            To build a solid web application end-to-end solution, that helps any beautiful idea become a <strong>tangible product</strong> easier, faster, and more reliable.
           </p>
         </div>
       </div>

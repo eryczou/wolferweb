@@ -2,9 +2,11 @@ import React, { PropTypes } from 'react'
 import { Motion, spring } from 'react-motion'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as SidebarActions from '../actions/sidebar'
+import * as SidebarActions from '../../actions/sidebar'
+import classes from './Sidebar.scss';
+import ChevronLeftIcon from '../../static/img/elements/chevron-left-512px.svg';
 
-import Login from '../components/Login'
+import Login from '../../components/Login'
 
 class Sidebar extends React.Component {
 
@@ -26,12 +28,15 @@ class Sidebar extends React.Component {
 
   showSidebar(isToggled) {
     return (
-      <Motion style={{ width: spring(this.props.isToggled? 40 : 270, [150, 15]) }} >
+      <Motion style={{ sidebarWidth: spring(isToggled? 40 : 270, [150, 15]) }} >
         {
-          ({ width }) =>
+          ({ sidebarWidth }) =>
             <div className='wfx-sidebar'
                  onClick={this.toggleSidebar}
-                 style={{ width }} >
+                 style={{ width: sidebarWidth }} >
+              <div>
+                <img className={classes['wfx-sidebar-chevronLeft']} src={ ChevronLeftIcon } />
+              </div>
               <Login />
             </div>
         }

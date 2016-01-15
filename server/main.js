@@ -1,9 +1,11 @@
-const paths = config.utils_paths;
-import webpack from 'webpack';
-import webpackConfig from '../build/webpack.config';
-import _debug from 'debug';
-const debug = _debug('app:server');
-import config from '../config';
+import config from '../config'
+import webpack from 'webpack'
+import webpackConfig from '../build/webpack.config'
+import _debug from 'debug'
+
+const debug = _debug('app:server')
+const paths = config.utils_paths
+
 // common util
 var request = require('request');
 var xml2js = require('xml2js');
@@ -51,14 +53,15 @@ if (config.env === 'development') {
   const { publicPath } = webpackConfig.output;
 
   app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: config.compiler_quiet,
     publicPath,
     contentBase: paths.base(config.dir_client),
     hot: true,
     quiet: config.compiler_quiet,
-    noInfo: config.compiler_quiet,
     lazy: false,
     stats: config.compiler_stats
   }));
+
   app.use(require('webpack-hot-middleware')(compiler, {
     log: console.log
   }));

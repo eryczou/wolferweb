@@ -27,7 +27,7 @@ const APP_ENTRY_PATH = paths.base(config.dir_client) + '/main.js';
 
 webpackConfig.entry = {
   app: __DEV__
-    ? [APP_ENTRY_PATH, 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true']
+    ? [APP_ENTRY_PATH, 'webpack-hot-middleware/client?path=/__webpack_hmr']
     : [APP_ENTRY_PATH],
   vendor: config.compiler_vendor
 };
@@ -55,7 +55,7 @@ webpackConfig.plugins = [
     filename: 'index.html',
     inject: 'body',
     minify: {
-      collapseWhitespace: false
+      collapseWhitespace: true
     }
   })
 ];
@@ -91,7 +91,7 @@ if (!__TEST__) {
 webpackConfig.module.preLoaders = [{
   test: /\.js$/,
   loader: 'eslint',
-  exclude: /(node_modules)/
+  exclude: /node_modules/
 }];
 
 webpackConfig.eslint = {
@@ -105,7 +105,7 @@ webpackConfig.eslint = {
 // JavaScript / JSON
 webpackConfig.module.loaders = [{
   test: /\.js$/,
-  exclude: /(node_modules)/,
+  exclude: /node_modules/,
   loader: 'babel',
   query: {
     cacheDirectory: true,
@@ -115,20 +115,20 @@ webpackConfig.module.loaders = [{
       : ['es2015', 'react', 'stage-0']
   }
 },
-{
-  test: /\.json$/,
-  loader: 'json'
-}];
+  {
+    test: /\.json$/,
+    loader: 'json'
+  }];
 
 // Styles
 const cssLoader = !config.compiler_css_modules
   ? 'css?sourceMap'
   : [
-    'css?modules',
-    'sourceMap',
-    'importLoaders=1',
-    'localIdentName=[name]__[local]___[hash:base64:5]'
-  ].join('&');
+  'css?modules',
+  'sourceMap',
+  'importLoaders=1',
+  'localIdentName=[name]__[local]___[hash:base64:5]'
+].join('&')
 
 webpackConfig.module.loaders.push({
   test: /\.scss$/,
@@ -139,7 +139,7 @@ webpackConfig.module.loaders.push({
     'postcss',
     'sass'
   ]
-});
+})
 
 // Don't treat global SCSS as modules
 webpackConfig.module.loaders.push({
@@ -166,17 +166,7 @@ webpackConfig.module.loaders.push({
 
 webpackConfig.sassLoader = {
   includePaths: paths.client('styles')
-};
-
-webpackConfig.module.loaders.push({
-  test: /\.less$/,
-  loaders: [
-    'style',
-    cssLoader,
-    'postcss',
-    'less'
-  ]
-});
+}
 
 webpackConfig.postcss = [
   cssnano({
@@ -191,7 +181,7 @@ webpackConfig.postcss = [
       removeAll: true
     }
   })
-];
+]
 
 // File loaders
 /* eslint-disable */
@@ -212,14 +202,14 @@ webpackConfig.module.loaders.push(
 // need to use the extractTextPlugin to fix this issue:
 // http://stackoverflow.com/questions/34133808/webpack-ots-parsing-error-loading-fonts/34133809#34133809
 if (!__DEV__) {
-  debug('Apply ExtractTextPlugin to CSS loaders.');
+  debug('Apply ExtractTextPlugin to CSS loaders.')
   webpackConfig.module.loaders.filter(loader =>
     loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0]))
   ).forEach(loader => {
-    const [first, ...rest] = loader.loaders;
-    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
+    const [first, ...rest] = loader.loaders
+    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'))
     delete loader.loaders
-  });
+  })
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin('[name].[contenthash].css', {

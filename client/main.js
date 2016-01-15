@@ -1,11 +1,10 @@
-import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createHistory, useBasename } from 'history'
 import { syncReduxAndRouter } from 'redux-simple-router';
-import configureStore from './store/configureStore';
-import Root from './containers/Root';
 import routes from './routes';
+import Root from './containers/Root';
+import configureStore from './store/configureStore';
 
 const history = useBasename(createHistory)({
   basename: __BASENAME__

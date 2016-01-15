@@ -1,18 +1,19 @@
 @import "../base/colors";
 @import "../base/variables";
 
-$wfx-topNavbar-height: 40px;
+$wfx-navbar-height: 40px;
 
 .wfx-navbar-wrapper {
   z-index: $wfx-zIndex-highest;
   width: 100%;
-  height: $wfx-topNavbar-height;
+  height: $wfx-navbar-height;
   background-color: $color-bg-secondary;
 }
 
 .wfx-navbar {
-  height: $wfx-topNavbar-height;
-  min-height: $wfx-topNavbar-height;
+  height: $wfx-navbar-height;
+  min-height: $wfx-navbar-height;
+  max-width: $wfx-view-maxWidth;
   background-color: $color-bg-secondary;
   margin-bottom: 0;
   border: none;
@@ -37,7 +38,7 @@ $wfx-topNavbar-height: 40px;
 
 .wfx-navbar-link {
   color: $color-text-secondary !important;
-  height: $wfx-topNavbar-height;
+  height: $wfx-navbar-height;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
   font-size: 20px;

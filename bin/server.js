@@ -8,5 +8,10 @@ const debug = require('debug')('app:bin:server');
 const host = config.server_host;
 const port = config.server_port;
 
-server.listen(port)
-debug(`Server is now running at ${host}:${port}.`)
+server.listen(port, (error) => {
+  if (error) {
+    debug (`Error:: @server start :: ${ error }`)
+  } else {
+    debug(`Server is now running at ${host}:${port}.`)
+  }
+})

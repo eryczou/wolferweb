@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
 export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
 
@@ -11,6 +13,12 @@ export function decrement() {
   return {
     type: DECREMENT_COUNTER
   }
+}
+
+export const incrementFromServer = () => (dispatch) => {
+  axios.get('http://localhost:3000/api/counter/random-increment')
+    .then((res) => dispatch(increment(res.data.increment)))
+    .catch(::console.log)
 }
 
 export function incrementIfOdd() {

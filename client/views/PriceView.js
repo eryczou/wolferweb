@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import App from '../containers/App';
 
 class PriceView extends React.Component {

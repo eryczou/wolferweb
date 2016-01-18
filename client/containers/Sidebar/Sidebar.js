@@ -3,10 +3,8 @@ import { Motion, spring } from 'react-motion'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as SidebarActions from '../../actions/sidebar'
-import classes from './Sidebar.scss';
-import ChevronLeftIcon from '../../static/img/elements/chevron-left-512px.svg';
-
-import Login from '../../components/Login'
+import classes from './sidebar.scss'
+import Login from '../Login/Login'
 
 class Sidebar extends React.Component {
 
@@ -16,39 +14,62 @@ class Sidebar extends React.Component {
   };
 
   constructor(props) {
-    super(props);
-    this.toggleSidebar = this.toggleSidebar.bind(this);
-    this.showSidebar = this.showSidebar.bind(this);
+    super(props)
+    this.toggleSidebar = this.toggleSidebar.bind(this)
+    this.onMouseOver = this.onMouseOver.bind(this)
+    this.onMouseOut = this.onMouseOut.bind(this)
+    this.state = {
+      isHovering: false
+    }
   }
 
   toggleSidebar(e) {
-    this.props.toggleSidebar();
-    e.preventDefault();
+    e.preventDefault()
+    e.stopPropagation()
+    this.props.toggleSidebar()
+    this.setState({ isHovering: false })
   }
 
-  showSidebar(isToggled) {
+  onMouseOver(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.setState({ isHovering: true })
+  }
+
+  onMouseOut(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.setState({ isHovering: false })
+  }
+
+  render() {
+
+    let { isToggled } = this.props;
+    let { isHovering } = this.state;
+
+    let sidebarClass = classes.sidebar + ' '
+      + (isToggled && isHovering? classes.onHovering : '')
+
+    let toggleButtonClass = 'glyphicon glyphicon-expand '
+      + (isToggled? 'fa-flip-horizontal ' : '')
+      + classes.toggleButton
+
     return (
       <Motion style={{ sidebarWidth: spring(isToggled? 40 : 270, [150, 15]) }} >
         {
           ({ sidebarWidth }) =>
-            <div className='wfx-sidebar'
-                 onClick={this.toggleSidebar}
+            <div className={ sidebarClass }
+                 onClick={ this.toggleSidebar }
+                 onMouseOver= { this.onMouseOver }
+                 onMouseOut= { this.onMouseOut }
                  style={{ width: sidebarWidth }} >
-              <div>
-                <img className={classes['wfx-sidebar-chevronLeft']} src={ ChevronLeftIcon } />
+              <div className={ classes.header }>
+                <i className={ toggleButtonClass } aria-hidden='true'></i>
               </div>
               <Login />
             </div>
         }
       </Motion>
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        {this.showSidebar(this.props.isToggled)}
-      </div>
     )
   }
 }

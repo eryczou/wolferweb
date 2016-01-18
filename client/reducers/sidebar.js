@@ -6,7 +6,6 @@ const initialState = {
 };
 
 function toggleSidebar(state){
-  console.log('chen' + state);
   const isToggled = !state.isToggled;
   return Object.assign({}, state, { isToggled });
 }

@@ -7,9 +7,11 @@ import HomeView from './views/HomeView';
 import PriceView from './views/PriceView';
 
 export default (
-  <Route path='/' component={OneColumnLayout}>
-    <IndexRoute component={HomeView} />
-    <Route path='/price' component={PriceView} />
-    <Redirect from='*' to='/' />
+  <Route path='/' component={ WolferXApp }>
+    <Route component={ OneColumnLayout }>
+      <IndexRoute component={HomeView} />
+      <Route path='/price' component={PriceView} />
+      <Redirect from='*' to='/' />
+    </Route>
   </Route>
 );

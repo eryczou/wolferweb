@@ -1,50 +1,62 @@
-@import "../base/colors";
-@import "../base/variables";
+@import "../../styles/base/colors";
+@import "../../styles/base/variables";
 
 $wfx-navbar-height: 40px;
 
-.wfx-navbar-wrapper {
-  z-index: $wfx-zIndex-highest;
-  width: 100%;
-  height: $wfx-navbar-height;
-  background-color: $color-bg-secondary;
-}
-
-.wfx-navbar {
-  height: $wfx-navbar-height;
-  min-height: $wfx-navbar-height;
-  max-width: $wfx-view-maxWidth;
-  background-color: $color-bg-secondary;
-  margin-bottom: 0;
-  border: none;
-}
-
-.wfx-navbar-fixed {
+.wrapper {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: $wfx-navbar-height;
+  z-index: $wfx-zIndex-highest;
+  background-color: $color-bg-secondary;
 }
 
-.wfx-navbar-brand {
+.navbar {
+  height: $wfx-navbar-height;
+  min-height: $wfx-navbar-height;
+  max-width: $wfx-view-maxWidth;
+  margin-bottom: 0;
+  background-color: $color-bg-secondary;
+  border: none;
+}
+
+.brand {
+  height: 100%;
   margin-left: -10px !important;
   padding: 1px 40px 0 0;
-  height: 100%;
 }
 
-.wfx-navbar-logo {
+.logo {
   width: 60px;
   height: 76px;
 }
 
-.wfx-navbar-link {
-  color: $color-text-secondary !important;
+.link {
   height: $wfx-navbar-height;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
+  color: $color-text-secondary !important;
   font-size: 20px;
 }
 
-.wfx-navbar-button {
+.button {
   margin: 8px 10px 0 0;
   padding: 4px 5px;
 }
+
+.sidebarButtonWrapper {
+  position: relative;
+  float: right;
+  height: 100%;
+  display: flex;
+}
+
+.sidebarButton {
+  width: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+

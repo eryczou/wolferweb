@@ -5,9 +5,8 @@ let parse = require('co-body');
 
 const auth = new Router()
 
-auth.post('/getToken/', (ctx, next) => {
-
-  console.log(ctx)
+auth.post('/getToken', (ctx, next) => {
+  console.log(ctx.request.header)
   if (ctx.request.email == 'hello@test.com' && ctx.request.password == 'test') {
     ctx.status = 200
     ctx.body({token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8'});
@@ -16,7 +15,7 @@ auth.post('/getToken/', (ctx, next) => {
   }
 })
 
-auth.get('/getData/', bodyParser, (ctx, next) => {
+auth.get('/getData', bodyParser, (ctx, next) => {
   let token = ctx.headers['authorization'];
   if (!token) {
     ctx.status = 401

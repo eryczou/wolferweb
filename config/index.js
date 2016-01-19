@@ -1,17 +1,24 @@
+import fs from 'fs'
 import _debug from 'debug'
+import config from './_base'
 
 const debug = _debug('app:config')
 debug('Create configuration.')
-import base from './_base'
+debug(`Apply environment overrides for NODE_ENV "${config.env}".`)
 
-debug(`Apply environment overrides for NODE_ENV "${base.env}".`)
-let overrides
+const overridesFilename = `_${config.env}`
+let hasOverridesFile
 try {
-  overrides = require(`./_${base.env}`)(base)
-} catch (e) {
-  debug(
-    `No configuration overrides found for NODE_ENV "${base.env}"`
-  )
+  fs.lstatSync(`${__dirname}/${overridesFilename}.js`)
+  hasOverridesFile = true
+} catch (e) {}
+
+let overrides
+if (hasOverridesFile) {
+  overrides = require(`./${overridesFilename}`)(config)
+} else {
+  debug(`No configuration overrides found for NODE_ENV "${config.env}"`)
 }
 
-export default Object.assign({}, base, overrides)
+
+export default Object.assign({}, config, overrides)

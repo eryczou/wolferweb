@@ -54,7 +54,7 @@ export function logoutAndRedirect() {
 export function loginUser(email, password, redirect='/') {
   return function(dispatch) {
     dispatch(loginUserRequest());
-    return fetch('http://localhost:3000/api/auth/getToken/', {
+    return fetch('http://localhost:3000/api/auth/getToken', {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -104,7 +104,7 @@ export function fetchProtectedData(token) {
 
   return (dispatch, state) => {
     dispatch(fetchProtectedDataRequest());
-    return fetch('http://localhost:3000/api/auth/getData/', {
+    return fetch('http://localhost:3000/api/auth/getData', {
       credentials: 'include',
       headers: {
         'Authorization': `Bearer ${token}`

@@ -8,11 +8,16 @@ export function requireAuthentication(Component) {
 
     static propTypes = {
       token: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
+      userName: PropTypes.string.isRequired,
       isAuthenticated: PropTypes.bool.isRequired,
       location: PropTypes.object.isRequired,
       dispatch: PropTypes.func.isRequired
     };
+
+    constructor(props){
+      super(props)
+      this.checkAuth.bind(this)
+    }
 
     componentWillMount () {
       this.checkAuth();
@@ -25,7 +30,7 @@ export function requireAuthentication(Component) {
     checkAuth () {
       if (!this.props.isAuthenticated) {
         let redirectAfterLogin = this.props.location.pathname;
-        this.props.dispatch(routeActions.push(`/login?next=${redirectAfterLogin}`));
+        routeActions.push(`/login?next=${redirectAfterLogin}`);
       }
     }
 

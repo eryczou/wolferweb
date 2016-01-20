@@ -22,14 +22,11 @@ app.use(cookieParser())
 // koa-router
 app.use(api.routes());
 
-// This rewrites all routes requests to the root /index.html file
-// (ignoring file requests). If you want to implement isomorphic
-// rendering, you'll want to remove this middleware.
+// Rewrites all routes requests to the root /index.html file
+// Remove this, if you want to implement isomorphic rendering
 app.use(convert(historyApiFallback({
   verbose: false
 })))
-
-
 
 // ------------------------------------
 // Apply Webpack HMR Middleware

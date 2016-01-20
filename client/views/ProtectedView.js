@@ -9,9 +9,13 @@ export class ProtectedView extends React.Component {
     actions: PropTypes.object.isRequired,
     userName: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    data: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired
   };
+
+  constructor(props){
+    super(props)
+    this.fetchData.bind(this)
+  }
 
   componentWillMount () {
     this.fetchData();
@@ -30,7 +34,7 @@ export class ProtectedView extends React.Component {
           : <div>
           <h1>Welcome back,
             {this.props.userName}!</h1>
-          <h3>{this.props.data}</h3>
+          <h3>{this.props.data? this.props.data : ''}</h3>
         </div>
         }
       </div>

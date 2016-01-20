@@ -67,9 +67,8 @@ export function loginUser(email, password, redirect='/') {
       .then(parseJSON)
       .then((response) => {
         try {
-          let decoded = jwtDecode(response.token);
           dispatch(loginUserSuccess(response.token));
-          dispatch(routeActions.push(redirect));
+          //dispatch(routeActions.push(redirect));
         } catch (e) {
           dispatch(loginUserFailure({
             response: {
@@ -113,6 +112,7 @@ export function fetchProtectedData(token) {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then((response) => {
+        console.log(response)
         dispatch(receiveProtectedData(response.data));
       })
       .catch((error) => {

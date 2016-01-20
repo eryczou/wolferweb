@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import reactMixin from 'react-mixin'
@@ -53,6 +54,7 @@ export class LoginView extends React.Component {
                   disabled={this.props.isAuthenticating}
                   onClick={this.login.bind(this)}>Submit</button>
         </form>
+        <Link to='/protected' >Protected</Link>
       </div>
     );
   }

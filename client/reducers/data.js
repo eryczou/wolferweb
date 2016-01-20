@@ -1,20 +1,21 @@
-import { createAction, handleActions } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST } from '../actions/auth';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
-    data: null,
+    data: '',
+    username:'',
     isFetching: false
 };
 
 export default handleActions({
-    [RECEIVE_PROTECTED_DATA]: (state, payload) => {
+    [RECEIVE_PROTECTED_DATA]: (state, action) => {
         return Object.assign({}, state, {
-            'data': payload.data,
+            'data': action.payload.data,
             'isFetching': false
         });
     },
-    [FETCH_PROTECTED_DATA_REQUEST]: (state, payload) => {
+    [FETCH_PROTECTED_DATA_REQUEST]: (state, action) => {
         return Object.assign({}, state, {
             'isFetching': true
         });

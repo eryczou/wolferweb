@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import { routeReducer as router } from 'redux-simple-router'
-import counter from './counter'
-import sidebar from './sidebar'
-import auth from './auth'
-import data from './data'
+import counter from './modules/counter'
+import sidebar from './modules/sidebar'
+import auth from './modules/auth'
+import data from './modules/data'
 
 export default combineReducers({
   counter,

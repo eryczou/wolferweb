@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST } from '../actions/auth';
+import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST } from './auth';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {

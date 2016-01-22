@@ -1,15 +1,16 @@
 import React, { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actionCreators from '../actions/auth';
+import { actions as authActions } from '../redux/modules/auth';
 
 export class ProtectedView extends React.Component {
 
   static propTypes = {
-    actions: PropTypes.object.isRequired,
     userName: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    token: PropTypes.string.isRequired
+    token: PropTypes.string.isRequired,
+    fetchProtectedData: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
   };
 
   constructor(props){
@@ -23,7 +24,7 @@ export class ProtectedView extends React.Component {
 
   fetchData () {
     let token = this.props.token;
-    this.props.actions.fetchProtectedData(token);
+    this.props.fetchProtectedData(token);
   }
 
   render () {
@@ -47,8 +48,4 @@ const mapStateToProps = (state) => ({
   isFetching: state.data.isFetching
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  actions : bindActionCreators(actionCreators, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProtectedView);
+export default connect(mapStateToProps, authActions)(ProtectedView);

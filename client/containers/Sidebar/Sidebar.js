@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Motion, spring } from 'react-motion'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as SidebarActions from '../../actions/sidebar'
+import { actions as SidebarActions } from '../../redux/modules/sidebar'
 import classes from './sidebar.scss'
 import Login from '../Login/Login'
 
@@ -80,9 +80,5 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(SidebarActions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(mapStateToProps, SidebarActions)(Sidebar);
 

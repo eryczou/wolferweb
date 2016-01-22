@@ -1,7 +1,11 @@
-import { checkHttpStatus, parseJSON } from '../utils';
+import { handleActions } from 'redux-actions'
 import { routeActions } from 'redux-simple-router';
+import { checkHttpStatus, parseJSON } from '../../utils';
 import jwtDecode from 'jwt-decode';
 
+// ------------------------------------
+// Constants
+// ------------------------------------
 export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST'
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
@@ -9,7 +13,9 @@ export const LOGOUT_USER = 'LOGOUT_USER'
 export const FETCH_PROTECTED_DATA_REQUEST = 'FETCH_PROTECTED_DATA_REQUEST'
 export const RECEIVE_PROTECTED_DATA = 'RECEIVE_PROTECTED_DATA'
 
-
+// ------------------------------------
+// Actions
+// ------------------------------------
 export function loginUserSuccess(token) {
   localStorage.setItem('token', token);
   return {
@@ -123,3 +129,63 @@ export function fetchProtectedData(token) {
       })
   }
 }
+
+export const actions = {
+  loginUserSuccess,
+  loginUserFailure,
+  loginUserRequest,
+  logout,
+  logoutAndRedirect,
+  loginUser,
+  receiveProtectedData,
+  fetchProtectedDataRequest,
+  fetchProtectedData
+}
+
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = {
+  token: '',
+  userName: '',
+  isAuthenticated: false,
+  isAuthenticating: false,
+  statusText: 'Chen Before Auth'
+}
+
+export default handleActions({
+  [LOGIN_USER_REQUEST]: (state, action) => {
+    return Object.assign({}, state, {
+      'isAuthenticating': true,
+      'statusText': 'Chen is authenticating'
+    });
+  },
+  [LOGIN_USER_SUCCESS]: (state, action) => {
+    return Object.assign({}, state, {
+      'isAuthenticating': false,
+      'isAuthenticated': true,
+      'token': action.payload.token,
+      'userName': jwtDecode(action.payload.token).userName,
+      'statusText': 'You have been successfully logged in.'
+    });
+
+  },
+  [LOGIN_USER_FAILURE]: (state, action) => {
+    return Object.assign({}, state, {
+      'isAuthenticating': false,
+      'isAuthenticated': false,
+      'token': null,
+      'userName': null,
+      'statusText': `Authentication Error: ${action.payload.status} ${action.payload.statusText}`
+    });
+  },
+  [LOGOUT_USER]: (state, action) => {
+    return Object.assign({}, state, {
+      'isAuthenticated': false,
+      'token': null,
+      'userName': null,
+      'statusText': 'You have been successfully logged out.'
+    });
+  }
+}, initialState)

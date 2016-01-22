@@ -4,15 +4,15 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import reactMixin from 'react-mixin'
 import linkedStateMixin from 'react-addons-linked-state-mixin'
-import * as actionCreators from '../actions/auth'
+import { actions as authActions } from '../redux/modules/auth'
 
 export class LoginView extends React.Component {
 
   static propTypes = {
-    actions: PropTypes.object.isRequired,
     statusText: PropTypes.string.isRequired,
     isAuthenticating: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -27,7 +27,7 @@ export class LoginView extends React.Component {
 
   login(e) {
     e.preventDefault();
-    this.props.actions.loginUser(this.state.email, this.state.password, this.state.redirectTo);
+    this.props.loginUser(this.state.email, this.state.password, this.state.redirectTo);
   }
 
   render () {
@@ -67,8 +67,4 @@ const mapStateToProps = (state) => ({
   statusText         : state.auth.statusText
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  actions : bindActionCreators(actionCreators, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, authActions)(LoginView);

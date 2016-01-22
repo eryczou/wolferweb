@@ -53,7 +53,6 @@
     "jsx": true,                                // enable JSX
     "experimentalObjectRestSpread": true
   },
-
   "rules": {
     ////////// Strict Mode //////////
     "strict": [2, "never"],        // controls location of Use Strict Directives
@@ -66,6 +65,7 @@
     "babel/no-await-in-loop": 1,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
+    "react/prop-types": 1,
     "react/react-in-jsx-scope": 2,
 
     ////////// Styles ///////////////

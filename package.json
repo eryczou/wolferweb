@@ -21,6 +21,7 @@
     "lint": "eslint . ./",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
+    "forever": "better-npm-run forever",
     "dev": "better-npm-run dev",
     "dev:no-debug": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
@@ -42,6 +43,9 @@
     },
     "start": {
       "command": "node -r dotenv/config bin/server"
+    },
+    "forever": {
+      "command": "forever start bin/server.js"
     },
     "test": {
       "command": "node -r dotenv/config ./node_modules/karma/bin/karma start bin/karma.js",

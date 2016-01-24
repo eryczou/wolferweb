@@ -8,8 +8,8 @@ import _debug from 'debug';
 const debug = _debug('app:webpack:config');
 const paths = config.utils_paths;
 const {__DEV__, __PROD__, __TEST__} = config.globals;
-debug('Create configuration.');
 
+debug('Create configuration.');
 const webpackConfig = {
   name: 'client',
   target: 'web',
@@ -46,8 +46,6 @@ webpackConfig.output = {
 // ------------------------------------
 webpackConfig.plugins = [
   new webpack.DefinePlugin(config.globals),
-  new webpack.optimize.OccurrenceOrderPlugin(),
-  new webpack.optimize.DedupePlugin(),
   new HtmlWebpackPlugin({
     template: paths.client('index.html'),
     hash: false,
@@ -55,7 +53,7 @@ webpackConfig.plugins = [
     filename: 'index.html',
     inject: 'body',
     minify: {
-      collapseWhitespace: true
+      collapseWhitespace: false
     }
   })
 ];
@@ -67,8 +65,10 @@ if (__DEV__) {
     new webpack.NoErrorsPlugin()
   )
 } else if (__PROD__) {
-  debug('Apply UglifyJS plugin.');
+  debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
   webpackConfig.plugins.push(
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         unused: true,
@@ -137,7 +137,17 @@ webpackConfig.module.loaders.push({
     'style',
     cssLoader,
     'postcss',
-    'sass'
+    'sass?sourceMap'
+  ]
+})
+
+webpackConfig.module.loaders.push({
+  test: /\.css$/,
+  include: /client/,
+  loaders: [
+    'style',
+    'css?sourceMap',
+    'postcss'
   ]
 })
 
@@ -149,7 +159,7 @@ webpackConfig.module.loaders.push({
     'style',
     'css?sourceMap',
     'postcss',
-    'sass'
+    'sass?sourceMap'
   ]
 })
 
@@ -188,6 +198,7 @@ webpackConfig.postcss = [
 webpackConfig.module.loaders.push(
   { test: /\.woff(\?.*)?$/,  loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' },
   { test: /\.woff2(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' },
+  { test: /\.otf(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
   { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
   { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
   { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },

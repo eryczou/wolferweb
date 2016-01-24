@@ -1,13 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import App from '../containers/App';
+import Counter from '../containers/Counter';
 
 class PriceView extends React.Component {
   render() {
     return (
       <div id='wfx-price'>
         <div className='container wfx-mainWrapper wfx-align-vCenter'>
-          <App />
+          <Counter />
         </div>
       </div>
     );

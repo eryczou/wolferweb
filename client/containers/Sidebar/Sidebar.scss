@@ -1,3 +1,46 @@
-.wfx-sidebar-chevronLeft {
-  width: 25px;
+@import "../../styles/base/colors";
+@import "../../styles/base/variables";
+
+$sidebar-width: 270px;
+
+.sidebar {
+  height: 100%;
+  position: fixed;
+  z-index: $wfx-zIndex-highest + 900;
+  top: 0;
+  right: 0;
+  background-color: $color-bg-third;
+}
+
+.header {
+  height: 40px;
+  border-bottom: 1px solid wheat;
+  box-shadow: 2px 0 3px whitesmoke;
+}
+
+.toggleButton {
+  width: 28px;
+  height: 28px;
+  font-size: 28px;
+  margin-top: 6px;
+  margin-left: 4px;
+  color: $color-button-secondary;
+}
+
+@keyframes toggleButtonHoveringAnimation {
+  0% {
+    width: 40px;
+  }
+
+  100% {
+    width: 50px;
+  }
+}
+
+.onHovering {
+  animation-duration: 0.3s;
+  animation-name: toggleButtonHoveringAnimation;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
 }

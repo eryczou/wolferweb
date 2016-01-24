@@ -5,6 +5,6 @@ export default (config) => ({
   compiler_public_path: `http://${config.server_host}:${config.server_port}/`,
   globals: {
     ...config.globals,
-    API_URL: JSON.stringify('localhost:8080')
+    __API_URL__: JSON.stringify('http://ec2-54-164-76-225.compute-1.amazonaws.com:5000/api')
   }
 })

@@ -137,7 +137,7 @@ webpackConfig.module.loaders.push({
     'style',
     cssLoader,
     'postcss',
-    'sass'
+    'sass?sourceMap'
   ]
 })
 
@@ -159,7 +159,7 @@ webpackConfig.module.loaders.push({
     'style',
     'css?sourceMap',
     'postcss',
-    'sass'
+    'sass?sourceMap'
   ]
 })
 

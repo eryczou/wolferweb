@@ -3,7 +3,7 @@ import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST } from './auth';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
-    data: '',
+    data: {},
     username:'',
     isFetching: false
 };

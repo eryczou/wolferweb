@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { routeActions } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 import { checkHttpStatus, parseJSON } from '../../utils';
 import jwtDecode from 'jwt-decode';
 
@@ -74,14 +74,13 @@ export function loginUser(email, password, redirect='/') {
       .then((response) => {
         try {
           dispatch(loginUserSuccess(response.token));
-          //dispatch(routeActions.push(redirect));
         } catch (e) {
           dispatch(loginUserFailure({
             response: {
               status: 403,
               statusText: 'Invalid token'
             }
-          }));
+          }))
         }
       })
       .catch((error) => {

@@ -3,7 +3,7 @@ import { Motion, spring } from 'react-motion'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actions as SidebarActions } from '../../redux/modules/sidebar'
-import classes from './sidebar.scss'
+import classes from './Sidebar.scss'
 import Login from '../Login/Login'
 
 class Sidebar extends React.Component {
@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
       + classes.toggleButton
 
     return (
-      <Motion style={{ sidebarWidth: spring(isToggled? 40 : 270, [150, 15]) }} >
+      <Motion style={{ sidebarWidth: spring(isToggled? 40 : 330, [150, 15]) }} >
         {
           ({ sidebarWidth }) =>
             <div className={ sidebarClass }
@@ -66,7 +66,9 @@ class Sidebar extends React.Component {
               <div className={ classes.header }>
                 <i className={ toggleButtonClass } aria-hidden='true'></i>
               </div>
-              <Login />
+              <div id='sidebar-content-wrapper' className={ classes.contentWrapper }>
+                <Login />
+              </div>
             </div>
         }
       </Motion>

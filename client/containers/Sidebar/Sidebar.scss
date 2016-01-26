@@ -1,7 +1,7 @@
 @import "../../styles/base/colors";
 @import "../../styles/base/variables";
 
-$sidebar-width: 270px;
+$sidebar-width: 330px;
 
 .sidebar {
   height: 100%;
@@ -16,6 +16,13 @@ $sidebar-width: 270px;
   height: 40px;
   border-bottom: 1px solid wheat;
   box-shadow: 2px 0 3px whitesmoke;
+}
+
+.contentWrapper {
+  width: $sidebar-width - 20px;
+  margin: 70px 10px 0 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .toggleButton {

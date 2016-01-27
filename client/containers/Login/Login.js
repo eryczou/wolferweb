@@ -17,12 +17,16 @@ class Login extends React.Component {
     super(props)
   }
 
-  login(e) {
+  submitHandler(e) {
     e.preventDefault()
     e.stopPropagation()
-    const email = $('login-input-email').val()
-    const password = $('login-input-password').val()
+    const email = $('#login-input-email').val()
+    const password = $('#login-input-password').val()
     this.props.loginUser(email, password)
+  }
+
+  inputHandler(e) {
+    e.stopPropagation()
   }
 
   render() {
@@ -35,19 +39,21 @@ class Login extends React.Component {
           <div className='form-group'>
             <input id='login-input-email'
                    type='text'
+                   onClick={ this.inputHandler.bind(this) }
                    className='form-control input-lg'
                    placeholder='Email' />
           </div>
           <div className='form-group'>
             <input id='login-input-password'
                    type='password'
+                   onClick={ this.inputHandler.bind(this) }
                    className='form-control input-lg'
                    placeholder='Password' />
           </div>
           <button type='submit'
                   className='btn btn-lg'
                   disabled={ this.props.isAuthenticating }
-                  onClick={ this.login.bind(this) }>Submit</button>
+                  onClick={ this.submitHandler.bind(this) }>Submit</button>
         </form>
       </div>
     );

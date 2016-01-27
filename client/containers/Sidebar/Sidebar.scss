@@ -2,11 +2,13 @@
 @import "../../styles/base/variables";
 
 $sidebar-width: 330px;
+$topClickZone-height: 120px;
+$zIndex-level1: 900;
 
 .sidebar {
   height: 100%;
   position: fixed;
-  z-index: $wfx-zIndex-highest + 900;
+  z-index: $wfx-zIndex-highest + $zIndex-level1;
   top: 0;
   right: 0;
   background-color: $color-bg-third;
@@ -16,6 +18,13 @@ $sidebar-width: 330px;
   height: 40px;
   border-bottom: 1px solid wheat;
   box-shadow: 2px 0 3px whitesmoke;
+}
+
+.topClickZone {
+  position: absolute;
+  width: 100%;
+  height: $topClickZone-height;
+  z-index: $wfx-zIndex-highest + $zIndex-level1;
 }
 
 .contentWrapper {
@@ -30,7 +39,8 @@ $sidebar-width: 330px;
   height: 28px;
   font-size: 28px;
   margin-top: 6px;
-  margin-left: 4px;
+  margin-left: 2px;
+  margin-right: -10px;
   color: $color-button-secondary;
 }
 
@@ -50,4 +60,12 @@ $sidebar-width: 330px;
   animation-iteration-count: infinite;
   animation-direction: alternate;
   animation-timing-function: linear;
+}
+
+.cursorShow {
+  cursor: pointer;
+}
+
+.cursorHide {
+  cursor: e-resize;
 }

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { actions as clusterDocActions } from '../../redux/modules/clusterDoc'
 import ListBlock from '../../components/ListBlock/ListBlock'
-import classes from './clusterDoc.scss'
+import classes from './ClusterDoc.scss'
 
 class ClusterDoc extends React.Component {
 

@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { routeActions } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 import { checkHttpStatus, parseJSON } from '../../utils';
 import jwtDecode from 'jwt-decode';
 
@@ -16,7 +16,8 @@ export const RECEIVE_PROTECTED_DATA = 'RECEIVE_PROTECTED_DATA'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function loginUserSuccess(token) {
+
+export const loginUserSuccess = (token) => {
   localStorage.setItem('token', token);
   return {
     type: LOGIN_USER_SUCCESS,
@@ -26,7 +27,7 @@ export function loginUserSuccess(token) {
   }
 }
 
-export function loginUserFailure(error) {
+export const loginUserFailure = (error) => {
   localStorage.removeItem('token');
   return {
     type: LOGIN_USER_FAILURE,
@@ -37,27 +38,27 @@ export function loginUserFailure(error) {
   }
 }
 
-export function loginUserRequest() {
+export const loginUserRequest = () => {
   return {
     type: LOGIN_USER_REQUEST
   }
 }
 
-export function logout() {
+export const logout = () => {
   localStorage.removeItem('token');
   return {
     type: LOGOUT_USER
   }
 }
 
-export function logoutAndRedirect() {
+export const logoutAndRedirect = () => {
   return (dispatch, state) => {
     dispatch(logout());
     dispatch(routeActions.push('/login'));
   }
 }
 
-export function loginUser(email, password, redirect='/') {
+export const loginUser = (email, password, redirect='/') => {
   return function(dispatch) {
     dispatch(loginUserRequest());
     return fetch('http://localhost:3000/api/auth/getToken', {
@@ -74,14 +75,13 @@ export function loginUser(email, password, redirect='/') {
       .then((response) => {
         try {
           dispatch(loginUserSuccess(response.token));
-          //dispatch(routeActions.push(redirect));
         } catch (e) {
           dispatch(loginUserFailure({
             response: {
               status: 403,
               statusText: 'Invalid token'
             }
-          }));
+          }))
         }
       })
       .catch((error) => {
@@ -90,7 +90,7 @@ export function loginUser(email, password, redirect='/') {
   }
 }
 
-export function receiveProtectedData(data) {
+export const receiveProtectedData = (data) => {
   return {
     type: RECEIVE_PROTECTED_DATA,
     payload: {
@@ -99,13 +99,13 @@ export function receiveProtectedData(data) {
   }
 }
 
-export function fetchProtectedDataRequest() {
+export const fetchProtectedDataRequest = () => {
   return {
     type: FETCH_PROTECTED_DATA_REQUEST
   }
 }
 
-export function fetchProtectedData(token) {
+export const fetchProtectedData = (token) => {
 
   return (dispatch, state) => {
     dispatch(fetchProtectedDataRequest());

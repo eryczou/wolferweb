@@ -1,10 +1,10 @@
 import { createAction, handleActions } from 'redux-actions'
-import 'immutable'
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR'
+export const SHOW_SIDEBAR = 'SHOW_SIDEBAR'
 
 
 // ------------------------------------
@@ -16,8 +16,15 @@ export function toggleSidebar() {
   }
 }
 
+export function showSidebar() {
+  return {
+    type: SHOW_SIDEBAR
+  }
+}
+
 export const actions = {
-  toggleSidebar
+  toggleSidebar,
+  showSidebar
 }
 
 
@@ -30,7 +37,10 @@ const initialState = {
 
 export default handleActions({
   [TOGGLE_SIDEBAR]: (state, { payload }) => {
-    const isToggled = !state.isToggled;
-    return Object.assign({}, state, { isToggled });
+    const isToggled = !state.isToggled
+    return Object.assign({}, state, { isToggled })
+  },
+  [SHOW_SIDEBAR]: (state, action) => {
+    return Object.assign({}, state, { isToggled: false })
   }
 }, initialState)

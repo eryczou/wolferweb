@@ -5,7 +5,6 @@ import WolferXApp from './apps/WolferX'
 import OneColumnLayout from './layouts/OneColumnLayout'
 import HomeView from './views/HomeView'
 import PriceView from './views/PriceView'
-import LoginView from './views/LoginView'
 import ProtectedView from './views/ProtectedView'
 import { requireAuthentication } from './components/AuthenticatedComponent'
 
@@ -17,7 +16,6 @@ export default (
       <IndexRoute component={ HomeView } />
       <Route path='/counter' component={ PriceView } />
       <Route path='/docchef' component={ DocChefView } />
-      <Route path='/login' component={ LoginView }/>
       <Route path='/protected' component={ requireAuthentication(ProtectedView) }/>
       <Redirect from='*' to='/' />
     </Route>

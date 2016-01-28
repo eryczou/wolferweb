@@ -1,4 +1,4 @@
-import { createAction, handleActions } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 import axios from 'axios'
 
 // ------------------------------------
@@ -10,8 +10,19 @@ export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const increment = createAction(INCREMENT_COUNTER, (value = 1) => value)
-export const decrement = createAction(DECREMENT_COUNTER, (value = 1) => value)
+export const increment = (value=1) => {
+  return {
+    type: INCREMENT_COUNTER,
+    payload: value
+  }
+}
+
+export const decrement = (value=1) => {
+  return {
+    type: DECREMENT_COUNTER,
+    payload: value
+  }
+}
 
 export const incrementFromServer = () => (dispatch) => {
   axios.get('http://localhost:3000/api/counter/random-increment')

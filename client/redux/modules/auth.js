@@ -134,7 +134,7 @@ export const isLoggedIn = () => {
   return (dispatch, getState) => {
     let state = getState()
     let token = localStorage.getItem('token')
-    let preLocation = state.router.location.pathname
+    let curLocation = state.router.location.pathname
     if (state.auth.isAuthenticated && token){
       fetch('http://localhost:3000/api/auth/getData', {
         credentials: 'include',
@@ -145,13 +145,16 @@ export const isLoggedIn = () => {
         .then(checkHttpStatus)
         .then(parseJSON)
         .then((response) => {
-          console.log(response)
+          let toLocation = state.router.location.query.fromLoc
+          if (toLocation) {
+            dispatch(routeActions.push(`/${toLocation}`))
+          }
         })
         .catch((error) => {
-          dispatch(routeActions.push(`/?fromLoc=${preLocation}`))
+          dispatch(routeActions.push(`/?fromLoc=${curLocation}`))
         })
     } else {
-      dispatch(routeActions.push(`/?fromLoc=${preLocation}`))
+      dispatch(routeActions.push(`/?fromLoc=${curLocation}`))
     }
   }
 }

@@ -10,13 +10,13 @@ export const SHOW_SIDEBAR = 'SHOW_SIDEBAR'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function toggleSidebar() {
+export const toggleSidebar = () => {
   return {
     type: TOGGLE_SIDEBAR
   }
 }
 
-export function showSidebar() {
+export const showSidebar = () => {
   return {
     type: SHOW_SIDEBAR
   }
@@ -26,7 +26,6 @@ export const actions = {
   toggleSidebar,
   showSidebar
 }
-
 
 // ------------------------------------
 // Reducer

@@ -19,8 +19,10 @@ $wfx-app-minHeight: 500px;
 }
 
 $wfx-view-marginTop: 40px;
-$wfx-view-paddingTop: 30px;
+$wfx-view-paddingTop: 70px;
 .wfx-view-container {
+  width: 100%;
+  height: 100%;
   max-width: $wfx-view-maxWidth;
   margin-top: $wfx-view-marginTop;
   padding-top: $wfx-view-paddingTop;

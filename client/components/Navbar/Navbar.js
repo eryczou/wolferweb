@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import classes from './navbar.scss'
+import classes from './Navbar.scss'
 
 class Navbar extends React.Component {
 
@@ -38,6 +38,7 @@ class Navbar extends React.Component {
                 <li><Link to='/' className={classes.link} >Home</Link></li>
                 <li><Link to='/counter' className={classes.link} >Counter</Link></li>
                 <li><Link to='/docchef' className={classes.link} >DocChef</Link></li>
+                <li><Link to='/protected' className={classes.link} >protected</Link></li>
               </ul>
             </div>
           </nav>

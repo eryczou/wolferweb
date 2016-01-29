@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import classes from './listBlock.scss'
+import classes from './ListBlock.scss'
 import ListItem from '../ListItem/ListItem'
 
 function ListBlock ({ title, items }) {

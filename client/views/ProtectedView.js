@@ -5,39 +5,19 @@ import { actions as authActions } from '../redux/modules/auth';
 
 export class ProtectedView extends React.Component {
 
-  static propTypes = {
-    userName: PropTypes.string.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    token: PropTypes.string.isRequired,
-    fetchProtectedData: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
-  };
-
   constructor(props){
     super(props)
-    this.fetchData.bind(this)
   }
 
-  componentWillMount () {
-    this.fetchData();
-  }
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired
+  };
 
-  fetchData () {
-    let token = this.props.token;
-    this.props.fetchProtectedData(token);
-  }
 
   render () {
     return (
       <div>
-        {this.props.isFetching === true
-          ? <h1>Loading data...</h1>
-          : <div>
-          <h1>Welcome back,
-            {this.props.userName}!</h1>
-          <h3>{this.props.data? this.props.data : ''}</h3>
-        </div>
-        }
+        Hello
       </div>
     );
   }
@@ -48,4 +28,4 @@ const mapStateToProps = (state) => ({
   isFetching: state.data.isFetching
 });
 
-export default connect(mapStateToProps, authActions)(ProtectedView);
+export default connect(mapStateToProps)(ProtectedView);

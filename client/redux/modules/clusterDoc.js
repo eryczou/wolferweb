@@ -11,13 +11,13 @@ export const FAILED_CLUSTERED_DOC_DATA = 'FAILED_CLUSTERED_DOC_DATA'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function fetchingClusterDocData () {
+export const fetchingClusterDocData = () => {
   return {
     type: FETCHING_CLUSTERED_DOC_DATA
   }
 }
 
-export function receivedClusterDocData (data) {
+export const receivedClusterDocData = (data) => {
   return {
     type: RECEIVED_CLUSTERED_DOC_DATA,
     payload: {
@@ -26,14 +26,14 @@ export function receivedClusterDocData (data) {
   }
 }
 
-export function failedClusterDocData (error)  {
+export const failedClusterDocData = (error) =>  {
   return {
     type: FAILED_CLUSTERED_DOC_DATA,
     error: error
   }
 }
 
-export function fetchClusterDocData() {
+export const fetchClusterDocData = () => {
   return (dispatch, state) => {
     dispatch(fetchingClusterDocData());
     return fetch(__API_URL__ + '/clusterdoc')

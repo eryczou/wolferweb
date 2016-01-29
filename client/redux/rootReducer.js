@@ -13,5 +13,5 @@ export default combineReducers({
   data,
   clusterDoc,
   router
-});
+})
 

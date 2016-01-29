@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { checkHttpStatus, parseJSON } from '../../utils';
+import { checkHttpStatus, parseJSON } from '../../utils/webUtils';
 
 // ------------------------------------
 // Constants

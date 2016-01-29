@@ -1,31 +1,18 @@
-import React, { PropTypes } from 'react';
-import {connect} from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actions as authActions } from '../redux/modules/auth';
+import React from 'react'
 
-export class ProtectedView extends React.Component {
+export default class ProtectedView extends React.Component {
 
   constructor(props){
     super(props)
   }
 
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired
-  };
-
-
   render () {
     return (
-      <div>
-        Hello
-      </div>
+      <h3>
+        This is a login required view.
+        If you see this without logged in, please contact the web owner.
+      </h3>
     );
   }
+
 }
-
-const mapStateToProps = (state) => ({
-  data: state.data.data,
-  isFetching: state.data.isFetching
-});
-
-export default connect(mapStateToProps)(ProtectedView);

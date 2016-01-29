@@ -1,6 +1,6 @@
 import 'babel-polyfill'
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { useRouterHistory } from 'react-router'
 import { createHistory } from 'history'
 import routes from './routes'
@@ -16,4 +16,4 @@ const store = configureStore({ initialState, history })
 ReactDOM.render(
   <Root history={history} routes={routes} store={store} />,
   document.getElementById('root')
-);
+)

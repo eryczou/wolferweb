@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import classes from './listItem.scss'
+import classes from './ListItem.scss'
 
 function ListItem ({ item }) {
   return (

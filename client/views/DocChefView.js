@@ -11,4 +11,4 @@ class DocChefView extends React.Component {
   }
 }
 
-export default DocChefView;
+export default DocChefView

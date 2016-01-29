@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classes from './Login.scss'
 import { actions as authActions } from '../../redux/modules/auth'
@@ -31,8 +29,8 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
-        <h3 className={classes.statusText} >Log in to view protected content!</h3>
+      <div className={classes.loginContainer}>
+        <h3 className={classes.statusText} >Log In</h3>
         <p className={classes.statusText}>Hint: hello@test.com / test</p>
         {this.props.statusText ? <div className={`alert alert-info`}>{this.props.statusText}</div> : ''}
         <form role='form'>

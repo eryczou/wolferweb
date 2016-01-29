@@ -3,12 +3,12 @@ import { Route, IndexRoute, Redirect } from 'react-router'
 
 import WolferXApp from './apps/WolferX'
 import OneColumnLayout from './layouts/OneColumnLayout'
-import AuthRequiredWrapper from './containers/AuthRequiredWrapper'
 import HomeView from './views/HomeView'
-import PriceView from './views/PriceView'
-import ProtectedView from './views/ProtectedView'
-
+import PriceView from './views/CounterView'
 import DocChefView from './views/DocChefView'
+
+import AuthRequiredWrapper from './containers/AuthRequiredWrapper'
+import ProtectedView from './views/ProtectedView'
 
 export default (
   <Route path='/' component = { WolferXApp }>

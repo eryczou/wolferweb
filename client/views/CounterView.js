@@ -1,7 +1,7 @@
 import React from 'react';
-import Counter from '../containers/Counter';
+import Counter from '../containers/Counter/Counter';
 
-class PriceView extends React.Component {
+class CounterView extends React.Component {
   render() {
     return (
       <div id='wfx-price'>
@@ -13,4 +13,4 @@ class PriceView extends React.Component {
   }
 }
 
-export default PriceView;
+export default CounterView

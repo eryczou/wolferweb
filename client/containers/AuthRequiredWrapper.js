@@ -17,9 +17,6 @@ class AuthRequiredWrapper extends React.Component {
     this.props.isLoggedIn()
   }
 
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div>

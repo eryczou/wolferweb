@@ -1,8 +1,8 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux'
 import { syncHistory } from 'react-router-redux'
-import thunk from 'redux-thunk';
-import createLogger from 'redux-logger';
-import rootReducer from './rootReducer';
+import thunk from 'redux-thunk'
+import createLogger from 'redux-logger'
+import rootReducer from './rootReducer'
 
 function withDevTools (middleware) {
   const devTools = window.devToolsExtension
@@ -27,9 +27,9 @@ export default function configureStore ({ initialState = {}, history }) {
   if (module.hot) {
     module.hot.accept('./rootReducer', () => {
       const nextRootReducer = require('./rootReducer').default
-      store.replaceReducer(nextRootReducer);
+      store.replaceReducer(nextRootReducer)
     })
   }
 
-  return store;
+  return store
 }

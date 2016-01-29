@@ -37,7 +37,7 @@ class OneColumnLayout extends React.Component {
 
   render() {
     return (
-        <Motion style={{ sidebarWidth: spring(this.props.isSidebarToggled? 40 : 270, [150, 15]) }}>
+        <Motion style={{ sidebarWidth: spring(this.props.isSidebarToggled? 40 : 330, [120, 15]) }}>
           {
             (val) =>
               <div className='wfx-layout-container'

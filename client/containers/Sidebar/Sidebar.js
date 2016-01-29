@@ -62,7 +62,7 @@ class Sidebar extends React.Component {
     let topClickZoneClass = classes.topClickZone + ' ' + (isToggled? classes.cursorShow : classes.cursorHide)
 
     return (
-      <Motion style={{ sidebarWidth: spring(isToggled? 40 : 330, [150, 15]) }} >
+      <Motion style={{ sidebarWidth: spring(isToggled? 40 : 330, [120, 15]) }} >
         {
           ({ sidebarWidth }) =>
             <div className={ sidebarClass }

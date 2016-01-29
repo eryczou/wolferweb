@@ -1,5 +1,5 @@
 import React from 'react';
-import Blog from '../components/Blog';
+import Blog from '../components/Blog/Blog';
 
 class HomeView extends React.Component {
 

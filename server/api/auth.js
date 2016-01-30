@@ -1,6 +1,6 @@
 import Router from 'koa-router'
-import counterApi from './counter'
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken'
+import _ from 'lodash'
 
 
 const auth = new Router()

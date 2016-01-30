@@ -109,7 +109,7 @@ webpackConfig.module.loaders = [{
   loader: 'babel',
   query: {
     cacheDirectory: true,
-    plugins: ['transform-runtime'],
+    plugins: ['transform-runtime', 'lodash'],
     presets: __DEV__
       ? ['es2015', 'react', 'stage-0', 'react-hmre']
       : ['es2015', 'react', 'stage-0']

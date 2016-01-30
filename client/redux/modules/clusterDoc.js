@@ -36,12 +36,11 @@ export const failedClusterDocData = (error) =>  {
 export const fetchClusterDocData = () => {
   return (dispatch, state) => {
     dispatch(fetchingClusterDocData());
-    return fetch(__API_URL__ + '/clusterdoc')
+    return fetch(__PYTHON_API_URL__ + '/clusterdoc')
       .then(checkHttpStatus)
       .then(parseJSON)
       .then((response) => {
-        console.log(response)
-        dispatch(receivedClusterDocData(response.data))
+        dispatch(receivedClusterDocData(response.payload))
       })
       .catch((error) => {
         dispatch(failedClusterDocData(error))
@@ -63,7 +62,7 @@ export const actions = {
 const initialState = {
   isFetching: false,
   statusText: 'Click Button to Fetch Cluster Documentation Data',
-  data: {}
+  docData: []
 }
 
 export default handleActions({
@@ -73,9 +72,11 @@ export default handleActions({
       'statusText': 'Fetching Cluster Doc Data'
     });
   },
-  [RECEIVED_CLUSTERED_DOC_DATA]: (state, action) => {
+  [RECEIVED_CLUSTERED_DOC_DATA]: (state, { payload }) => {
+    console.log(payload.data)
     return Object.assign({}, state, {
       'isFetching': false,
+      docData: payload.data,
       'statusText': 'Successfully Received Data'
     });
 
@@ -83,7 +84,7 @@ export default handleActions({
   [FAILED_CLUSTERED_DOC_DATA]: (state, action) => {
     return Object.assign({}, state, {
       'isFetching': false,
-      'data': {},
+      docData: [],
       'statusText': `Failed when fetch clustered doc data, due to ${action.error}`
     });
   }

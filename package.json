@@ -45,7 +45,10 @@
       "command": "node -r dotenv/config bin/server"
     },
     "forever": {
-      "command": "forever start bin/server.js"
+      "command": "forever start bin/server.js",
+      "env": {
+        "NODE_ENV": "production"
+      }
     },
     "test": {
       "command": "node -r dotenv/config ./node_modules/karma/bin/karma start bin/karma.js",

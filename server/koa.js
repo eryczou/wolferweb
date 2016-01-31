@@ -10,6 +10,7 @@ import config from '../config'
 
 import bodyParser from 'koa-bodyparser'
 import cookieParser from './middleware/express-coookieParser'
+import reqErrorHandler from './middleware/request-error-handler'
 import { publicApi, privateApi } from './api'
 
 const debug = _debug('app:server')
@@ -22,21 +23,7 @@ app.use(bodyParser());
 app.use(cookieParser())
 
 // Custom 401 handling if you don't want to expose koa-jwt errors to users
-app.use(
-  async (ctx, next) => {
-    try {
-      await next()
-    } catch (err) {
-      if (401 == err.status) {
-        ctx.status = 401;
-        ctx.body = { message: 'Log In is require for this resource' }
-      } else {
-        ctx.status = err.status || 500
-        ctx.body = { message: err.message }
-      }
-    }
-  }
-)
+app.use(reqErrorHandler.err401())
 
 // Rewrites all routes requests to the root /index.html file
 // Remove this, if you want to implement isomorphic rendering
@@ -75,7 +62,10 @@ if (config.env === 'development') {
 app.use(publicApi.routes());
 
 // jwt validation
-//app.use(convert(jwt({ secret: config.JWT.secret })));
+app.use(convert(jwt({ secret: config.jwt.secret, key: 'jwtdata' })));
+// use key pairs as secret
+//var publicKey = fs.readFileSync('/path/to/public.pub');
+//app.use(jwt({ secret: publicKey }));
 
 // private api
 app.use(privateApi.routes());

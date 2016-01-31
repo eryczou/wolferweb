@@ -21,10 +21,10 @@ const config = {
   // ----------------------------------
   server_host : 'localhost',
   server_port : process.env.PORT || 3000,
-  mongo_uri: process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
-  JWT : {
-    expires : 10080,
-    secret : "eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0"
+  mongo_uri   : process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
+  jwt : {
+    expire : '1h',
+    secret : 'eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0'
   },
 
   // ----------------------------------

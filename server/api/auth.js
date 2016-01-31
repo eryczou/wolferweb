@@ -1,27 +1,42 @@
 import Router from 'koa-router'
-import jwt from 'jsonwebtoken'
+import jwt1 from 'jsonwebtoken'
+import jwt from 'koa-jwt'
+import config from '../../config'
+import { generateToken, extractToken } from '../utils/authUtils'
 import _ from 'lodash'
-
 
 const auth = new Router()
 
-auth.post('/getToken', (ctx, next) => {
-  let params = ctx.request.body;
-  if (params.email == 'hello@test.com' && params.password == 'test') {
+const HARDCODED_USER = {
+  id: 4,
+  email: 'hello@test.com',
+  password: 'test'
+};
+
+auth.post('/login', (ctx, next) => {
+  let { email, password } = ctx.request.body;
+  if (email == HARDCODED_USER.email && password == HARDCODED_USER.password) {
+    const token = generateToken(email, password)
+    const user = HARDCODED_USER;
     ctx.status = 200
-    ctx.body = {token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8'};
+    ctx.body = {
+      token: token,
+      user: user
+    }
   } else {
     ctx.status = 403
   }
 })
 
-auth.get('/getData', (ctx, next) => {
-  let token = ctx.headers['authorization'];
+auth.get('/validateToken', (ctx, next) => {
+
+  let token = ctx.headers.authorization;
+
   if (!token) {
     ctx.status = 401
   } else {
     try {
-      let decoded = jwt.verify(token.replace('Bearer ', ''), 'secret-key');
+      jwt.verify(token.replace('Bearer ', ''), config.jwt.secret);
       ctx.status = 200
       ctx.body = {data: 'Valid JWT found! This protected data was fetched from the server.'};
     } catch (e) {

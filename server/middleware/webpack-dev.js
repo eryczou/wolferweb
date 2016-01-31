@@ -1,5 +1,5 @@
 import WebpackDevMiddleware from 'webpack-dev-middleware'
-import applyExpressMiddleware from '../lib/apply-express-middleware'
+import applyExpressMiddleware from '../utils/apply-express-middleware'
 import _debug from 'debug'
 import config from '../../config'
 

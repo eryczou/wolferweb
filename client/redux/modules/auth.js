@@ -50,7 +50,7 @@ export const loginUser = (email, password, redirect='/') => {
     dispatch(loginUserRequest())
     let state = getState()
 
-    return fetch('http://localhost:3000/api/auth/login', {
+    return fetch(`${__NODE_API_URL__}/auth/login`, {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -104,7 +104,7 @@ export const isLoggedIn = () => {
     let token = localStorage.getItem('token')
     let curLocation = state.router.location.pathname
     if (state.auth.isAuthenticated && token) {
-      fetch('http://localhost:3000/api/auth/validateToken', {
+      fetch(`${__NODE_API_URL__}/auth/validateToken`, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

@@ -10,7 +10,7 @@ class ClusterDoc extends React.Component {
     fetchClusterDocData: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     statusText: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired
+    docData: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -19,37 +19,14 @@ class ClusterDoc extends React.Component {
 
   render() {
 
-    let { statusText, isFetching, data } = this.props;
+    let { statusText, isFetching, docData } = this.props;
     let { fetchClusterDocData } = this.props;
-
-    let fakeDatas = [
-      {
-        title: 'American Politics',
-        items: [
-          {doc: 'article1',
-            keywords: 'american'},
-          {doc: 'article2',
-            keywords: 'china'}
-        ]
-      },
-      {
-        title: 'Animal World',
-        items: [
-          {doc: 'animal1',
-            keywords: 'monkey'},
-          {doc: 'animal2',
-            keywords: 'cat'},
-          {doc: 'animal3',
-            keywords: 'elephant'}
-        ]
-      }
-    ]
 
     return (
       <div>
         <h3 className={classes.clusterDocTitle} >{ statusText }</h3>
         <button className='btn btn-primary' onClick= { () => fetchClusterDocData() }> Fetch Cluster Doc Data</button>
-        {fakeDatas.map(
+        {docData.map(
           (data, index) =>
             <ListBlock key={index} title={data.title} items={data.items} />
         )}
@@ -62,7 +39,7 @@ function mapStateToProps(state) {
   return {
     isFetching: state.clusterDoc.isFetching,
     statusText: state.clusterDoc.statusText,
-    data: state.clusterDoc.data
+    docData: state.clusterDoc.docData
   }
 }
 

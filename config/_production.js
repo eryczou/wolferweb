@@ -7,5 +7,9 @@ export default (config) => ({
     chunks : true,
     chunkModules : true,
     colors : true
+  },
+  globals: {
+    ...config.globals,
+    __PYTHON_API_URL__: JSON.stringify('http://ec2-54-85-109-102.compute-1.amazonaws.com:9999/api')
   }
 })

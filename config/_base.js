@@ -6,7 +6,6 @@ import { argv } from 'yargs'
 const debug = _debug('app:config:_base')
 const config = {
   env : process.env.NODE_ENV || 'development',
-  mongo_uri: process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
 
   // ----------------------------------
   // Project Structure
@@ -22,6 +21,11 @@ const config = {
   // ----------------------------------
   server_host : 'localhost',
   server_port : process.env.PORT || 3000,
+  mongo_uri   : process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
+  jwt : {
+    expire : '1h',
+    secret : 'eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0'
+  },
 
   // ----------------------------------
   // Compiler Configuration
@@ -58,13 +62,13 @@ const config = {
 }
 
 /************************************************
--------------------------------------------------
+ -------------------------------------------------
 
-All Internal Configuration Below
-Edit at Your Own Risk
+ All Internal Configuration Below
+ Edit at Your Own Risk
 
--------------------------------------------------
-************************************************/
+ -------------------------------------------------
+ ************************************************/
 
 // ------------------------------------
 // Environment

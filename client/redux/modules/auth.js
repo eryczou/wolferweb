@@ -50,7 +50,7 @@ export const loginUser = (email, password, redirect='/') => {
     dispatch(loginUserRequest())
     let state = getState()
 
-    return fetch('http://localhost:3000/api/auth/getToken', {
+    return fetch('http://localhost:3000/api/auth/login', {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -72,7 +72,7 @@ export const loginUser = (email, password, redirect='/') => {
           dispatch(loginUserFailure({
             response: {
               status: 403,
-              statusText: 'Invalid token'
+              statusText: `The username and password pair do not matched!`
             }
           }))
         }
@@ -98,54 +98,16 @@ export const logoutAndRedirect = () => {
   }
 }
 
-export const receiveProtectedData = (data) => {
-  return {
-    type: RECEIVE_PROTECTED_DATA,
-    payload: {
-      data: data
-    }
-  }
-}
-
-export const fetchProtectedDataRequest = () => {
-  return {
-    type: FETCH_PROTECTED_DATA_REQUEST
-  }
-}
-
-export const fetchProtectedData = (token) => {
-  return (dispatch, state) => {
-    dispatch(fetchProtectedDataRequest())
-    return fetch('http://localhost:3000/api/auth/getData', {
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((response) => {
-        console.log(response)
-        dispatch(receiveProtectedData(response.data))
-      })
-      .catch((error) => {
-        if(error.response.status === 401) {
-          dispatch(loginUserFailure(error));
-          dispatch(routeActions.push('/login'))
-        }
-      })
-  }
-}
-
 export const isLoggedIn = () => {
   return (dispatch, getState) => {
     let state = getState()
     let token = localStorage.getItem('token')
     let curLocation = state.router.location.pathname
     if (state.auth.isAuthenticated && token) {
-      fetch('http://localhost:3000/api/auth/getData', {
+      fetch('http://localhost:3000/api/auth/validateToken', {
         credentials: 'include',
         headers: {
+          'Accept': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       })
@@ -161,7 +123,7 @@ export const isLoggedIn = () => {
           dispatch(loginUserFailure({
             response: {
               status: 403,
-              statusText: 'Authenticated Token has expired, please login again!'
+              statusText: 'Please login to access the protected content'
             }
           }))
           dispatch(routeActions.push(`/?fromLoc=${curLocation}`))
@@ -187,9 +149,6 @@ export const actions = {
   logout,
   logoutAndRedirect,
   loginUser,
-  receiveProtectedData,
-  fetchProtectedDataRequest,
-  fetchProtectedData,
   isLoggedIn
 }
 

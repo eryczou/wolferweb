@@ -11,8 +11,6 @@ export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST'
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
-export const FETCH_PROTECTED_DATA_REQUEST = 'FETCH_PROTECTED_DATA_REQUEST'
-export const RECEIVE_PROTECTED_DATA = 'RECEIVE_PROTECTED_DATA'
 
 // ------------------------------------
 // Actions
@@ -50,7 +48,7 @@ export const loginUser = (email, password, redirect='/') => {
     dispatch(loginUserRequest())
     let state = getState()
 
-    return fetch('http://localhost:3000/api/auth/login', {
+    return fetch(`${__NODE_API_URL__}/auth/login`, {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -104,7 +102,7 @@ export const isLoggedIn = () => {
     let token = localStorage.getItem('token')
     let curLocation = state.router.location.pathname
     if (state.auth.isAuthenticated && token) {
-      fetch('http://localhost:3000/api/auth/validateToken', {
+      fetch(`${__NODE_API_URL__}/auth/validateToken`, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

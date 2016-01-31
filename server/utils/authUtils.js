@@ -8,7 +8,3 @@ export const generateToken = (email, password) => {
     expire: config.jwt.expire
   })
 }
-
-export const extractToken = (header) => {
-  return header.split(' ')[1]
-}

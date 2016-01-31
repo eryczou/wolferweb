@@ -17,11 +17,16 @@ auth.post('/login', (ctx, next) => {
   let { email, password } = ctx.request.body;
   if (email == HARDCODED_USER.email && password == HARDCODED_USER.password) {
     const token = generateToken(email, password)
-    const user = HARDCODED_USER;
+    const user = {
+      id : HARDCODED_USER.id,
+      username : HARDCODED_USER.email
+    }
     ctx.status = 200
     ctx.body = {
-      token: token,
-      user: user
+      payload: {
+        token: token,
+        user: user
+      }
     }
   } else {
     ctx.status = 403

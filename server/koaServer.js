@@ -9,7 +9,7 @@ import { publicApi, privateApi } from './api'
 const debug = _debug('app:server')
 const paths = config.utils_paths
 
-export default () => {
+const koaApp = () => {
   let app = new Koa()
 
   middlewareInit(app)
@@ -31,6 +31,10 @@ export default () => {
 
   return app
 }
+
+export default koaApp
+
+
 
 const middlewareInit = (app) => {
   debug("Init server middleware")

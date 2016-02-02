@@ -6,6 +6,7 @@ import OneColumnLayout from './layouts/OneColumnLayout'
 import HomeView from './views/HomeView'
 import PriceView from './views/CounterView'
 import DocChefView from './views/DocChefView'
+import TestView from './views/TestView'
 
 import AuthRequiredWrapper from './containers/AuthRequiredWrapper'
 import ProtectedView from './views/ProtectedView'
@@ -16,6 +17,7 @@ export default (
       <IndexRoute component = { HomeView } />
       <Route path='/counter' component = { PriceView } />
       <Route path='/docchef' component = { DocChefView } />
+      <Route path='/test' component = { TestView } />
       <Route component = { AuthRequiredWrapper } >
         <Route path='/protected' component = { ProtectedView }/>
       </Route>

@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import counterApi from './counter'
+import testApi from './test'
 import authApi from './auth'
 
 export const publicApi = new Router({
@@ -7,9 +7,10 @@ export const publicApi = new Router({
 })
 
 publicApi.use('/auth', authApi.routes())
+publicApi.use('/test', testApi.routes())
 
 export const privateApi = new Router({
   prefix: '/api'
 })
 
-privateApi.use('/counter', counterApi.routes())
+//privateApi.use('/private', testApi.routes())

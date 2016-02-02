@@ -11,9 +11,3 @@ export const err401 = () => async (ctx, next) => {
     }
   }
 }
-
-const errorHandler = {
-  err401
-}
-
-export default errorHandler

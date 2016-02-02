@@ -25,7 +25,7 @@ export const decrement = (value=1) => {
 }
 
 export const incrementFromServer = () => (dispatch) => {
-  axios.get('http://localhost:3000/api/counter/random-increment')
+  axios.get(`${__NODE_API_URL__}/test/random-increment`)
     .then((res) => dispatch(increment(res.data.increment)))
     .catch(::console.log)
 }

@@ -27,6 +27,13 @@ const config = {
     expire : '1h',
     secret : 'eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0'
   },
+  log: {
+    console: {
+      level: "debug",
+      timestamp: true,
+      colorize: true
+    }
+  },
 
   // ----------------------------------
   // Compiler Configuration

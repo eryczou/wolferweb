@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 var async = require('async');
-var Character = require('./../models/character');
+var Character = require('././character');
 
 /**
  * GET /api/characters

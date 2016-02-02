@@ -2,7 +2,7 @@ require('babel-register');
 
 const config = require('../config');
 //const server = require('../server/main');
-const server = require('../server/koa');
+const server = require('../server/koaServer')();
 const debug = require('debug')('app:bin:server');
 
 const host = config.server_host;

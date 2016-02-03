@@ -9,7 +9,7 @@ class CounterView extends React.Component {
   }
 
   getMovies() {
-    fetch('http://localhost:3000/api/test/movies', {
+    fetch('http://localhost:3000/api/test/users', {
       headers: {
         'Accept': 'application/json'
       }

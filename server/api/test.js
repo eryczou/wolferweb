@@ -4,11 +4,11 @@ import User from '../data/models/User'
 
 const test = new Router()
 
-test.get('/random-increment', (ctx, next) => {
+test.get('/random-increment', (ctx, next) => (
   ctx.body = {
     increment: Math.floor((Math.random() * 25) + 1)
-  }
-})
+  })
+)
 
 test.get('/users', async (ctx, next) => {
   await new User().fetchAll()

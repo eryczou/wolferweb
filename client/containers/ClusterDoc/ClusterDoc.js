@@ -14,13 +14,13 @@ class ClusterDoc extends React.Component {
   };
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
 
-    let { statusText, isFetching, docData } = this.props;
-    let { fetchClusterDocData } = this.props;
+    let { statusText, isFetching, docData } = this.props
+    let { fetchClusterDocData } = this.props
 
     return (
       <div>

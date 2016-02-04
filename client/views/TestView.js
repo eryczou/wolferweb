@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { checkHttpStatus, parseJSON } from '../utils/webUtils'
 
 
@@ -33,7 +33,7 @@ class CounterView extends React.Component {
           1234
         </div>
       </div>
-    );
+    )
   }
 }
 

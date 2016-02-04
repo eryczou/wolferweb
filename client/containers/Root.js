@@ -22,7 +22,7 @@ export default class Root extends React.Component {
       if (window.devToolsExtension) {
         //window.devToolsExtension.open();
       } else {
-        const DevTools = require('./DevTools').default;
+        const DevTools = require('./DevTools').default
         return <DevTools />
       }
     }

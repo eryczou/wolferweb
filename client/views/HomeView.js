@@ -1,10 +1,10 @@
-import React from 'react';
-import Blog from '../components/Blog/Blog';
+import React from 'react'
+import Blog from '../components/Blog/Blog'
 
 class HomeView extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -12,8 +12,8 @@ class HomeView extends React.Component {
       <div>
         <Blog />
       </div>
-    );
+    )
   }
 }
 
-export default HomeView;
+export default HomeView

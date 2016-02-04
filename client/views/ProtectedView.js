@@ -12,7 +12,7 @@ export default class ProtectedView extends React.Component {
         This is a login required view.
         If you see this without logged in, please contact the web owner.
       </h3>
-    );
+    )
   }
 
 }

@@ -54,7 +54,7 @@ class Login extends React.Component {
                   onClick={ this.submitHandler.bind(this) }>Submit</button>
         </form>
       </div>
-    );
+    )
   }
 }
 

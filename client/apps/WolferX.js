@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import '../styles/main.scss'
 import Sidebar from '../containers/Sidebar/Sidebar'
 
@@ -14,8 +14,8 @@ class WolferX extends React.Component {
         <Sidebar />
         {this.props.children}
       </div>
-    );
+    )
   }
 }
 
-export default WolferX;
+export default WolferX

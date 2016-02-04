@@ -7,7 +7,7 @@ class DocChefView extends React.Component {
       <div>
         <ClusteredDoc />
       </div>
-    );
+    )
   }
 }
 

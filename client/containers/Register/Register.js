@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import classes from './Login.scss'
+import classes from './Register.scss'
 import { actions as authActions } from '../../redux/modules/auth'
 
-class Login extends React.Component {
+class Register extends React.Component {
 
   static propTypes = {
+    isRegistering: PropTypes.bool.isRequired,
     statusText: PropTypes.string.isRequired,
-    isRequesting: PropTypes.bool.isRequired,
-    loginUser: PropTypes.func.isRequired
+    registerUser: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -16,11 +16,13 @@ class Login extends React.Component {
   }
 
   submitHandler(e) {
+    const { registerUser } = this.props
+
     e.preventDefault()
     e.stopPropagation()
     const email = $('#login-input-email').val()
     const password = $('#login-input-password').val()
-    this.props.loginUser(email, password)
+    registerUser(email, password)
   }
 
   inputHandler(e) {
@@ -28,21 +30,24 @@ class Login extends React.Component {
   }
 
   render() {
+
+    const { isRegistering, statusText } = this.props
+
     return (
       <div className={classes.loginContainer}>
         <h3 className={classes.statusText} >Log In</h3>
         <p className={classes.statusText}>Hint: hello@test.com / test</p>
-        {this.props.statusText ? <div className={`alert alert-info`}>{this.props.statusText}</div> : ''}
+        {statusText ? <div className={`alert alert-info`} >{ statusText }</div> : ''}
         <form role='form'>
           <div className='form-group'>
-            <input id='login-input-email'
+            <input id='register-input-email'
                    type='text'
                    onClick={ this.inputHandler.bind(this) }
                    className='form-control input-lg'
                    placeholder='Email' />
           </div>
           <div className='form-group'>
-            <input id='login-input-password'
+            <input id='register-input-password'
                    type='password'
                    onClick={ this.inputHandler.bind(this) }
                    className='form-control input-lg'
@@ -50,18 +55,18 @@ class Login extends React.Component {
           </div>
           <button type='submit'
                   className='btn btn-lg'
-                  disabled={ this.props.isRequesting }
+                  disabled={ isRegistering }
                   onClick={ this.submitHandler.bind(this) }>Submit</button>
         </form>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
-  isRequesting : state.auth.isRequesting,
+  isRegistering : state.auth.isRegistering,
   statusText : state.auth.statusText,
   user : state.auth.user
 })
 
-export default connect(mapStateToProps, authActions)(Login)
+export default connect(mapStateToProps, authActions)(Register)

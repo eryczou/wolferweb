@@ -11,7 +11,7 @@ import TestView from './views/TestView'
 import AuthRequiredWrapper from './containers/AuthRequiredWrapper'
 import ProtectedView from './views/ProtectedView'
 
-export default (
+export default (store) => (
   <Route path='/' component = { WolferXApp }>
     <Route component = { OneColumnLayout }>
       <IndexRoute component = { HomeView } />
@@ -24,4 +24,4 @@ export default (
       <Redirect from='*' to='/' />
     </Route>
   </Route>
-);
+)

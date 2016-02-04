@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { checkHttpStatus, parseJSON } from '../../utils/webUtils';
+import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 
 // ------------------------------------
 // Constants
@@ -35,7 +35,7 @@ export const failedClusterDocData = (error) =>  {
 
 export const fetchClusterDocData = () => {
   return (dispatch, state) => {
-    dispatch(fetchingClusterDocData());
+    dispatch(fetchingClusterDocData())
     return fetch(__PYTHON_API_URL__ + '/clusterdoc')
       .then(checkHttpStatus)
       .then(parseJSON)
@@ -70,7 +70,7 @@ export default handleActions({
     return Object.assign({}, state, {
       'isFetching': true,
       'statusText': 'Fetching Cluster Doc Data'
-    });
+    })
   },
   [RECEIVED_CLUSTERED_DOC_DATA]: (state, { payload }) => {
     console.log(payload.data)
@@ -78,7 +78,7 @@ export default handleActions({
       'isFetching': false,
       docData: payload.data,
       'statusText': 'Successfully Received Data'
-    });
+    })
 
   },
   [FAILED_CLUSTERED_DOC_DATA]: (state, action) => {
@@ -86,6 +86,6 @@ export default handleActions({
       'isFetching': false,
       docData: [],
       'statusText': `Failed when fetch clustered doc data, due to ${action.error}`
-    });
+    })
   }
 }, initialState)

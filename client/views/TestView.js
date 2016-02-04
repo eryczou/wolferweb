@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { checkHttpStatus, parseJSON } from '../utils/webUtils'
 
 
@@ -9,7 +9,7 @@ class CounterView extends React.Component {
   }
 
   getMovies() {
-    fetch('http://localhost:3000/api/test/movies', {
+    fetch('http://localhost:3000/api/test/users', {
       headers: {
         'Accept': 'application/json'
       }
@@ -33,7 +33,7 @@ class CounterView extends React.Component {
           1234
         </div>
       </div>
-    );
+    )
   }
 }
 

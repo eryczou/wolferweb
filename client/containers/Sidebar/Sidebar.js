@@ -49,8 +49,8 @@ class Sidebar extends React.Component {
 
   render() {
 
-    let { isToggled } = this.props;
-    let { isHovering } = this.state;
+    let { isToggled } = this.props
+    let { isHovering } = this.state
 
     let sidebarClass = classes.sidebar + ' '
       + (isToggled && isHovering? classes.onHovering : ' ')
@@ -91,5 +91,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, SidebarActions)(Sidebar);
+export default connect(mapStateToProps, SidebarActions)(Sidebar)
 

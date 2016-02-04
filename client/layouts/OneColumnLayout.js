@@ -11,28 +11,28 @@ class OneColumnLayout extends React.Component {
   };
 
   constructor(props) {
-    super(props);
-    this.handleWindowResize.bind(this);
+    super(props)
+    this.handleWindowResize.bind(this)
 
     this.state = {
       layoutWidth: -1
-    };
+    }
   }
 
   handleWindowResize() {
-    let layout = this.refs.layout;
+    let layout = this.refs.layout
   }
 
   componentDidMount() {
-    window.addEventListener( 'resize', this.handleWindowResize.bind(this) );
-    this.handleWindowResize();
+    window.addEventListener( 'resize', this.handleWindowResize.bind(this) )
+    this.handleWindowResize()
   }
 
   componentWillReceiveProps() {
   }
 
   componentWillUnmount() {
-    window.removeEventListener( 'resize', this.handleWindowResize.bind(this) );
+    window.removeEventListener( 'resize', this.handleWindowResize.bind(this) )
   }
 
   render() {
@@ -66,5 +66,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(OneColumnLayout);
+export default connect(mapStateToProps)(OneColumnLayout)
 

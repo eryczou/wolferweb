@@ -10,7 +10,7 @@ class AuthRequiredWrapper extends React.Component {
   };
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   componentWillMount() {
@@ -26,5 +26,5 @@ class AuthRequiredWrapper extends React.Component {
   }
 }
 
-export default connect(null, authActions)(AuthRequiredWrapper);
+export default connect(null, authActions)(AuthRequiredWrapper)
 

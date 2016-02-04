@@ -10,26 +10,47 @@ const karmaConfig = {
   files: [
     './node_modules/phantomjs-polyfill/bind-polyfill.js',
     {
-      pattern: `./${config.dir_test}/**/*.js`,
+      pattern: `./${config.dir_test}/test-bundler.js`,
       watched: false,
       served: true,
       included: true
     }
   ],
   singleRun: !argv.watch,
-  frameworks: ['mocha', 'chai-sinon', 'chai-as-promised', 'chai'],
+  frameworks: ['mocha'],
   preprocessors: {
-    [`${config.dir_test}/**/*.js`]: ['webpack']
+    [`${config.dir_test}/test-bundler.js`]: ['webpack', 'sourcemap']
   },
   reporters: ['spec'],
   browsers: ['PhantomJS'],
   webpack: {
     devtool: 'inline-source-map',
-    resolve: webpackConfig.resolve,
-    plugins: webpackConfig.plugins
-      .filter(plugin => !plugin.__KARMA_IGNORE__),
+    resolve: {
+      ...webpackConfig.resolve,
+      alias: {
+        ...webpackConfig.resolve.alias,
+        sinon: 'sinon/pkg/sinon.js'
+      }
+    },
+    plugins: webpackConfig.plugins,
     module: {
-      loaders: webpackConfig.module.loaders
+      noParse: [
+        /\/sinon\.js/
+      ],
+      loaders: webpackConfig.module.loaders.concat([
+        {
+          test: /sinon\/pkg\/sinon\.js/,
+          loader: 'imports?define=>false,require=>false'
+        }
+      ])
+    },
+    externals: {
+      ...webpackConfig.externals,
+      jsdom: 'window',
+      cheerio: 'window',
+      'react/lib/ExecutionEnvironment': true,
+      'react/lib/ReactContext': 'window',
+      'text-encoding': 'window'
     },
     sassLoader: webpackConfig.sassLoader
   },

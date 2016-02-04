@@ -7,7 +7,7 @@ import { jwtDecode } from 'koa-jwt'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST'
+export const ISSUE_AUTH_REQUEST = 'ISSUE_AUTH_REQUEST'
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
@@ -40,12 +40,50 @@ export const loginUserFailure = (error) => {
 
 export const loginUserRequest = () => {
   return {
-    type: LOGIN_USER_REQUEST
+    type: ISSUE_AUTH_REQUEST
   }
 }
 
 export const loginUser = (email, password, redirect='/') => {
   return function(dispatch, getState) {
+    dispatch(loginUserRequest())
+    let state = getState()
+
+    return fetch(`${__NODE_API_URL__}/auth/login`, {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: email, password: password})
+    })
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then((response) => {
+        try {
+          dispatch(loginUserSuccess(response.payload))
+          let toLocation = state.router.location.query.fromLoc
+          if (toLocation) {
+            dispatch(routeActions.push(`${toLocation}`))
+          }
+        } catch (e) {
+          dispatch(loginUserFailure({
+            response: {
+              status: 403,
+              statusText: `The username and password pair do not matched!`
+            }
+          }))
+        }
+      })
+      .catch((error) => {
+        dispatch(loginUserFailure(error))
+      })
+  }
+}
+
+export const registerUser = (email, password, redirect='/') => {
+  return (dispatch, getState) => {
     dispatch(loginUserRequest())
     let state = getState()
 
@@ -145,9 +183,10 @@ export const actions = {
   loginUserSuccess,
   loginUserFailure,
   loginUserRequest,
+  loginUser,
+  registerUser,
   logout,
   logoutAndRedirect,
-  loginUser,
   isLoggedIn
 }
 
@@ -159,20 +198,20 @@ const initialState = {
   token: null,
   user: null,
   isAuthenticated: false,
-  isAuthenticating: false,
+  isRequesting: false,
   statusText: 'You Before Auth'
 }
 
 export default handleActions({
-  [LOGIN_USER_REQUEST]: (state, action) => {
+  [ISSUE_AUTH_REQUEST]: (state, action) => {
     return Object.assign({}, state, {
-      isAuthenticating : true,
+      isRequesting : true,
       statusText : 'You are authenticating'
     })
   },
   [LOGIN_USER_SUCCESS]: (state, { payload }) => {
     return Object.assign({}, state, {
-      isAuthenticating : false,
+      isRequesting : false,
       isAuthenticated : true,
       token : payload.token,
       user : payload.user,
@@ -181,7 +220,7 @@ export default handleActions({
   },
   [LOGIN_USER_FAILURE]: (state, { payload }) => {
     return Object.assign({}, state, {
-      isAuthenticating: false,
+      isRequesting: false,
       isAuthenticated: false,
       token: null,
       user: null,

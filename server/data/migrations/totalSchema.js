@@ -1,5 +1,13 @@
 exports.up = function(knex, Promise) {
   return knex.schema
+    .dropTableIfExists('accounts')
+    .createTable('users', function(table) {
+      table.increments().unsigned().primary().index()
+      table.string('username')
+      table.string('password')
+      table.string('token')
+      table.timestamps()
+    })
     .dropTableIfExists('directors')
     .createTable('directors', function(table) {
       table.increments().unsigned().primary().index()
@@ -33,6 +41,7 @@ exports.up = function(knex, Promise) {
       console.log(`
       Table created in order:
 
+      Users table created,
       Directors table created,
       Movies table created,
       Genres table created,
@@ -42,11 +51,11 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return knex.schema
-    .dropTable('movies_genres')
-    .dropTable('genres')
-    .dropTable('movie')
-    .dropTable('directors')
-    .dropTable('knex_migrations')
+    .dropTableIfExists('movies_genres')
+    .dropTableIfExists('genres')
+    .dropTableIfExists('movie')
+    .dropTableIfExists('directors')
+    .dropTableIfExists('knex_migrations')
     .then(function() {
       console.log(`
       Table dropped in order:

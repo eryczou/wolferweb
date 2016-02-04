@@ -6,7 +6,7 @@ import { actions as authActions } from '../../redux/modules/auth'
 class Register extends React.Component {
 
   static propTypes = {
-    isRegistering: PropTypes.bool.isRequired,
+    isRequesting: PropTypes.bool.isRequired,
     statusText: PropTypes.string.isRequired,
     registerUser: PropTypes.func.isRequired
   };
@@ -16,13 +16,11 @@ class Register extends React.Component {
   }
 
   submitHandler(e) {
-    const { registerUser } = this.props
-
     e.preventDefault()
     e.stopPropagation()
-    const email = $('#login-input-email').val()
-    const password = $('#login-input-password').val()
-    registerUser(email, password)
+    const email = $('#register-input-email').val()
+    const password = $('#register-input-password').val()
+    this.props.registerUser(email, password)
   }
 
   inputHandler(e) {
@@ -31,7 +29,7 @@ class Register extends React.Component {
 
   render() {
 
-    const { isRegistering, statusText } = this.props
+    const { isRequesting, statusText } = this.props
 
     return (
       <div className={classes.loginContainer}>
@@ -55,16 +53,16 @@ class Register extends React.Component {
           </div>
           <button type='submit'
                   className='btn btn-lg'
-                  disabled={ isRegistering }
+                  disabled={ isRequesting }
                   onClick={ this.submitHandler.bind(this) }>Submit</button>
         </form>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state) => ({
-  isRegistering : state.auth.isRegistering,
+  isRequesting : state.auth.isRequesting,
   statusText : state.auth.statusText,
   user : state.auth.user
 })

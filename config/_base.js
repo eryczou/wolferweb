@@ -55,7 +55,6 @@ const config = {
     'react-redux',
     'react-router',
     'redux',
-    'redux-actions',
     'react-router-redux'
   ],
 

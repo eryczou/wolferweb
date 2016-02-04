@@ -38,7 +38,7 @@ export const loginUserFailure = (error): Action => {
   }
 }
 
-export const loginUserRequest = (): Action => {
+export const issueAuthRequest = (): Action => {
   return {
     type: ISSUE_AUTH_REQUEST
   }
@@ -46,7 +46,7 @@ export const loginUserRequest = (): Action => {
 
 export const loginUser = (email, password, redirect='/') => {
   return function(dispatch, getState) {
-    dispatch(loginUserRequest())
+    dispatch(issueAuthRequest())
     let state = getState()
 
     return fetch(`${__NODE_API_URL__}/auth/login`, {
@@ -84,10 +84,10 @@ export const loginUser = (email, password, redirect='/') => {
 
 export const registerUser = (email, password, redirect='/') => {
   return (dispatch, getState) => {
-    dispatch(loginUserRequest())
+    dispatch(issueAuthRequest())
     let state = getState()
 
-    return fetch(`${__NODE_API_URL__}/auth/login`, {
+    return fetch(`${__NODE_API_URL__}/auth/register`, {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -182,7 +182,7 @@ export const isLoggedIn = () => {
 export const actions = {
   loginUserSuccess,
   loginUserFailure,
-  loginUserRequest,
+  issueAuthRequest,
   loginUser,
   registerUser,
   logout,

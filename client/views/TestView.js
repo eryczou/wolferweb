@@ -1,5 +1,6 @@
 import React from 'react'
 import { checkHttpStatus, parseJSON } from '../utils/webUtils'
+import Register from '../containers/Register/Register'
 
 
 class CounterView extends React.Component {
@@ -32,6 +33,7 @@ class CounterView extends React.Component {
         <div id='showbox'>
           1234
         </div>
+        <Register />
       </div>
     )
   }

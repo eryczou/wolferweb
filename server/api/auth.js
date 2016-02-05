@@ -23,7 +23,7 @@ auth.post('/login', async (ctx, next) => {
   })
     .fetch()
     .then((model) => {
-      console.log(token)
+      console.log(model)
       console.log(`The saved token = ${model.get('token')}`)
       console.log (model.get('token') == token ? 'true' : 'false')
       if (model.get('token').split('.')[0] == token.split('.')[0]) {

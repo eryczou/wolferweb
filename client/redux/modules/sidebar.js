@@ -1,4 +1,4 @@
-import { createAction, handleActions } from 'redux-actions'
+/* @flow */
 
 // ------------------------------------
 // Constants
@@ -10,13 +10,13 @@ export const SHOW_SIDEBAR = 'SHOW_SIDEBAR'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const toggleSidebar = () => {
+export const toggleSidebar = (): Action => {
   return {
     type: TOGGLE_SIDEBAR
   }
 }
 
-export const showSidebar = () => {
+export const showSidebar = (): Action => {
   return {
     type: SHOW_SIDEBAR
   }
@@ -28,13 +28,9 @@ export const actions = {
 }
 
 // ------------------------------------
-// Reducer
+// Action Handlers
 // ------------------------------------
-const initialState = {
-  isToggled: true
-}
-
-export default handleActions({
+const ACTION_HANDLERS = {
   [TOGGLE_SIDEBAR]: (state, { payload }) => {
     const isToggled = !state.isToggled
     return Object.assign({}, state, { isToggled })
@@ -42,4 +38,15 @@ export default handleActions({
   [SHOW_SIDEBAR]: (state, action) => {
     return Object.assign({}, state, { isToggled: false })
   }
-}, initialState)
+}
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = {
+  isToggled: true
+}
+export default function sidebarReducer (state: obj = initialState, action: Action): Object {
+  const handler = ACTION_HANDLERS[action.type]
+  return handler ? handler(state, action) : state
+}

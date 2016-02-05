@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions'
+/* @flow */
 import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 
 // ------------------------------------
@@ -11,13 +11,13 @@ export const FAILED_CLUSTERED_DOC_DATA = 'FAILED_CLUSTERED_DOC_DATA'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const fetchingClusterDocData = () => {
+export const fetchingClusterDocData = (): Action => {
   return {
     type: FETCHING_CLUSTERED_DOC_DATA
   }
 }
 
-export const receivedClusterDocData = (data) => {
+export const receivedClusterDocData = (data): Action => {
   return {
     type: RECEIVED_CLUSTERED_DOC_DATA,
     payload: {
@@ -26,7 +26,7 @@ export const receivedClusterDocData = (data) => {
   }
 }
 
-export const failedClusterDocData = (error) =>  {
+export const failedClusterDocData = (error): Action =>  {
   return {
     type: FAILED_CLUSTERED_DOC_DATA,
     error: error
@@ -55,17 +55,10 @@ export const actions = {
   failedClusterDocData
 }
 
-
 // ------------------------------------
-// Reducer
+// Action Handlers
 // ------------------------------------
-const initialState = {
-  isFetching: false,
-  statusText: 'Click Button to Fetch Cluster Documentation Data',
-  docData: []
-}
-
-export default handleActions({
+const ACTION_HANDLERS = {
   [FETCHING_CLUSTERED_DOC_DATA]: (state, action) => {
     return Object.assign({}, state, {
       'isFetching': true,
@@ -88,4 +81,19 @@ export default handleActions({
       'statusText': `Failed when fetch clustered doc data, due to ${action.error}`
     })
   }
-}, initialState)
+}
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = {
+  isFetching: false,
+  statusText: 'Click Button to Fetch Cluster Documentation Data',
+  docData: []
+}
+
+export default function clusterDocReducer (state: obj = initialState, action: Action): Object {
+  const handler = ACTION_HANDLERS[action.type]
+  return handler ? handler(state, action) : state
+}
+

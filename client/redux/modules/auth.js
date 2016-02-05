@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions'
+/* @flow */
 import { routeActions } from 'react-router-redux'
 import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 import { actions as sidebarActions } from './sidebar'
@@ -16,7 +16,7 @@ export const LOGOUT_USER = 'LOGOUT_USER'
 // Actions
 // ------------------------------------
 
-export const loginUserSuccess = (payload) => {
+export const loginUserSuccess = (payload): Action => {
   localStorage.setItem('token', payload.token)
   return {
     type: LOGIN_USER_SUCCESS,
@@ -27,7 +27,7 @@ export const loginUserSuccess = (payload) => {
   }
 }
 
-export const loginUserFailure = (error) => {
+export const loginUserFailure = (error): Action => {
   localStorage.removeItem('token')
   return {
     type: LOGIN_USER_FAILURE,
@@ -38,7 +38,7 @@ export const loginUserFailure = (error) => {
   }
 }
 
-export const loginUserRequest = () => {
+export const issueAuthRequest = (): Action => {
   return {
     type: ISSUE_AUTH_REQUEST
   }
@@ -46,7 +46,7 @@ export const loginUserRequest = () => {
 
 export const loginUser = (email, password, redirect='/') => {
   return function(dispatch, getState) {
-    dispatch(loginUserRequest())
+    dispatch(issueAuthRequest())
     let state = getState()
 
     return fetch(`${__NODE_API_URL__}/auth/login`, {
@@ -84,10 +84,10 @@ export const loginUser = (email, password, redirect='/') => {
 
 export const registerUser = (email, password, redirect='/') => {
   return (dispatch, getState) => {
-    dispatch(loginUserRequest())
+    dispatch(issueAuthRequest())
     let state = getState()
 
-    return fetch(`${__NODE_API_URL__}/auth/login`, {
+    return fetch(`${__NODE_API_URL__}/auth/register`, {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -120,7 +120,7 @@ export const registerUser = (email, password, redirect='/') => {
   }
 }
 
-export const logout = () => {
+export const logout = (): Action => {
   localStorage.removeItem('token')
   return {
     type: LOGOUT_USER
@@ -182,7 +182,7 @@ export const isLoggedIn = () => {
 export const actions = {
   loginUserSuccess,
   loginUserFailure,
-  loginUserRequest,
+  issueAuthRequest,
   loginUser,
   registerUser,
   logout,
@@ -190,19 +190,10 @@ export const actions = {
   isLoggedIn
 }
 
-
 // ------------------------------------
-// Reducer
+// Action Handlers
 // ------------------------------------
-const initialState = {
-  token: null,
-  user: null,
-  isAuthenticated: false,
-  isRequesting: false,
-  statusText: 'You Before Auth'
-}
-
-export default handleActions({
+const ACTION_HANDLERS = {
   [ISSUE_AUTH_REQUEST]: (state, action) => {
     return Object.assign({}, state, {
       isRequesting : true,
@@ -235,4 +226,21 @@ export default handleActions({
       statusText: 'You have been successfully logged out.'
     })
   }
-}, initialState)
+}
+
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = {
+  token: null,
+  user: null,
+  isAuthenticated: false,
+  isRequesting: false,
+  statusText: 'You Before Auth'
+}
+
+export default function authReducer (state: obj = initialState, action: Action): Object {
+  const handler = ACTION_HANDLERS[action.type]
+  return handler ? handler(state, action) : state
+}

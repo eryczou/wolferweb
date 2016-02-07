@@ -1,36 +1,36 @@
-import webpack from 'webpack';
-import cssnano from 'cssnano';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import config from '../config';
-import _debug from 'debug';
+import webpack from 'webpack'
+import cssnano from 'cssnano'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import config from '../config'
+import _debug from 'debug'
 
-const debug = _debug('app:webpack:config');
-const paths = config.utils_paths;
-const {__DEV__, __PROD__, __TEST__} = config.globals;
+const debug = _debug('app:webpack:config')
+const paths = config.utils_paths
+const {__DEV__, __PROD__, __TEST__} = config.globals
 
-debug('Create configuration.');
+debug('Create configuration.')
 const webpackConfig = {
   name: 'client',
   target: 'web',
   devtool: config.compiler_devtool,
   resolve: {
     root: paths.base(config.dir_client),
-    extensions: ['', '.js']
+    extensions: ['', '.js', '.jsx']
   },
   module: {}
-};
+}
 // ------------------------------------
 // Entry Points
 // ------------------------------------
-const APP_ENTRY_PATH = paths.base(config.dir_client) + '/main.js';
+const APP_ENTRY_PATH = paths.base(config.dir_client) + '/main.js'
 
 webpackConfig.entry = {
   app: __DEV__
     ? [APP_ENTRY_PATH, `webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`]
     : [APP_ENTRY_PATH],
   vendor: config.compiler_vendor
-};
+}
 
 // ------------------------------------
 // Bundle Output
@@ -39,7 +39,7 @@ webpackConfig.output = {
   filename: `[name].[${config.compiler_hash_type}].js`,
   path: paths.base(config.dir_dist),
   publicPath: config.compiler_public_path
-};
+}
 
 // ------------------------------------
 // Plugins
@@ -56,10 +56,10 @@ webpackConfig.plugins = [
       collapseWhitespace: false
     }
   })
-];
+]
 
 if (__DEV__) {
-  debug('Enable plugins for live development (HMR, NoErrors).');
+  debug('Enable plugins for live development (HMR, NoErrors).')
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
@@ -72,7 +72,8 @@ if (__DEV__) {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         unused: true,
-        dead_code: true
+        dead_code: true,
+        warnings: false
       }
     })
   )
@@ -89,22 +90,22 @@ if (!__TEST__) {
 // Pre-Loaders
 // ------------------------------------
 webpackConfig.module.preLoaders = [{
-  test: /\.js$/,
+  test: /\.(js|jsx)$/,
   loader: 'eslint',
   exclude: /node_modules/
-}];
+}]
 
 webpackConfig.eslint = {
   configFile: paths.base('.eslintrc'),
   emitWarning: __DEV__
-};
+}
 
 // ------------------------------------
 // Loaders
 // ------------------------------------
 // JavaScript / JSON
 webpackConfig.module.loaders = [{
-  test: /\.js$/,
+  test: /\.(js|jsx)$/,
   exclude: /node_modules/,
   loader: 'babel',
   query: {
@@ -118,7 +119,7 @@ webpackConfig.module.loaders = [{
   {
     test: /\.json$/,
     loader: 'json'
-  }];
+  }]
 
 // Styles
 const cssLoader = !config.compiler_css_modules
@@ -203,7 +204,7 @@ webpackConfig.module.loaders.push(
   { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
   { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
   { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
-);
+)
 /* eslint-enable */
 
 // ------------------------------------

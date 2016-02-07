@@ -2,7 +2,6 @@
 import { routeActions } from 'react-router-redux'
 import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 import { actions as sidebarActions } from './sidebar'
-import { jwtDecode } from 'koa-jwt'
 
 // ------------------------------------
 // Constants
@@ -237,7 +236,7 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   isRequesting: false,
-  statusText: 'You Before Auth'
+  statusText: ''
 }
 
 export default function authReducer (state: obj = initialState, action: Action): Object {

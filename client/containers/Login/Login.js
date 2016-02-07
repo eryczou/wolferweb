@@ -30,7 +30,6 @@ class Login extends React.Component {
   render() {
     return (
       <div className={classes.loginContainer}>
-        <h3 className={classes.statusText} >Log In</h3>
         <p className={classes.statusText}>Hint: hello@test.com / test</p>
         {this.props.statusText ? <div className={`alert alert-info`}>{this.props.statusText}</div> : ''}
         <form role='form'>

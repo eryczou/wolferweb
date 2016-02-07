@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { TextField } from 'material-ui'
+
 import classes from './Register.scss'
 import { actions as authActions } from '../../redux/modules/auth'
 
@@ -32,30 +34,28 @@ class Register extends React.Component {
     const { isRequesting, statusText } = this.props
 
     return (
-      <div className={classes.loginContainer}>
-        <h3 className={classes.statusText} >Log In</h3>
-        <p className={classes.statusText}>Hint: hello@test.com / test</p>
-        {statusText ? <div className={`alert alert-info`} >{ statusText }</div> : ''}
-        <form role='form'>
-          <div className='form-group'>
-            <input id='register-input-email'
+      <div className={ classes.registerContainer }>
+        {statusText ? <p className={classes.statusText}>{ statusText }</p> : ''}
+        <TextField id='register-input-email'
+                   className={ classes.input }
                    type='text'
+                   autoComplete='off'
                    onClick={ this.inputHandler.bind(this) }
-                   className='form-control input-lg'
-                   placeholder='Email' />
-          </div>
-          <div className='form-group'>
-            <input id='register-input-password'
+                   floatingLabelText='Email'
+                   floatingLabelStyle={{ color: '#777777' }}
+                   inputStyle={{ color: 'white' }}/>
+        <TextField id='register-input-password'
+                   className={ classes.input }
                    type='password'
+                   autoComplete='off'
                    onClick={ this.inputHandler.bind(this) }
-                   className='form-control input-lg'
-                   placeholder='Password' />
-          </div>
-          <button type='submit'
-                  className='btn btn-lg'
-                  disabled={ isRequesting }
-                  onClick={ this.submitHandler.bind(this) }>Submit</button>
-        </form>
+                   floatingLabelText='Password'
+                   floatingLabelStyle={{ color: '#777777' }}
+                   inputStyle={{ color: 'white' }}/>
+        <button type='submit'
+                className='btn btn-lg'
+                disabled={ isRequesting }
+                onClick={ this.submitHandler.bind(this) }>Submit</button>
       </div>
     )
   }

@@ -2,8 +2,9 @@
 @import "../../styles/base/variables";
 
 $sidebar-width: 330px;
-$topClickZone-height: 120px;
+$topClickZone-height: 130px;
 $zIndex-level1: 900;
+$zIndex-level2: 990;
 
 .sidebar {
   height: 100%;
@@ -29,9 +30,47 @@ $zIndex-level1: 900;
 
 .contentWrapper {
   width: $sidebar-width - 20px;
-  margin: 70px 10px 0 10px;
+  margin: 90px 10px 0 10px;
   display: flex;
   justify-content: center;
+}
+
+.optionWrapper {
+  width: 100%;
+
+  .optionHeader {
+    width: 100%;
+    position: absolute;
+    top: 130px;
+    font-size: 25px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .optionTitle {
+    width: 96px;
+    padding: 9px 6px;
+    cursor: pointer;
+    z-index: $wfx-zIndex-highest + $zIndex-level2;
+  }
+
+  .optionSubTitle {
+    width: 60px;
+    padding: 6px 0;
+    font-size: 13px;
+    cursor: pointer;
+    z-index: $wfx-zIndex-highest + $zIndex-level2;
+  }
+
+  .optionSlash {
+    color: #fff;
+    height: 24px;
+    padding: 0 7px;
+    font-size: 16px;
+    font-weight: bolder;
+  }
+
+
 }
 
 .toggleButton {

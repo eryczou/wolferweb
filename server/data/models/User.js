@@ -1,7 +1,7 @@
 import bookshelf from '../bookshelf'
 
 const User = bookshelf.Model.extend({
-  tableName: 'users'
+  tableName: 'user'
 })
 
 export default bookshelf.model('User', User)

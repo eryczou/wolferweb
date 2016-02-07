@@ -6,6 +6,4 @@ bookshelf.plugin('registry')
 
 export default bookshelf
 
-require('./models/Movie');
-require('./models/Director');
-require('./models/Genre');
+require('./models/User');

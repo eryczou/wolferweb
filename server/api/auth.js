@@ -8,12 +8,6 @@ import User from '../data/models/User'
 
 const auth = new Router()
 
-const HARDCODED_USER = {
-  id: 4,
-  email: 'hello@test.com',
-  password: 'test'
-};
-
 auth.post('/login', async (ctx, next) => {
   let { email, password } = ctx.request.body
   const token = generateToken(email, password)

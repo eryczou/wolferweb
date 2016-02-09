@@ -1,5 +1,6 @@
 /* @flow */
 import { routeActions } from 'react-router-redux'
+import Constants from '../../utils/constants'
 import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 import { actions as sidebarActions } from './sidebar'
 
@@ -10,18 +11,20 @@ export const ISSUE_AUTH_REQUEST = 'ISSUE_AUTH_REQUEST'
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
+export const SHOW_ERROR = 'SHOW_ERROR'
+
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 
-export const loginUserSuccess = (payload): Action => {
-  localStorage.setItem('token', payload.token)
+export const loginUserSuccess = (token, user): Action => {
+  localStorage.setItem('token', token)
   return {
     type: LOGIN_USER_SUCCESS,
     payload: {
-      token: payload.token,
-      user: payload.user
+      token: token,
+      user: user
     }
   }
 }
@@ -61,7 +64,7 @@ export const loginUser = (email, password, redirect='/') => {
       .then(parseJSON)
       .then((response) => {
         try {
-          dispatch(loginUserSuccess(response.payload))
+          dispatch(loginUserSuccess(response.payload.token, response.payload.user))
           let toLocation = state.router.location.query.fromLoc
           if (toLocation) {
             dispatch(routeActions.push(`${toLocation}`))
@@ -99,7 +102,7 @@ export const registerUser = (email, password, redirect='/') => {
       .then(parseJSON)
       .then((response) => {
         try {
-          dispatch(loginUserSuccess(response.payload))
+          dispatch(loginUserSuccess(response.payload.token, response.payload.user))
           let toLocation = state.router.location.query.fromLoc
           if (toLocation) {
             dispatch(routeActions.push(`${toLocation}`))
@@ -178,6 +181,35 @@ export const isLoggedIn = () => {
   }
 }
 
+export const updateError = (target, errorCode) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    const error = Object.assign({}, state.auth.error, {[target]: errorCode})
+    dispatch(showError(error))
+  }
+}
+
+export const showError = (error): Action => {
+  return {
+    type: SHOW_ERROR,
+    payload: {
+      error: error
+    }
+  }
+}
+
+export const removeError = (target) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    let preError = state.auth.error
+    if (preError.hasOwnProperty(target)) {
+      delete preError[target]
+      const error = Object.assign({}, preError)
+      dispatch(showError(error))
+    }
+  }
+}
+
 export const actions = {
   loginUserSuccess,
   loginUserFailure,
@@ -186,7 +218,10 @@ export const actions = {
   registerUser,
   logout,
   logoutAndRedirect,
-  isLoggedIn
+  isLoggedIn,
+  updateError,
+  showError,
+  removeError
 }
 
 // ------------------------------------
@@ -224,6 +259,11 @@ const ACTION_HANDLERS = {
       user: null,
       statusText: 'You have been successfully logged out.'
     })
+  },
+  [SHOW_ERROR]: (state, { payload }) => {
+    return Object.assign({}, state, {
+      error: payload.error
+    })
   }
 }
 
@@ -236,7 +276,8 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   isRequesting: false,
-  statusText: ''
+  statusText: '',
+  error: {}
 }
 
 export default function authReducer (state: obj = initialState, action: Action): Object {

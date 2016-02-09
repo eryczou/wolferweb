@@ -29,6 +29,9 @@ class CounterView extends React.Component {
   render() {
     return (
       <div id='wfx-price'>
+        <div>
+          Test Link to <a href='https://centos55.hightail.com'>centos55.hightail.com</a>
+        </div>
         <button onClick={ this.getMovies.bind(this) }> Get Movies from Server </button>
         <div id='showbox'>
           1234

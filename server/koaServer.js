@@ -5,8 +5,19 @@ import _debug from 'debug'
 import config from '../config'
 import * as httpErrHandler from './middleware/http-error-handler'
 import { publicApi, privateApi } from './api'
+import _log from 'logfilename'
+import bodyParser from 'koa-bodyparser'
+import cookieParser from './middleware/express-coookieParser'
+import historyApiFallback from 'koa-connect-history-api-fallback'
+import webpack from 'webpack'
+import webpackConfig from '../build/webpack.config'
+import serve from 'koa-static'
+import webpackProxyMiddleware from './middleware/webpack-proxy'
+import webpackDevMiddleware from './middleware/webpack-dev'
+import webpackHMRMiddleware from './middleware/webpack-hmr'
 
 const debug = _debug('app:server')
+const log = _log(__filename, config.log)
 const paths = config.utils_paths
 
 const koaApp = () => {
@@ -38,13 +49,6 @@ export default koaApp
 
 const middlewareInit = (app) => {
   debug("Init server middleware")
-  const log = require('logfilename')(__filename, config.log)
-  const bodyParser = require('koa-bodyparser')
-  const cookieParser = require('./middleware/express-coookieParser')
-  const historyApiFallback = require('koa-connect-history-api-fallback')
-  const webpack = require('webpack')
-  const webpackConfig = require ('../build/webpack.config')
-  const serve = require('koa-static')
 
   // koa-bodyparser
   app.use(bodyParser())
@@ -75,11 +79,11 @@ const middlewareInit = (app) => {
 
     if (config.proxy && config.proxy.enabled) {
       const options = config.proxy.options
-      app.use(convert(require('./middleware/webpack-proxy')(options)))
+      app.use(convert(webpackProxyMiddleware(options)))
     }
 
-    app.use(require('./middleware/webpack-dev')(compiler, publicPath))
-    app.use(require('./middleware/webpack-hmr')(compiler))
+    app.use(webpackDevMiddleware(compiler, publicPath))
+    app.use(webpackHMRMiddleware(compiler))
 
     app.use(convert(serve(paths.client('static'))))
     debug('Server is running on development mode.')

@@ -1,8 +1,14 @@
 .loginContainer {
   width: 100%;
-  padding-top: 45px;
+  padding-top: 65px;
 }
 
 .statusText {
   color: floralwhite;
+}
+
+.submitButtonRow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
 }

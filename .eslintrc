@@ -75,7 +75,7 @@
     "quotes": [2, "single"],       // specify whether double or single quotes should be used
     "semi": [2, "never"],          // require or disallow use of semicolons instead of ASI
     "space-infix-ops": 0,             // require spaces around operators
-    "max-len": [2, 120, 2],         // specify the maximum length of a line in your program (off by default)
+    "max-len": [2, 250, 2],         // specify the maximum length of a line in your program (off by default)
 
     "comma-dangle": 0,             // disallow trailing commas in object literals
     "no-cond-assign": 0,           // disallow assignment in conditional expressions

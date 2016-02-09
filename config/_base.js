@@ -2,6 +2,7 @@
 import _debug from 'debug'
 import path from 'path'
 import { argv } from 'yargs'
+import _constants from './../client/utils/constants'
 
 const debug = _debug('app:config:_base')
 const config = {
@@ -90,7 +91,6 @@ config.globals = {
   '__PROD__'     : config.env === 'production',
   '__TEST__'     : config.env === 'test',
   '__DEBUG__'    : config.env === 'development' && !argv.no_debug,
-  '__DEBUG_NEW_WINDOW__' : !!argv.nw,
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
 }
 

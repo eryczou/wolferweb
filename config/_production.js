@@ -9,6 +9,14 @@ export default (config) => ({
     chunkModules : true,
     colors : true
   },
+  proxy: {
+    enabled: false,
+    options: {
+      // koa-proxy options
+      host: 'http://localhost:8000',
+      match: /^\/api\/.*/
+    }
+  },
   globals: {
     ...config.globals,
     __PYTHON_API_URL__: JSON.stringify('http://ec2-54-85-109-102.compute-1.amazonaws.com:9999/api'),

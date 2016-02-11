@@ -43,13 +43,15 @@ export const incrementIfOdd = () => (dispatch, getState) => {
   dispatch(increment(1))
 }
 
-export const doubleAsync = () => (dispatch, getState) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      dispatch(increment(getState().counter))
-      resolve()
-    }, 200)
-  })
+export const doubleAsync = (): Function => {
+  return (dispatch: Function, getState: Function): Promise => {
+    return new Promise((resolve: Function) => {
+      setTimeout(() => {
+        dispatch(increment(getState().counter))
+        resolve()
+      }, 200)
+    })
+  }
 }
 
 export const actions = {
@@ -63,8 +65,11 @@ export const actions = {
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
+// NOTE: "Action" is a Flow interface defined in https://github.com/TechnologyAdvice/flow-interfaces
+// If you're unfamiliar with Flow, you are completely welcome to avoid annotating your code, but
+// if you'd like to learn more you can check out: flowtype.org.
 const ACTION_HANDLERS = {
-  [INCREMENT_COUNTER]: (state, {payload}) => state + payload,
+  [INCREMENT_COUNTER]: (state: number, action: {payload: number}) => state + action.payload,
   [DECREMENT_COUNTER]: (state, { payload }) => state - payload
 }
 
@@ -72,7 +77,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = 0
-export default function counterReducer (state: number = initialState, action: Action): Object {
+export default function counterReducer (state: number = initialState, action: Action): number {
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
 }

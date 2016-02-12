@@ -1,20 +1,22 @@
 import Koa from 'koa'
 import convert from 'koa-convert'
 import jwt from 'koa-jwt'
-import _debug from 'debug'
-import config from '../config'
-import * as httpErrHandler from './middleware/http-error-handler'
-import { publicApi, privateApi } from './api'
-import _log from 'logfilename'
+import proxy from 'koa-proxy'
 import bodyParser from 'koa-bodyparser'
-import cookieParser from './middleware/express-coookieParser'
+import serve from 'koa-static'
 import historyApiFallback from 'koa-connect-history-api-fallback'
+
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
-import serve from 'koa-static'
-import webpackProxyMiddleware from './middleware/webpack-proxy'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
+import cookieParser from './middleware/express-coookieParser'
+
+import _debug from 'debug'
+import config from '../config'
+import _log from 'logfilename'
+import * as httpErrHandler from './middleware/http-error-handler'
+import { publicApi, privateApi } from './api'
 
 const debug = _debug('app:server')
 const log = _log(__filename, config.log)
@@ -50,11 +52,6 @@ export default koaApp
 const middlewareInit = (app) => {
   debug("Init server middleware")
 
-  // koa-bodyparser
-  app.use(bodyParser())
-  // express cookie-parser
-  app.use(cookieParser())
-
   // log api request
   app.use(async(ctx, next) => {
     const start = new Date;
@@ -63,6 +60,18 @@ const middlewareInit = (app) => {
     const ms = new Date - start;
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`)
   });
+
+  // koa-proxy
+  if (config.proxy && config.proxy.enabled) {
+    const options = config.proxy.options
+    app.use(convert(proxy(options)))
+  }
+
+  // koa-bodyparser
+  app.use(bodyParser())
+
+  // express cookie-parser
+  app.use(cookieParser())
 
   // Rewrites all routes requests to the root /index.html file
   // Remove this, if you want to implement isomorphic rendering
@@ -76,11 +85,6 @@ const middlewareInit = (app) => {
 
     // Enable webpack-dev and webpack-hot middleware
     const { publicPath } = webpackConfig.output
-
-    if (config.proxy && config.proxy.enabled) {
-      const options = config.proxy.options
-      app.use(convert(webpackProxyMiddleware(options)))
-    }
 
     app.use(webpackDevMiddleware(compiler, publicPath))
     app.use(webpackHMRMiddleware(compiler))

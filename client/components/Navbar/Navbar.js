@@ -24,7 +24,7 @@ class Navbar extends React.Component {
       <div className={'container ' + classes.wrapper}
            style={{ paddingRight }}>
         <div className='row'>
-          <nav className={ navbarClass }
+          <nav className={navbarClass}
                role='navigation'>
             <div className='navbar-header'>
               <button type='button'

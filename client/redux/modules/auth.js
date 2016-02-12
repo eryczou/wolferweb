@@ -1,5 +1,5 @@
 /* @flow */
-import { routeActions } from 'react-router-redux'
+import { routerActions } from 'react-router-redux'
 import Constants from '../../utils/constants'
 import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 import { actions as sidebarActions } from './sidebar'
@@ -58,22 +58,22 @@ export const loginUser = (email, password, redirect='/') => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({email: email, password: password})
+      body: JSON.stringify({ email: email, password: password })
     })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then((response) => {
         try {
           dispatch(loginUserSuccess(response.payload.token, response.payload.user))
-          let toLocation = state.router.location.query.fromLoc
-          if (toLocation) {
-            dispatch(routeActions.push(`${toLocation}`))
+          let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
+          if (typeof redirectLocation != 'undefined' && redirectLocation) {
+            dispatch(routerActions.push(`${redirectLocation}`))
           }
         } catch (e) {
           dispatch(loginUserFailure({
             response: {
               status: 403,
-              statusText: `The username and password pair do not matched!`
+              statusText: 'Login failed, please try again'
             }
           }))
         }
@@ -96,22 +96,22 @@ export const registerUser = (email, password, redirect='/') => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({email: email, password: password})
+      body: JSON.stringify({ email: email, password: password })
     })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then((response) => {
         try {
           dispatch(loginUserSuccess(response.payload.token, response.payload.user))
-          let toLocation = state.router.location.query.fromLoc
-          if (toLocation) {
-            dispatch(routeActions.push(`${toLocation}`))
+          let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
+          if (typeof redirectLocation != 'undefined' && redirectLocation) {
+            dispatch(routerActions.push(`${redirectLocation}`))
           }
         } catch (e) {
           dispatch(loginUserFailure({
             response: {
               status: 403,
-              statusText: `The username and password pair do not matched!`
+              statusText: 'Register failed, please try again'
             }
           }))
         }
@@ -132,7 +132,7 @@ export const logout = (): Action => {
 export const logoutAndRedirect = () => {
   return (dispatch, state) => {
     dispatch(logout())
-    dispatch(routeActions.push('/'))
+    dispatch(routerActions.push('/'))
     dispatch(sidebarActions.showSidebar())
   }
 }
@@ -141,7 +141,7 @@ export const isLoggedIn = () => {
   return (dispatch, getState) => {
     let state = getState()
     let token = localStorage.getItem('token')
-    let curLocation = state.router.location.pathname
+    let curLocation = state.router.locationBeforeTransitions.pathname
     if (state.auth.isAuthenticated && token) {
       fetch(`${__NODE_API_URL__}/auth/validateToken`, {
         credentials: 'include',
@@ -153,9 +153,10 @@ export const isLoggedIn = () => {
         .then(checkHttpStatus)
         .then(parseJSON)
         .then((response) => {
-          let toLocation = state.router.location.query.fromLoc
-          if (toLocation) {
-            dispatch(routeActions.push(`/${toLocation}`))
+          debugger
+          let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
+          if (typeof redirectLocation != 'undefined' && redirectLocation) {
+            dispatch(routerActions.push(`/${redirectLocation}`))
           }
         })
         .catch((error) => {
@@ -165,7 +166,7 @@ export const isLoggedIn = () => {
               statusText: 'Please login to access the protected content'
             }
           }))
-          dispatch(routeActions.push(`/?fromLoc=${curLocation}`))
+          dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
           dispatch(sidebarActions.showSidebar())
         })
     } else {
@@ -175,7 +176,9 @@ export const isLoggedIn = () => {
           statusText: 'Please login to access the protected content'
         }
       }))
-      dispatch(routeActions.push(`/?fromLoc=${curLocation}`))
+      debugger
+      //dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
+      dispatch(routerActions.push('/'))
       dispatch(sidebarActions.showSidebar())
     }
   }
@@ -184,7 +187,7 @@ export const isLoggedIn = () => {
 export const updateError = (target, errorCode) => {
   return (dispatch, getState) => {
     const state = getState()
-    const error = Object.assign({}, state.auth.error, {[target]: errorCode})
+    const error = Object.assign({}, state.auth.error, { [target]: errorCode })
     dispatch(showError(error))
   }
 }
@@ -240,7 +243,7 @@ const ACTION_HANDLERS = {
       isAuthenticated : true,
       token : payload.token,
       user : payload.user,
-      statusText : `${payload.user.username} have been successfully logged in.`
+      statusText : `You have been successfully logged in.`
     })
   },
   [LOGIN_USER_FAILURE]: (state, { payload }) => {

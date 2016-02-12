@@ -99,38 +99,38 @@ class Login extends React.Component {
 
     return (
       <div className={classes.loginContainer}>
-        {statusText ? <p className={classes.statusText}>{ statusText }</p> : ''}
+        {statusText ? <p className={classes.statusText}>{statusText}</p> : ''}
         <TextField id='login-input-email'
                    name='email'
                    type='text'
                    autoComplete='off'
-                   style={ styles.textFieldStyle }
-                   inputStyle={ styles.inputStyle }
-                   floatingLabelStyle={ styles.floatingLabelStyle }
-                   errorStyle={ styles.errorStyle }
-                   underlineStyle={ styles.underlineStyle }
+                   style={styles.textFieldStyle}
+                   inputStyle={styles.inputStyle}
+                   floatingLabelStyle={styles.floatingLabelStyle}
+                   errorStyle={styles.errorStyle}
+                   underlineStyle={styles.underlineStyle}
                    floatingLabelText='Email'
-                   errorText={ error.EMAIL_INPUT? error.EMAIL_INPUT : '' }
-                   onClick={ this.inputHandler.bind(this) }
+                   errorText={error.EMAIL_INPUT? error.EMAIL_INPUT : ''}
+                   onClick={this.inputHandler.bind(this)}
         />
         <TextField id='login-input-password'
                    name='password'
                    type='password'
                    autoComplete='off'
-                   style={ styles.textFieldStyle }
-                   inputStyle={ styles.inputStyle }
-                   floatingLabelStyle={ styles.floatingLabelStyle }
-                   errorStyle={ styles.errorStyle }
-                   underlineStyle={ styles.underlineStyle }
-                   onClick={ this.inputHandler.bind(this) }
+                   style={styles.textFieldStyle}
+                   inputStyle={styles.inputStyle}
+                   floatingLabelStyle={styles.floatingLabelStyle}
+                   errorStyle={styles.errorStyle}
+                   underlineStyle={styles.underlineStyle}
+                   onClick={this.inputHandler.bind(this)}
                    floatingLabelText='Password'
         />
-        <div className={ classes.submitButtonRow }>
+        <div className={classes.submitButtonRow}>
           <FlatButton label='Submit'
-                      style={ styles.submitButton }
-                      labelStyle={ styles.labelStyle }
-                      disabled={ isRequesting }
-                      onClick={ this.submitHandler.bind(this) }
+                      style={styles.submitButton}
+                      labelStyle={styles.labelStyle}
+                      disabled={isRequesting}
+                      onClick={this.submitHandler.bind(this)}
           />
         </div>
       </div>

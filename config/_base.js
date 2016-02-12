@@ -22,11 +22,14 @@ const config = {
   // ----------------------------------
   server_host : 'localhost',
   server_port : process.env.PORT || 3000,
-  api_port : 80,
+  api_port    : 80,
   mongo_uri   : process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
-  jwt : {
-    expire : '1h',
-    secret : 'eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0'
+  jwt: {
+    expire: '1h',
+    secret: 'eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0'
+  },
+  auth:{
+    secret: 'wolferx_secret'
   },
   log: {
     console: {

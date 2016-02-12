@@ -102,53 +102,53 @@ class Register extends React.Component {
     const { isRequesting, statusText, error } = this.props
 
     return (
-      <div className={ classes.registerContainer }>
-        {statusText ? <p className={classes.statusText}>{ statusText }</p> : ''}
+      <div className={classes.registerContainer}>
+        {statusText ? <p className={classes.statusText}>{statusText}</p> : ''}
         <TextField id='register-input-email'
                    name='email'
                    type='text'
                    autoComplete='off'
-                   style={ styles.textFieldStyle }
-                   inputStyle={ styles.inputStyle }
-                   floatingLabelStyle={ styles.floatingLabelStyle }
-                   errorStyle={ styles.errorStyle }
-                   underlineStyle={ styles.underlineStyle }
+                   style={styles.textFieldStyle}
+                   inputStyle={styles.inputStyle}
+                   floatingLabelStyle={styles.floatingLabelStyle}
+                   errorStyle={styles.errorStyle}
+                   underlineStyle={styles.underlineStyle}
                    floatingLabelText='Email'
-                   errorText={ error.EMAIL_INPUT? error.EMAIL_INPUT : '' }
-                   onClick={ this.inputHandler.bind(this) }
+                   errorText={error.EMAIL_INPUT? error.EMAIL_INPUT : ''}
+                   onClick={this.inputHandler.bind(this)}
         />
         <TextField id='register-input-password'
                    name='password'
                    type='password'
                    autoComplete='off'
-                   style={ styles.textFieldStyle }
-                   inputStyle={ styles.inputStyle }
-                   floatingLabelStyle={ styles.floatingLabelStyle }
-                   errorStyle={ styles.errorStyle }
-                   underlineStyle={ styles.underlineStyle }
-                   onClick={ this.inputHandler.bind(this) }
+                   style={styles.textFieldStyle}
+                   inputStyle={styles.inputStyle}
+                   floatingLabelStyle={styles.floatingLabelStyle}
+                   errorStyle={styles.errorStyle}
+                   underlineStyle={styles.underlineStyle}
+                   onClick={this.inputHandler.bind(this)}
                    floatingLabelText='Password'
         />
         <TextField id='register-input-repassword'
                    name='passwordConfirm'
-                   className={ classes.input }
+                   className={classes.input}
                    type='password'
                    autoComplete='off'
-                   style={ styles.textFieldStyle }
-                   inputStyle={ styles.inputStyle }
-                   floatingLabelStyle={ styles.floatingLabelStyle }
-                   errorStyle={ styles.errorStyle }
-                   underlineStyle={ styles.underlineStyle }
-                   onClick={ this.inputHandler.bind(this) }
+                   style={styles.textFieldStyle}
+                   inputStyle={styles.inputStyle}
+                   floatingLabelStyle={styles.floatingLabelStyle}
+                   errorStyle={styles.errorStyle}
+                   underlineStyle={styles.underlineStyle}
+                   onClick={this.inputHandler.bind(this)}
                    floatingLabelText='Retype Password'
-                   errorText={ error.PASSWORD_CONFIRM_INPUT? error.PASSWORD_CONFIRM_INPUT : '' }
+                   errorText={error.PASSWORD_CONFIRM_INPUT? error.PASSWORD_CONFIRM_INPUT : ''}
         />
-        <div className={ classes.submitButtonRow }>
+        <div className={classes.submitButtonRow}>
           <FlatButton label='Submit'
-                      style={ styles.submitButton }
-                      labelStyle={ styles.labelStyle }
-                      disabled={ isRequesting }
-                      onClick={ this.submitHandler.bind(this) }
+                      style={styles.submitButton}
+                      labelStyle={styles.labelStyle}
+                      disabled={isRequesting}
+                      onClick={this.submitHandler.bind(this)}
           />
         </div>
       </div>

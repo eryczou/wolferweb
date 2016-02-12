@@ -1,6 +1,7 @@
 import Router from 'koa-router'
 import jwt from 'koa-jwt'
 import moment from 'moment'
+import bcrypt from 'bcrypt'
 import config from '../../config'
 import { generateToken } from '../utils/authUtils'
 import User from '../data/models/User'
@@ -10,17 +11,17 @@ const auth = new Router()
 
 auth.post('/login', async (ctx, next) => {
   let { email, password } = ctx.request.body
-  const token = generateToken(email, password)
 
   await new User({
     'username': email
   })
     .fetch()
     .then((model) => {
-      console.log(model)
-      console.log(`The saved token = ${model.get('token')}`)
-      console.log (model.get('token') == token ? 'true' : 'false')
-      if (model.get('token').split('.')[0] == token.split('.')[0]) {
+      const hash = model.get('password')
+      const isValidPassword = bcrypt.compareSync(password, hash)
+
+      if (isValidPassword) {
+        const token = generateToken(email, hash)
         ctx.status = 200
         ctx.body = {
           payload: {
@@ -43,32 +44,35 @@ auth.post('/login', async (ctx, next) => {
 auth.post('/register', async (ctx, next) => {
   let { email, password } = ctx.request.body
   const timeNow = moment().format()
-  const token = generateToken(email, password)
+  const salt = bcrypt.genSaltSync(8) + config.auth.secret
+  const hash = bcrypt.hashSync(password, salt)
+  const token = generateToken(email, hash)
 
-  await new User({
-    username: email,
-    password: password,
-    token: token,
-    created_at: timeNow,
-    updated_at: timeNow
-  })
-    .save()
-    .then((model) => {
-      console.log(model)
-      ctx.status = 200
-      ctx.body = {
-        payload: {
-          token: model.get('token'),
-          user: {
-            id: model.get('id'),
-            username: model.get('username')
+  if (hash) {
+    await new User({
+      username: email,
+      password: hash,
+      token: token,
+      created_at: timeNow,
+      updated_at: timeNow
+    })
+      .save()
+      .then((model) => {
+        ctx.status = 200
+        ctx.body = {
+          payload: {
+            token: model.get('token'),
+            user: {
+              id: model.get('id'),
+              username: model.get('username')
+            }
           }
         }
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 })
 
 auth.get('/validateToken', (ctx, next) => {
@@ -79,9 +83,10 @@ auth.get('/validateToken', (ctx, next) => {
     ctx.status = 401
   } else {
     try {
-      jwt.verify(token.replace('Bearer ', ''), config.jwt.secret)
+      const decodedToken = jwt.verify(token.replace('Bearer ', ''), config.jwt.secret)
+      console.log(decodedToken)
       ctx.status = 200
-      ctx.body = {data: 'Valid JWT found! This protected data was fetched from the server.'};
+      ctx.body = {data: 'Valid Token'}
     } catch (e) {
       ctx.status = 401
     }

@@ -15,7 +15,7 @@ import cookieParser from './middleware/express-coookieParser'
 import _debug from 'debug'
 import config from '../config'
 import _log from 'logfilename'
-import * as httpErrHandler from './middleware/http-error-handler'
+import httpErrorHandler from './middleware/http-error-handler'
 import { publicApi, privateApi } from './api'
 
 const debug = _debug('app:server')
@@ -28,16 +28,13 @@ const koaApp = () => {
   middlewareInit(app)
 
   // Custom 401 handling if you don't want to expose koa-jwt errors to users
-  app.use(httpErrHandler.err401())
+  app.use(httpErrorHandler())
 
   // public api
   app.use(publicApi.routes())
 
   // jwt validation
   app.use(convert(jwt({ secret: config.jwt.secret, key: 'jwtdata' })))
-  // use key pairs as secret
-  //var publicKey = fs.readFileSync('/path/to/public.pub');
-  //app.use(jwt({ secret: publicKey }));
 
   // private api
   app.use(privateApi.routes())

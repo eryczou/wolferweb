@@ -2,10 +2,6 @@ import React from 'react'
 import classes from './Blog.scss'
 
 class Blog extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <div id='wfx-blog'>

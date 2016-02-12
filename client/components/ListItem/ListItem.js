@@ -3,7 +3,7 @@ import classes from './ListItem.scss'
 
 function ListItem ({ item }) {
   return (
-    <div className={ classes.listItem }>
+    <div className={classes.listItem}>
       <div>
         {item.doc}
       </div>

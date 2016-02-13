@@ -25,7 +25,8 @@ const config = {
   api_port    : 80,
   mongo_uri   : process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
   jwt: {
-    expire: '1h',
+    expire: '5m',
+    refresh_expire: '30d',
     secret: 'eyJ0aXRsZSI6ImZ1Y2sgeW91IHBheSBtZSIsImxlYWQiOiJ0'
   },
   auth:{

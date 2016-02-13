@@ -13,7 +13,6 @@ export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
 export const SHOW_ERROR = 'SHOW_ERROR'
 
-
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -142,7 +141,7 @@ export const isLoggedIn = () => {
     let state = getState()
     let token = localStorage.getItem('token')
     let curLocation = state.router.locationBeforeTransitions.pathname
-    if (state.auth.isAuthenticated && token) {
+    if (typeof token != 'undefined' && token) {
       fetch(`${__NODE_API_URL__}/auth/validateToken`, {
         credentials: 'include',
         headers: {
@@ -153,7 +152,6 @@ export const isLoggedIn = () => {
         .then(checkHttpStatus)
         .then(parseJSON)
         .then((response) => {
-          debugger
           let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
           if (typeof redirectLocation != 'undefined' && redirectLocation) {
             dispatch(routerActions.push(`/${redirectLocation}`))
@@ -176,9 +174,7 @@ export const isLoggedIn = () => {
           statusText: 'Please login to access the protected content'
         }
       }))
-      debugger
-      //dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
-      dispatch(routerActions.push('/'))
+      dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
       dispatch(sidebarActions.showSidebar())
     }
   }

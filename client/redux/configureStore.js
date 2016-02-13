@@ -1,11 +1,16 @@
 import { applyMiddleware, compose, createStore } from 'redux'
+import { browserHistory } from 'react-router'
+import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import rootReducer from './rootReducer'
 
 export default function configureStore (initialState = {}) {
+
+  const router = routerMiddleware(browserHistory)
+
   // Compose final middleware and use devtools in debug environment
-  let middleware = applyMiddleware(thunk, createLogger())
+  let middleware = applyMiddleware(router, thunk, createLogger())
   if (__DEBUG__) {
     const devTools = window.devToolsExtension
       ? window.devToolsExtension()

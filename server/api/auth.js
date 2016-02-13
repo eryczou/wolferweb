@@ -3,9 +3,9 @@ import jwt from 'koa-jwt'
 import moment from 'moment'
 import bcrypt from 'bcrypt'
 import config from '../../config'
-import { generateToken } from '../utils/authUtils'
+import { generateToken, generateRefreshToken } from '../utils/authUtils'
 import User from '../data/models/User'
-
+import Token from '../data/models/Token'
 
 const auth = new Router()
 
@@ -13,7 +13,7 @@ auth.post('/login', async (ctx, next) => {
   let { email, password } = ctx.request.body
 
   await new User({
-    'username': email
+    'email': email
   })
     .fetch()
     .then((model) => {
@@ -21,14 +21,14 @@ auth.post('/login', async (ctx, next) => {
       const isValidPassword = bcrypt.compareSync(password, hash)
 
       if (isValidPassword) {
-        const token = generateToken(email, hash)
+        const userId = model.get('id')
+        const token = generateToken(userId)
         ctx.status = 200
         ctx.body = {
           payload: {
-            token: model.get('token'),
+            token: token,
             user: {
-              id: model.get('id'),
-              username: model.get('username')
+              id: userId
             }
           }
         }
@@ -43,35 +43,55 @@ auth.post('/login', async (ctx, next) => {
 
 auth.post('/register', async (ctx, next) => {
   let { email, password } = ctx.request.body
-  const timeNow = moment().format()
+  const timeNow = moment().format("YYYY-MM-DD HH:mm:ss")
   const salt = bcrypt.genSaltSync(8) + config.auth.secret
   const hash = bcrypt.hashSync(password, salt)
-  const token = generateToken(email, hash)
 
   if (hash) {
+    let userId = null
+
     await new User({
-      username: email,
+      email: email,
       password: hash,
-      token: token,
       created_at: timeNow,
       updated_at: timeNow
-    })
-      .save()
+    }).save()
       .then((model) => {
-        ctx.status = 200
-        ctx.body = {
-          payload: {
-            token: model.get('token'),
-            user: {
-              id: model.get('id'),
-              username: model.get('username')
-            }
-          }
-        }
+        userId = model.get('id')
       })
       .catch((error) => {
-        console.log(error)
+        throw error
       })
+
+    if (userId) {
+      const token = generateToken(userId)
+      const freshToken = generateRefreshToken(userId)
+      const tokenSalt = bcrypt.genSaltSync(1)
+      const hashedRefreshToken = bcrypt.hashSync(freshToken, tokenSalt)
+      await new Token({
+        user_id: userId,
+        device: '',
+        refresh: hashedRefreshToken,
+        created_at: timeNow,
+        updated_at: timeNow
+      })
+        .save()
+        .then(() => {
+          ctx.status = 200
+          ctx.body = {
+            payload: {
+              token: token,
+              refresh: freshToken,
+              user: {
+                id: userId
+              }
+            }
+          }
+        })
+        .catch((error) => {
+          throw error
+        })
+    }
   }
 })
 
@@ -84,7 +104,6 @@ auth.get('/validateToken', (ctx, next) => {
   } else {
     try {
       const decodedToken = jwt.verify(token.replace('Bearer ', ''), config.jwt.secret)
-      console.log(decodedToken)
       ctx.status = 200
       ctx.body = {data: 'Valid Token'}
     } catch (e) {

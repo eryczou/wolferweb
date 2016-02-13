@@ -24,6 +24,13 @@ auth.post('/login', async (ctx, next) => {
         const userId = model.get('id')
         const token = generateToken(userId)
         ctx.status = 200
+
+        ctx.cookies.set('wfx_token', token, {
+          httpOnly: true,
+          overwrite: true,
+          maxAge: config.auth.expire
+        })
+
         ctx.body = {
           payload: {
             token: token,
@@ -95,9 +102,12 @@ auth.post('/register', async (ctx, next) => {
   }
 })
 
-auth.get('/validateToken', (ctx, next) => {
+auth.get('/isValidToken', (ctx, next) => {
 
-  let token = ctx.headers.authorization
+  //let token = ctx.headers.authorization
+
+  let token = ctx.cookies.get('token', { signed: true })
+  console.log(token)
 
   if (!token) {
     ctx.status = 401
@@ -105,7 +115,7 @@ auth.get('/validateToken', (ctx, next) => {
     try {
       const decodedToken = jwt.verify(token.replace('Bearer ', ''), config.jwt.secret)
       ctx.status = 200
-      ctx.body = {data: 'Valid Token'}
+      ctx.body = {payload: 'Valid Token'}
     } catch (e) {
       ctx.status = 401
     }

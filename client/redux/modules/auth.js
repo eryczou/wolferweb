@@ -139,10 +139,10 @@ export const logoutAndRedirect = () => {
 export const isLoggedIn = () => {
   return (dispatch, getState) => {
     let state = getState()
-    let token = localStorage.getItem('token')
-    let curLocation = state.router.locationBeforeTransitions.pathname
+    const token = localStorage.getItem('token')
+    const curLocation = state.router.locationBeforeTransitions.pathname
     if (typeof token != 'undefined' && token) {
-      fetch(`${__NODE_API_URL__}/auth/validateToken`, {
+      fetch(`${__NODE_API_URL__}/auth/isValidToken`, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

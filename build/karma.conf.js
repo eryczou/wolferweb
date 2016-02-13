@@ -20,12 +20,12 @@ const karmaConfig = {
   singleRun: !argv.watch,
   frameworks: ['mocha'],
   preprocessors: {
-    [`${config.dir_test}/test-bundler.js`]: ['webpack', 'sourcemap']
+    [`${config.dir_test}/test-bundler.js`]: ['webpack']
   },
   reporters: ['spec'],
   browsers: ['PhantomJS'],
   webpack: {
-    devtool: 'inline-source-map',
+    devtool: 'cheap-module-source-map',
     resolve: {
       ...webpackConfig.resolve,
       alias: {

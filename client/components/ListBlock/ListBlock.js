@@ -4,9 +4,9 @@ import ListItem from '../ListItem/ListItem'
 
 function ListBlock ({ title, items }) {
   return (
-    <div className={ `panel panel-default ${classes.listBlock}` } >
+    <div className={`panel panel-default ${classes.listBlock}`} >
       <div className='panel-heading'>
-        <h3 className='panel-title'>{ title }</h3>
+        <h3 className='panel-title'>{title}</h3>
       </div>
       <div className='panel-body'>
         <ul className='list-group item-container'>
@@ -20,8 +20,8 @@ function ListBlock ({ title, items }) {
           </li>
           {items.map(
             (item, index) =>
-              <li className='list-group-item' key={ index }>
-                <ListItem item={ item }/>
+              <li className='list-group-item' key={index}>
+                <ListItem item={item}/>
               </li>
           )}
         </ul>

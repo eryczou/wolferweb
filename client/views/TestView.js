@@ -32,7 +32,7 @@ class CounterView extends React.Component {
         <div>
           Test Link to <a href='https://centos55.hightail.com'>centos55.hightail.com</a>
         </div>
-        <button onClick={ this.getMovies.bind(this) }> Get Movies from Server </button>
+        <button onClick={this.getMovies.bind(this)}> Get Movies from Server </button>
         <div id='showbox'>
           1234
         </div>

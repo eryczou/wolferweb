@@ -22,23 +22,23 @@ class Counter extends React.Component {
         Clicked: {counter} times
         {' '}
         <button id='foo'
-          onClick={ () => increment(1) }>
+          onClick={() => increment(1)}>
           +
         </button>
         {' '}
-        <button onClick={ () => decrement(2) }>
+        <button onClick={() => decrement(2)}>
           -
         </button>
         {' '}
-        <button onClick={ incrementIfOdd }>
+        <button onClick={incrementIfOdd}>
           Increment if odd
         </button>
         {' '}
-        <button onClick={ () => doubleAsync() }>
+        <button onClick={() => doubleAsync()}>
           Increment async
         </button>
         {' '}
-        <button onClick={ incrementFromServer }>
+        <button onClick={incrementFromServer}>
           Increment (Server)
         </button>
       </p>

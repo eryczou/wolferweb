@@ -1,36 +1,51 @@
 import Router from 'koa-router'
 import jwt from 'koa-jwt'
 import moment from 'moment'
+import bcrypt from 'bcrypt'
 import config from '../../config'
-import { generateToken } from '../utils/authUtils'
+import { generateToken, generateRefreshToken } from '../utils/authUtils'
 import User from '../data/models/User'
-
+import Token from '../data/models/Token'
 
 const auth = new Router()
 
 auth.post('/login', async (ctx, next) => {
   let { email, password } = ctx.request.body
-  const token = generateToken(email, password)
 
   await new User({
-    'username': email
+    'email': email
   })
     .fetch()
     .then((model) => {
-      console.log(model)
-      console.log(`The saved token = ${model.get('token')}`)
-      console.log (model.get('token') == token ? 'true' : 'false')
-      if (model.get('token').split('.')[0] == token.split('.')[0]) {
+      const hash = model.get('password')
+      const isValidPassword = bcrypt.compareSync(password, hash)
+
+      if (isValidPassword) {
+        const userId = model.get('id')
+        const token = generateToken(userId)
+        const freshToken = generateRefreshToken(userId)
+        const dateNow = Date.now()
+        console.log(dateNow)
+        console.log(moment().valueOf())
+
         ctx.status = 200
         ctx.body = {
           payload: {
-            token: model.get('token'),
             user: {
-              id: model.get('id'),
-              username: model.get('username')
+              id: userId
             }
           }
         }
+        ctx.cookies.set('wfx_token', token, {
+          httpOnly: true,
+          overwrite: true,
+          expires: new Date(dateNow + config.jwt.cookie_expire)
+        })
+        ctx.cookies.set('wfx_refresh', freshToken, {
+          httpOnly: true,
+          overwrite: true,
+          expires: new Date(dateNow + config.jwt.cookie_refresh_expire)
+        })
       } else {
         ctx.status = 403
       }
@@ -42,50 +57,95 @@ auth.post('/login', async (ctx, next) => {
 
 auth.post('/register', async (ctx, next) => {
   let { email, password } = ctx.request.body
-  const timeNow = moment().format()
-  const token = generateToken(email, password)
+  const dbTimeNow = moment().format("YYYY-MM-DD HH:mm:ss")
+  const salt = bcrypt.genSaltSync(8) + config.auth.secret
+  const hash = bcrypt.hashSync(password, salt)
 
-  await new User({
-    username: email,
-    password: password,
-    token: token,
-    created_at: timeNow,
-    updated_at: timeNow
-  })
-    .save()
-    .then((model) => {
-      console.log(model)
-      ctx.status = 200
-      ctx.body = {
-        payload: {
-          token: model.get('token'),
-          user: {
-            id: model.get('id'),
-            username: model.get('username')
+  if (hash) {
+    let userId = null
+
+    await new User({
+      email: email,
+      password: hash,
+      created_at: dbTimeNow,
+      updated_at: dbTimeNow
+    }).save()
+      .then((model) => {
+        userId = model.get('id')
+      })
+      .catch((error) => {
+        throw error
+      })
+
+    if (userId) {
+      const token = generateToken(userId)
+      const freshToken = generateRefreshToken(userId)
+      const tokenSalt = bcrypt.genSaltSync(1)
+      const hashedRefreshToken = bcrypt.hashSync(freshToken, tokenSalt)
+
+      await new Token({
+        user_id: userId,
+        device: '',
+        refresh: hashedRefreshToken,
+        created_at: dbTimeNow,
+        updated_at: dbTimeNow
+      })
+        .save()
+        .then(() => {
+          ctx.status = 200
+          ctx.body = {
+            payload: {
+              user: {
+                id: userId
+              }
+            }
           }
-        }
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+          ctx.cookies.set('wfx_token', token, {
+            httpOnly: true,
+            overwrite: true
+          })
+        })
+        .catch((error) => {
+          throw error
+        })
+    }
+  }
 })
 
-auth.get('/validateToken', (ctx, next) => {
-
-  let token = ctx.headers.authorization
-
-  if (!token) {
-    ctx.status = 401
-  } else {
+auth.get('/isLoggedIn', (ctx, next) => {
+  const token = ctx.cookies.get('wfx_token')
+  if (typeof token != 'undefined' && token) {
     try {
-      jwt.verify(token.replace('Bearer ', ''), config.jwt.secret)
+      jwt.verify(token, config.jwt.secret)
       ctx.status = 200
-      ctx.body = {data: 'Valid JWT found! This protected data was fetched from the server.'};
+      ctx.body = { payload: 'User has already logged in' }
     } catch (e) {
       ctx.status = 401
     }
+  } else {
+    const refreshToken = ctx.cookies.get('wfx_refresh')
+    if (typeof refreshToken != 'undefined' && refreshToken) {
+
+      try {
+        const decodeRefreshToken = jwt.verify(refreshToken, config.jwt.secret)
+        const userId = decodeRefreshToken.userId
+        const token = generateToken(userId)
+        const dateNow = Date.now()
+        ctx.status = 200
+        ctx.body = { payload: 'User has already logged in' }
+        ctx.cookies.set('wfx_token', token, {
+          httpOnly: true,
+          overwrite: true,
+          expires: new Date(dateNow + config.jwt.cookie_expire)
+        })
+      } catch (e) {
+        ctx.status = 401
+      }
+    } else {
+      ctx.status = 401
+    }
   }
+
 })
 
 export default auth

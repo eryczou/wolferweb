@@ -78,28 +78,28 @@ class Sidebar extends React.Component {
     switch (option) {
       case 'signUp':
         sidebarOption =
-          <div className={ classes.optionWrapper }>
-            <div className= { classes.optionHeader }>
-              <div className={ `label label-danger ${ classes.optionTitle }`}>
+          <div className={classes.optionWrapper}>
+            <div className= {classes.optionHeader}>
+              <div className={`label label-danger ${classes.optionTitle}`}>
                 SignUP
               </div>
-              <span className={ classes.optionSlash }> &#47; </span>
-              <div className={ `label label-default ${ classes.optionSubTitle }` }
-                   onClick={ this.onOptionClick.bind(this, 'logIn') }>LogIN</div>
+              <span className={classes.optionSlash}> &#47; </span>
+              <div className={`label label-default ${classes.optionSubTitle}`}
+                   onClick={this.onOptionClick.bind(this, 'logIn')}>LogIN</div>
             </div>
             <Register />
           </div>
         break
       case 'logIn':
         sidebarOption =
-          <div className={ classes.optionWrapper }>
-            <div className= { classes.optionHeader }>
-              <div className={ `label label-danger ${ classes.optionTitle }`}>
+          <div className={classes.optionWrapper}>
+            <div className= {classes.optionHeader}>
+              <div className={`label label-danger ${classes.optionTitle}`}>
                 LogIN
               </div>
-              <span className={ classes.optionSlash }> &#47; </span>
-              <div className={ `label label-default ${ classes.optionSubTitle }` }
-                   onClick={ this.onOptionClick.bind(this, 'signUp') }>SignUP</div>
+              <span className={classes.optionSlash}> &#47; </span>
+              <div className={`label label-default ${classes.optionSubTitle}`}
+                   onClick={this.onOptionClick.bind(this, 'signUp')}>SignUP</div>
             </div>
             <Login />
           </div>
@@ -110,19 +110,19 @@ class Sidebar extends React.Component {
       <Motion style={{ sidebarWidth: spring(isToggled? 40 : 330, [120, 15]) }} >
         {
           ({ sidebarWidth }) =>
-            <div className={ sidebarClass }
-                 onClick={ isToggled? this.toggleSidebar.bind(this) : null }
-                 onMouseOver= { isToggled? this.onMouseOver.bind(this) : null }
-                 onMouseOut= { isToggled? this.onMouseOut.bind(this) : null }
+            <div className={sidebarClass}
+                 onClick={isToggled? this.toggleSidebar.bind(this) : null}
+                 onMouseOver= {isToggled? this.onMouseOver.bind(this) : null}
+                 onMouseOut= {isToggled? this.onMouseOut.bind(this) : null}
                  style={{ width: sidebarWidth }} >
-              <div id='sidebar-header' className={ classes.header } >
-                <div className={ topClickZoneClass }
-                     onClick={ isToggled? null : this.toggleSidebar.bind(this) } >
+              <div id='sidebar-header' className={classes.header} >
+                <div className={topClickZoneClass}
+                     onClick={isToggled? null : this.toggleSidebar.bind(this)} >
                 </div>
-                <i className={ toggleButtonClass } aria-hidden='true' ></i>
+                <i className={toggleButtonClass} aria-hidden='true' ></i>
               </div>
-              <div id='sidebar-content-wrapper' className={ classes.contentWrapper }>
-                { sidebarOption }
+              <div id='sidebar-content-wrapper' className={classes.contentWrapper}>
+                {sidebarOption}
               </div>
             </div>
         }

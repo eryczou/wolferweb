@@ -24,8 +24,8 @@ class ClusterDoc extends React.Component {
 
     return (
       <div>
-        <h3 className={classes.clusterDocTitle} >{ statusText }</h3>
-        <button className='btn btn-primary' onClick= { () => fetchClusterDocData() }> Fetch Cluster Doc Data</button>
+        <h3 className={classes.clusterDocTitle} >{statusText}</h3>
+        <button className='btn btn-primary' onClick= {() => fetchClusterDocData()}> Fetch Cluster Doc Data</button>
         {docData.map(
           (data, index) =>
             <ListBlock key={index} title={data.title} items={data.items} />

@@ -48,7 +48,7 @@ class OneColumnLayout extends React.Component {
                 <div className='container wfx-view-container'>
                   <div className='row'>
                     <div className='col-md-10 col-md-offset-1'>
-                      { this.props.children }
+                      {this.props.children}
                     </div>
                   </div>
                 </div>

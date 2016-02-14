@@ -58,8 +58,8 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  isToggled: false,
-  option: 'signUp'
+  isToggled: true,
+  option: 'logIn'
 }
 export default function sidebarReducer (state: obj = initialState, action: Action): Object {
   const handler = ACTION_HANDLERS[action.type]

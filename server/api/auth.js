@@ -10,7 +10,7 @@ import Token from '../data/models/Token'
 const auth = new Router()
 
 auth.post('/login', async (ctx, next) => {
-  let { email, password } = ctx.request.body
+  let { email, password, rememberMe } = ctx.request.body
 
   await new User({
     'email': email
@@ -36,16 +36,23 @@ auth.post('/login', async (ctx, next) => {
             }
           }
         }
-        ctx.cookies.set('wfx_token', token, {
-          httpOnly: true,
-          overwrite: true,
-          expires: new Date(dateNow + config.jwt.cookie_expire)
-        })
-        ctx.cookies.set('wfx_refresh', freshToken, {
-          httpOnly: true,
-          overwrite: true,
-          expires: new Date(dateNow + config.jwt.cookie_refresh_expire)
-        })
+        if (rememberMe) {
+          ctx.cookies.set('wfx_token', token, {
+            httpOnly: true,
+            overwrite: true,
+            expires: new Date(dateNow + config.jwt.cookie_expire)
+          })
+          ctx.cookies.set('wfx_refresh', freshToken, {
+            httpOnly: true,
+            overwrite: true,
+            expires: new Date(dateNow + config.jwt.cookie_refresh_expire)
+          })
+        } else {
+          ctx.cookies.set('wfx_token', token, {
+            httpOnly: true,
+            overwrite: true
+          })
+        }
       } else {
         ctx.status = 403
       }

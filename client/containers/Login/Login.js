@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { TextField, FlatButton } from 'material-ui'
+import { TextField, FlatButton, Checkbox } from 'material-ui'
 
 import { isValidEmail } from '../../utils/webUtils'
 import Constants from '../../utils/constants'
@@ -29,7 +29,6 @@ const styles = {
     bottom: '9px'
   },
   submitButton: {
-    marginTop: '20px',
     paddingLeft: '0px',
     paddingRight: '0px',
     color: 'steelblue',
@@ -38,6 +37,17 @@ const styles = {
   labelStyle: {
     paddingLeft: '0',
     paddingRight: '0'
+  },
+  checkBoxStyle: {
+    width: '130px'
+  },
+  checkBoxLabel: {
+    width: 'calc(100% - 27px)',
+    color: '#E0E0E0'
+  },
+  checkBoxIcon: {
+    fill: 'wheat',
+    marginRight: '3px'
   }
 }
 
@@ -61,6 +71,7 @@ class Login extends React.Component {
     e.stopPropagation()
     const email = $('#login-input-email').val()
     const password = $('#login-input-password').val()
+    const rememberMe = $('#login-input-remember').is(':checked')
 
     let hasError = false
     if (!isValidEmail(email)) {
@@ -69,7 +80,7 @@ class Login extends React.Component {
     }
 
     if (!hasError) {
-      this.props.loginUser(email, password)
+      this.props.loginUser(email, password, rememberMe)
     }
   }
 
@@ -125,13 +136,18 @@ class Login extends React.Component {
                    onClick={this.inputHandler.bind(this)}
                    floatingLabelText='Password'
         />
-        <div className={classes.submitButtonRow}>
+        <div className={classes.submitRow}>
           <FlatButton label='Submit'
                       style={styles.submitButton}
                       labelStyle={styles.labelStyle}
                       disabled={isRequesting}
                       onClick={this.submitHandler.bind(this)}
           />
+          <Checkbox id='login-input-remember'
+                    label='Remember Me'
+                    labelStyle={styles.checkBoxLabel}
+                    iconStyle={styles.checkBoxIcon}
+                    style={styles.checkBoxStyle}/>
         </div>
       </div>
     )

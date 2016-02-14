@@ -10,14 +10,15 @@ exports.up = function(knex, Promise) {
       table.integer('status').notNullable().defaultTo(0)
       table.timestamps()
     })
-    .createTable('token', function(table) {
-      table.integer('user_id').unsigned().references('id').inTable('user')
-      table.string('device', 31).notNullable()
-      table.string('refresh', 127).nullable()
-      table.timestamps()
-      table.primary(['user_id', 'device'])
-      table.index(['user_id', 'device'])
-    })
+    .raw(`CREATE TABLE token (
+      user_id int(10) unsigned NOT NULL,
+      device varchar(31) NOT NULL,
+      refresh varchar(127) DEFAULT NULL,
+      created_at datetime DEFAULT NULL,
+      updated_at datetime DEFAULT NULL,
+      PRIMARY KEY (user_id, device),
+      CONSTRAINT token_user_id_foreign FOREIGN KEY (user_id) REFERENCES user (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .then(function() {
       console.log(`
       user table created

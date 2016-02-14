@@ -1,5 +1,6 @@
 /* @flow */
 import { routerActions } from 'react-router-redux'
+import cookie from 'react-cookie'
 import Constants from '../../utils/constants'
 import { checkHttpStatus, parseJSON } from '../../utils/webUtils'
 import { actions as sidebarActions } from './sidebar'
@@ -17,19 +18,16 @@ export const SHOW_ERROR = 'SHOW_ERROR'
 // Actions
 // ------------------------------------
 
-export const loginUserSuccess = (token, user): Action => {
-  localStorage.setItem('token', token)
+export const loginUserSuccess = (user): Action => {
   return {
     type: LOGIN_USER_SUCCESS,
     payload: {
-      token: token,
       user: user
     }
   }
 }
 
 export const loginUserFailure = (error): Action => {
-  localStorage.removeItem('token')
   return {
     type: LOGIN_USER_FAILURE,
     payload: {
@@ -63,7 +61,7 @@ export const loginUser = (email, password, redirect='/') => {
       .then(parseJSON)
       .then((response) => {
         try {
-          dispatch(loginUserSuccess(response.payload.token, response.payload.user))
+          dispatch(loginUserSuccess(response.payload.user))
           let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
           if (typeof redirectLocation != 'undefined' && redirectLocation) {
             dispatch(routerActions.push(`${redirectLocation}`))
@@ -101,7 +99,7 @@ export const registerUser = (email, password, redirect='/') => {
       .then(parseJSON)
       .then((response) => {
         try {
-          dispatch(loginUserSuccess(response.payload.token, response.payload.user))
+          dispatch(loginUserSuccess(response.payload.user))
           let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
           if (typeof redirectLocation != 'undefined' && redirectLocation) {
             dispatch(routerActions.push(`${redirectLocation}`))
@@ -122,7 +120,8 @@ export const registerUser = (email, password, redirect='/') => {
 }
 
 export const logout = (): Action => {
-  localStorage.removeItem('token')
+  cookie.remove('wfx_token')
+  cookie.remove('wfx_refresh')
   return {
     type: LOGOUT_USER
   }
@@ -139,45 +138,33 @@ export const logoutAndRedirect = () => {
 export const isLoggedIn = () => {
   return (dispatch, getState) => {
     let state = getState()
-    const token = localStorage.getItem('token')
     const curLocation = state.router.locationBeforeTransitions.pathname
-    if (typeof token != 'undefined' && token) {
-      fetch(`${__NODE_API_URL__}/auth/isValidToken`, {
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
+    fetch(`${__NODE_API_URL__}/auth/isLoggedIn`, {
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then((response) => {
+        let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
+        if (typeof redirectLocation != 'undefined' && redirectLocation) {
+          dispatch(routerActions.push(`/${redirectLocation}`))
         }
       })
-        .then(checkHttpStatus)
-        .then(parseJSON)
-        .then((response) => {
-          let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
-          if (typeof redirectLocation != 'undefined' && redirectLocation) {
-            dispatch(routerActions.push(`/${redirectLocation}`))
+      .catch((error) => {
+        dispatch(loginUserFailure({
+          response: {
+            status: 403,
+            statusText: 'Please login to access the protected content'
           }
-        })
-        .catch((error) => {
-          dispatch(loginUserFailure({
-            response: {
-              status: 403,
-              statusText: 'Please login to access the protected content'
-            }
-          }))
-          dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
-          dispatch(sidebarActions.showSidebar())
-        })
-    } else {
-      dispatch(loginUserFailure({
-        response: {
-          status: 403,
-          statusText: 'Please login to access the protected content'
-        }
-      }))
-      dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
-      dispatch(sidebarActions.showSidebar())
-    }
+        }))
+        dispatch(routerActions.push(`/?fromLoc=${curLocation}`))
+        dispatch(sidebarActions.showSidebar())
+      })
   }
+
 }
 
 export const updateError = (target, errorCode) => {
@@ -237,7 +224,6 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, {
       isRequesting : false,
       isAuthenticated : true,
-      token : payload.token,
       user : payload.user,
       statusText : `You have been successfully logged in.`
     })
@@ -246,7 +232,6 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, {
       isRequesting: false,
       isAuthenticated: false,
-      token: null,
       user: null,
       statusText: `Login Status: (${payload.status}) ${payload.statusText}`
     })
@@ -254,7 +239,6 @@ const ACTION_HANDLERS = {
   [LOGOUT_USER]: (state, action) => {
     return Object.assign({}, state, {
       isAuthenticated: false,
-      token: null,
       user: null,
       statusText: 'You have been successfully logged out.'
     })
@@ -271,7 +255,6 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  token: null,
   user: null,
   isAuthenticated: false,
   isRequesting: false,

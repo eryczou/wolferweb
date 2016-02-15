@@ -4,18 +4,18 @@ import jwt from 'koa-jwt'
 import proxy from 'koa-proxy'
 import bodyParser from 'koa-bodyparser'
 import serve from 'koa-static'
+import cors from 'kcors'
 import historyApiFallback from 'koa-connect-history-api-fallback'
 
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
-import cookieParser from './middleware/express-coookieParser'
 
 import _debug from 'debug'
 import config from '../config'
 import _log from 'logfilename'
-import httpErrorHandler from './middleware/http-error-handler'
+import httpRequestHandler from './middleware/http-request-handler'
 import { publicApi, privateApi } from './api'
 
 const debug = _debug('app:server')
@@ -28,7 +28,20 @@ const koaApp = () => {
   middlewareInit(app)
 
   // Custom 401 handling if you don't want to expose koa-jwt errors to users
-  app.use(httpErrorHandler())
+  app.use(httpRequestHandler())
+
+  // CORS
+  app.use(convert(cors({
+    origin: (ctx) => {
+      const originWhiteList = config.cors.origin
+      const origin = ctx.request.header.origin
+      if(typeof origin != 'undefined' && originWhiteList.indexOf(origin) != -1){
+        return origin
+      }
+    },
+    credentials: config.cors.credentials,
+    allowMethods: config.cors.allowMethods
+  })))
 
   // public api
   app.use(publicApi.routes())
@@ -66,9 +79,6 @@ const middlewareInit = (app) => {
 
   // koa-bodyparser
   app.use(bodyParser())
-
-  // express cookie-parser
-  app.use(cookieParser())
 
   // Rewrites all routes requests to the root /index.html file
   // Remove this, if you want to implement isomorphic rendering

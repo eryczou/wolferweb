@@ -23,6 +23,11 @@ const config = {
   server_host : 'localhost',
   server_port : process.env.PORT || 3000,
   api_port    : 80,
+  cors: {
+    origin: ['http://wolferx.com', 'http://www.wolferx.com'],
+    credentials: true,
+    allowMethods: ['GET', 'POST']
+  },
   mongo_uri   : process.env.MONGO_URI || 'mongodb://localhost/wolferweb',
   jwt: {
     expire: '5m',

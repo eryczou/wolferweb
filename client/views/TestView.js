@@ -10,10 +10,14 @@ class CounterView extends React.Component {
   }
 
   fetchRequest() {
-    fetch('http://ec2-54-208-23-64.compute-1.amazonaws.com:9999/api/newjob/1', {
+    fetch('http://ec2-54-208-23-64.compute-1.amazonaws.com:9999/api/newjob/999', {
+      method: 'post',
       headers: {
         'Accept': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        task: 'start a clustering job'
+      })
     })
       .then(checkHttpStatus)
       .then(parseJSON)

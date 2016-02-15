@@ -25,8 +25,6 @@ auth.post('/login', async (ctx, next) => {
         const token = generateToken(userId)
         const freshToken = generateRefreshToken(userId)
         const dateNow = Date.now()
-        console.log(dateNow)
-        console.log(moment().valueOf())
 
         ctx.status = 200
         ctx.body = {

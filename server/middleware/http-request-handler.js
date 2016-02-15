@@ -1,5 +1,5 @@
 
-const httpErrorHandler = () => async (ctx, next) => {
+const httpRequestHandler = () => async (ctx, next) => {
   try {
     await next()
   } catch (err) {
@@ -12,4 +12,4 @@ const httpErrorHandler = () => async (ctx, next) => {
   }
 }
 
-export default httpErrorHandler;
+export default httpRequestHandler

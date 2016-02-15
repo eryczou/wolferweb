@@ -17,7 +17,6 @@ export const SHOW_ERROR = 'SHOW_ERROR'
 // ------------------------------------
 // Actions
 // ------------------------------------
-
 export const loginUserSuccess = (user): Action => {
   return {
     type: LOGIN_USER_SUCCESS,
@@ -43,7 +42,7 @@ export const issueAuthRequest = (): Action => {
   }
 }
 
-export const loginUser = (email, password, redirect='/') => {
+export const loginUser = (email, password, rememberMe, redirect='/') => {
   return function(dispatch, getState) {
     dispatch(issueAuthRequest())
     let state = getState()
@@ -55,7 +54,11 @@ export const loginUser = (email, password, redirect='/') => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email: email, password: password })
+      body: JSON.stringify({
+        email: email,
+        password: password ,
+        rememberMe: rememberMe
+      })
     })
       .then(checkHttpStatus)
       .then(parseJSON)

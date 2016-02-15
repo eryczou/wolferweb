@@ -9,11 +9,15 @@ class CounterView extends React.Component {
     super(props)
   }
 
-  getMovies() {
-    fetch('http://localhost:3000/api/test/users', {
+  fetchRequest() {
+    fetch('http://ec2-54-208-23-64.compute-1.amazonaws.com:9999/api/newjob/999', {
+      method: 'post',
       headers: {
         'Accept': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        task: 'start a clustering job'
+      })
     })
       .then(checkHttpStatus)
       .then(parseJSON)
@@ -32,7 +36,7 @@ class CounterView extends React.Component {
         <div>
           Test Link to <a href='https://centos55.hightail.com'>centos55.hightail.com</a>
         </div>
-        <button onClick={this.getMovies.bind(this)}> Get Movies from Server </button>
+        <button onClick={this.fetchRequest.bind(this)}> Get Movies from Server </button>
         <div id='showbox'>
           1234
         </div>

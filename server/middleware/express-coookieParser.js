@@ -2,8 +2,6 @@ import cookieParser from 'cookie-parser'
 import applyExpressMiddleware from '../utils/apply-express-middleware'
 import _debug from 'debug'
 
-const debug = _debug('app:server:webpack-hmr')
-
 export default function (compiler, opts) {
   debug('Enable Express Cookie-Parser')
 

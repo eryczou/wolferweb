@@ -10,6 +10,6 @@ server().listen(port, (error) => {
   if (error) {
     debug (`Error:: @server start :: ${ error }`)
   } else {
-    debug(`Server is now running at ${host}:${port}.`)
+    debug(`Server is now running at http://${host}:${port}.`)
   }
 })

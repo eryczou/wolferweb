@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { TextField, FlatButton } from 'material-ui'
+import zxcvbn from 'zxcvbn'
+import PasswordMeter from '../../components/PasswordMeter/PasswordMeter'
 
 import { isValidEmail } from '../../utils/webUtils'
 import Constants from '../../utils/constants'
@@ -54,6 +56,9 @@ class Register extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      passwordStrength: 0
+    }
   }
 
   submitHandler(e) {
@@ -78,28 +83,37 @@ class Register extends React.Component {
     }
   }
 
-  inputHandler(e) {
-    const { error } = this.props
+  onInputClickHandler(e) {
+    const { error, removeError } = this.props
 
     e.stopPropagation()
     switch (e.target.name) {
       case 'email':
         if (error.EMAIL_INPUT) {
-          this.props.removeError(Constants.EMAIL_INPUT)
+          removeError(Constants.EMAIL_INPUT)
         }
         break
       case 'password':
       case 'passwordConfirm':
         if (error.PASSWORD_CONFIRM_INPUT) {
-          this.props.removeError(Constants.PASSWORD_CONFIRM_INPUT)
+          removeError(Constants.PASSWORD_CONFIRM_INPUT)
         }
         break
     }
   }
 
+  onPasswordEnterHandler(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const password = e.target.value
+    const strength = zxcvbn(password).score
+    this.setState({ passwordStrength : strength })
+  }
+
   render() {
 
     const { isRequesting, statusText, error } = this.props
+    const { passwordStrength } = this.state
 
     return (
       <div className={classes.registerContainer}>
@@ -115,7 +129,7 @@ class Register extends React.Component {
                    underlineStyle={styles.underlineStyle}
                    floatingLabelText='Email'
                    errorText={error.EMAIL_INPUT? error.EMAIL_INPUT : ''}
-                   onClick={this.inputHandler.bind(this)}
+                   onClick={this.onInputClickHandler.bind(this)}
         />
         <TextField id='register-input-password'
                    name='password'
@@ -126,9 +140,13 @@ class Register extends React.Component {
                    floatingLabelStyle={styles.floatingLabelStyle}
                    errorStyle={styles.errorStyle}
                    underlineStyle={styles.underlineStyle}
-                   onClick={this.inputHandler.bind(this)}
                    floatingLabelText='Password'
+                   onClick={this.onInputClickHandler.bind(this)}
+                   onInput={this.onPasswordEnterHandler.bind(this)}
         />
+        <div className={ classes.strengthBarWrapper }>
+          <PasswordMeter appendClass={ classes.strengthBar } passwordStrength={ passwordStrength } />
+        </div>
         <TextField id='register-input-repassword'
                    name='passwordConfirm'
                    className={classes.input}
@@ -139,9 +157,9 @@ class Register extends React.Component {
                    floatingLabelStyle={styles.floatingLabelStyle}
                    errorStyle={styles.errorStyle}
                    underlineStyle={styles.underlineStyle}
-                   onClick={this.inputHandler.bind(this)}
                    floatingLabelText='Retype Password'
                    errorText={error.PASSWORD_CONFIRM_INPUT? error.PASSWORD_CONFIRM_INPUT : ''}
+                   onClick={this.onInputClickHandler.bind(this)}
         />
         <div className={classes.submitButtonRow}>
           <FlatButton label='Submit'

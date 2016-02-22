@@ -3,6 +3,7 @@ import jwt from 'koa-jwt'
 import moment from 'moment'
 import bcrypt from 'bcrypt'
 import config from '../../config'
+import Constants from '../utils/constants'
 import { generateToken, generateRefreshToken } from '../utils/authUtils'
 import User from '../data/models/User'
 import Token from '../data/models/Token'
@@ -62,57 +63,76 @@ auth.post('/login', async (ctx, next) => {
 
 auth.post('/register', async (ctx, next) => {
   let { email, password } = ctx.request.body
-  const dbTimeNow = moment().format("YYYY-MM-DD HH:mm:ss")
-  const salt = bcrypt.genSaltSync(8) + config.auth.secret
-  const hash = bcrypt.hashSync(password, salt)
 
-  if (hash) {
-    let userId = null
+  let isEmailBeenTaken = false
+  await new User({
+    'email': email
+  })
+    .fetch()
+    .then((model) => {
+      ctx.status = 202
+      ctx.body = {
+        errorCode: Constants.errorCode.AUTH_DUPLICAT_EMAIL
+      }
+      isEmailBeenTaken = true
+    })
+    .catch((error) => {
+      ctx.status = 403
+    })
 
-    await new User({
-      email: email,
-      password: hash,
-      created_at: dbTimeNow,
-      updated_at: dbTimeNow
-    }).save()
-      .then((model) => {
-        userId = model.get('id')
-      })
-      .catch((error) => {
-        throw error
-      })
+  if (!isEmailBeenTaken) {
+    const dbTimeNow = moment().format("YYYY-MM-DD HH:mm:ss")
+    const salt = bcrypt.genSaltSync(8) + config.auth.secret
+    const hash = bcrypt.hashSync(password, salt)
 
-    if (userId) {
-      const token = generateToken(userId)
-      const freshToken = generateRefreshToken(userId)
-      const tokenSalt = bcrypt.genSaltSync(1)
-      const hashedRefreshToken = bcrypt.hashSync(freshToken, tokenSalt)
+    if (hash) {
+      let userId = null
 
-      await new Token({
-        user_id: userId,
-        device: '',
-        refresh: hashedRefreshToken,
+      await new User({
+        email: email,
+        password: hash,
         created_at: dbTimeNow,
         updated_at: dbTimeNow
-      })
-        .save()
-        .then(() => {
-          ctx.status = 200
-          ctx.body = {
-            payload: {
-              user: {
-                id: userId
-              }
-            }
-          }
-          ctx.cookies.set('wfx_token', token, {
-            httpOnly: true,
-            overwrite: true
-          })
+      }).save()
+        .then((model) => {
+          userId = model.get('id')
         })
         .catch((error) => {
           throw error
         })
+
+      if (userId) {
+        const token = generateToken(userId)
+        const freshToken = generateRefreshToken(userId)
+        const tokenSalt = bcrypt.genSaltSync(1)
+        const hashedRefreshToken = bcrypt.hashSync(freshToken, tokenSalt)
+
+        await new Token({
+          user_id: userId,
+          device: '',
+          refresh: hashedRefreshToken,
+          created_at: dbTimeNow,
+          updated_at: dbTimeNow
+        })
+          .save()
+          .then(() => {
+            ctx.status = 200
+            ctx.body = {
+              payload: {
+                user: {
+                  id: userId
+                }
+              }
+            }
+            ctx.cookies.set('wfx_token', token, {
+              httpOnly: true,
+              overwrite: true
+            })
+          })
+          .catch((error) => {
+            throw error
+          })
+      }
     }
   }
 })

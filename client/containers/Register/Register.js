@@ -57,29 +57,44 @@ class Register extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      showPasswordStrengthMeter: false,
       passwordStrength: 0
     }
+  }
+
+  componentDidMount() {
+    $('#wfx-register-form').on('keydown', 'input', (e) => {
+      if (e.which == 13) {
+        this.setState({
+          showPasswordStrengthMeter:false
+        })
+        this.submitHandler(e)
+      }
+    })
   }
 
   submitHandler(e) {
     e.preventDefault()
     e.stopPropagation()
-    const email = $('#register-input-email').val()
-    const password = $('#register-input-password').val()
-    const repassword = $('#register-input-repassword').val()
+    const emailElem = $('#register-input-email')
+    const passwordElem = $('#register-input-password')
+    const repasswordElem = $('#register-input-repassword')
 
     let hasError = false
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(emailElem.val())) {
       this.props.updateError(Constants.EMAIL_INPUT, Constants.NOT_VALID_EMAIL)
       hasError = true
     }
-    if (password != repassword) {
+    if (passwordElem.val() != repasswordElem.val()) {
       this.props.updateError(Constants.PASSWORD_CONFIRM_INPUT, Constants.NOT_MATCH_PASSWORD)
       hasError = true
     }
 
     if (!hasError) {
-      this.props.registerUser(email, password)
+      emailElem.blur()
+      passwordElem.blur()
+      repasswordElem.blur()
+      this.props.registerUser(emailElem.val(), passwordElem.val())
     }
   }
 
@@ -107,16 +122,40 @@ class Register extends React.Component {
     e.stopPropagation()
     const password = e.target.value
     const strength = zxcvbn(password).score
-    this.setState({ passwordStrength : strength })
+    this.setState({
+      showPasswordStrengthMeter: true,
+      passwordStrength: strength
+    })
+  }
+
+  onInputBlurHandler(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const { showPasswordStrengthMeter, passwordStrength  } = this.state
+    if (showPasswordStrengthMeter) {
+      if (passwordStrength > 1) {
+        this.props.removeError(Constants.PASSWORD_INPUT)
+      } else {
+        this.props.updateError(Constants.PASSWORD_INPUT, Constants.PASSWORD_LOW_STRENGTH)
+      }
+    }
+  }
+
+  showPasswordStrengthMeter(passwordStrength) {
+    return (
+      <div className={ classes.strengthBarWrapper }>
+        <PasswordMeter appendClass={ classes.strengthBar } passwordStrength={ passwordStrength } />
+      </div>
+    )
   }
 
   render() {
 
     const { isRequesting, statusText, error } = this.props
-    const { passwordStrength } = this.state
+    const { showPasswordStrengthMeter, passwordStrength } = this.state
 
     return (
-      <div className={classes.registerContainer}>
+      <div id='wfx-register-form' className={classes.registerContainer}>
         {statusText ? <p className={classes.statusText}>{statusText}</p> : ''}
         <TextField id='register-input-email'
                    name='email'
@@ -141,12 +180,12 @@ class Register extends React.Component {
                    errorStyle={styles.errorStyle}
                    underlineStyle={styles.underlineStyle}
                    floatingLabelText='Password'
-                   onClick={this.onInputClickHandler.bind(this)}
-                   onInput={this.onPasswordEnterHandler.bind(this)}
+                   errorText={ error.PASSWORD_INPUT? error.PASSWORD_INPUT : '' }
+                   onClick={ this.onInputClickHandler.bind(this) }
+                   onInput={ this.onPasswordEnterHandler.bind(this) }
+                   onBlur={ this.onInputBlurHandler.bind(this) }
         />
-        <div className={ classes.strengthBarWrapper }>
-          <PasswordMeter appendClass={ classes.strengthBar } passwordStrength={ passwordStrength } />
-        </div>
+        { showPasswordStrengthMeter? this.showPasswordStrengthMeter(passwordStrength) : '' }
         <TextField id='register-input-repassword'
                    name='passwordConfirm'
                    className={classes.input}

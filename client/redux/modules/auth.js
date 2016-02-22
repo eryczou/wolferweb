@@ -9,7 +9,7 @@ import { actions as sidebarActions } from './sidebar'
 // Constants
 // ------------------------------------
 export const ISSUE_AUTH_REQUEST = 'ISSUE_AUTH_REQUEST'
-export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
+export const AUTH_USER_FAILURE = 'AUTH_USER_FAILURE'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
 export const SHOW_ERROR = 'SHOW_ERROR'
@@ -26,9 +26,9 @@ export const loginUserSuccess = (user): Action => {
   }
 }
 
-export const loginUserFailure = (error): Action => {
+export const authUserFailure = (error): Action => {
   return {
-    type: LOGIN_USER_FAILURE,
+    type: AUTH_USER_FAILURE,
     payload: {
       status: error.response.status,
       statusText: error.response.statusText
@@ -70,7 +70,7 @@ export const loginUser = (email, password, rememberMe, redirect='/') => {
             dispatch(routerActions.push(`${redirectLocation}`))
           }
         } catch (e) {
-          dispatch(loginUserFailure({
+          dispatch(authUserFailure({
             response: {
               status: 403,
               statusText: 'Login failed, please try again'
@@ -79,7 +79,7 @@ export const loginUser = (email, password, rememberMe, redirect='/') => {
         }
       })
       .catch((error) => {
-        dispatch(loginUserFailure(error))
+        dispatch(authUserFailure(error))
       })
   }
 }
@@ -101,23 +101,33 @@ export const registerUser = (email, password, redirect='/') => {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then((response) => {
-        try {
-          dispatch(loginUserSuccess(response.payload.user))
-          let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
-          if (typeof redirectLocation != 'undefined' && redirectLocation) {
-            dispatch(routerActions.push(`${redirectLocation}`))
-          }
-        } catch (e) {
-          dispatch(loginUserFailure({
+        console.log(response)
+        if (response.errorCode == Constants.serverErrorCode.AUTH_DUPLICAT_EMAIL) {
+          dispatch(authUserFailure({
             response: {
-              status: 403,
-              statusText: 'Register failed, please try again'
+              status: 202,
+              statusText: 'Register failed, please try again with another email'
             }
           }))
+        } else {
+          try {
+            dispatch(loginUserSuccess(response.payload.user))
+            let redirectLocation = state.router.locationBeforeTransitions.query.fromLoc
+            if (typeof redirectLocation != 'undefined' && redirectLocation) {
+              dispatch(routerActions.push(`${redirectLocation}`))
+            }
+          } catch (e) {
+            dispatch(authUserFailure({
+              response: {
+                status: 403,
+                statusText: 'Register failed, please try again'
+              }
+            }))
+          }
         }
       })
       .catch((error) => {
-        dispatch(loginUserFailure(error))
+        dispatch(authUserFailure(error))
       })
   }
 }
@@ -157,7 +167,7 @@ export const isLoggedIn = () => {
         }
       })
       .catch((error) => {
-        dispatch(loginUserFailure({
+        dispatch(authUserFailure({
           response: {
             status: 403,
             statusText: 'Please login to access the protected content'
@@ -201,7 +211,7 @@ export const removeError = (target) => {
 
 export const actions = {
   loginUserSuccess,
-  loginUserFailure,
+  authUserFailure,
   issueAuthRequest,
   loginUser,
   registerUser,
@@ -231,12 +241,12 @@ const ACTION_HANDLERS = {
       statusText : `You have been successfully logged in.`
     })
   },
-  [LOGIN_USER_FAILURE]: (state, { payload }) => {
+  [AUTH_USER_FAILURE]: (state, { payload }) => {
     return Object.assign({}, state, {
       isRequesting: false,
       isAuthenticated: false,
       user: null,
-      statusText: `Login Status: (${payload.status}) ${payload.statusText}`
+      statusText: `Status: (${payload.status}) ${payload.statusText}`
     })
   },
   [LOGOUT_USER]: (state, action) => {

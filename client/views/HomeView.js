@@ -1,19 +1,28 @@
 import React from 'react'
-import Blog from '../components/Blog/Blog'
+import { connect } from 'react-redux'
+import MDRender from '../components/MarkDownRender/MarkDownRender'
+import SimpleMDE from '../containers/MarkDownEditor/MarkDownEditor'
+
 
 class HomeView extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   render() {
+
+    const { mdContent } = this.props
+
     return (
       <div>
-        <Blog />
+        <MDRender mdContent={mdContent} />
+        <SimpleMDE />
       </div>
     )
   }
 }
 
-export default HomeView
+function mapStateToProps(state) {
+  return {
+    mdContent: state.mde.mdContent
+  }
+}
+
+export default connect(mapStateToProps)(HomeView)

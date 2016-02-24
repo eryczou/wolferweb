@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { Motion, spring } from 'react-motion'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Login from '../Login/Login'

@@ -1,17 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import MDRender from '../components/MarkDownRender/MarkDownRender'
-import SimpleMDE from '../containers/MarkDownEditor/MarkDownEditor'
+import classes from './Blog.scss'
+import MDRender from '../../components/MarkDownRender/MarkDownRender'
+import SimpleMDE from '../MarkDownEditor/MarkDownEditor'
 
-
-class HomeView extends React.Component {
-
+class Blog extends React.Component {
   render() {
 
     const { mdContent } = this.props
 
     return (
-      <div>
+      <div id='wfx-blog'>
         <MDRender mdContent={mdContent} />
         <SimpleMDE />
       </div>
@@ -25,4 +24,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(HomeView)
+export default connect(mapStateToProps)(Blog)

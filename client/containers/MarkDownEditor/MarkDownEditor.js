@@ -12,9 +12,9 @@ class MarkDownEditor extends React.Component {
       element: $('#wfx-mde-textarea')[0],
       autofucs: false,
       autosave: {
-        enabled: false,
+        enabled: true,
         delay: 10000,
-        uniqueId: 'askjfls'
+        uniqueId: 'myUniqueMDEditor'
       },
       insertTexts: {
         horizontalRule: ["", '\n\n-----\n\n'],
@@ -22,18 +22,27 @@ class MarkDownEditor extends React.Component {
         link: ['[', '](http://)'],
         table: ["", '\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n'],
       },
+      renderingConfig: {
+        singleLineBreaks: true
+      },
       hideIcons: ['side-by-side', 'fullscreen'],
       placeholder: 'Typing here...',
       showIcons: ['code', 'table', 'horizontal-rule'],
       status: ['autosave', 'lines', 'words'],
       tabSize: 2
     })
+
     simplemde.codemirror.on('change', function(){
       updateContent(simplemde.value())
     })
+
+    updateContent(simplemde.value())
   }
 
-
+  componentWillUnmount() {
+    const { clearContent } = this.props
+    clearContent()
+  }
 
   render() {
     return (

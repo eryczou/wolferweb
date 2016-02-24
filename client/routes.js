@@ -3,7 +3,8 @@ import { Route, IndexRoute, Redirect } from 'react-router'
 
 import WolferXApp from './apps/WolferX'
 import OneColumnLayout from './layouts/OneColumnLayout'
-import HomeView from './views/HomeView'
+import HomeView from './views/HomeView/HomeView'
+import BlogView from './views/BlogView'
 import PriceView from './views/CounterView'
 import DocChefView from './views/DocChefView'
 import TestView from './views/TestView'
@@ -15,6 +16,7 @@ export default (store) => (
   <Route path='/' component = { WolferXApp }>
     <Route component = { OneColumnLayout }>
       <IndexRoute component = { HomeView } />
+      <Route path='/blog' component = { BlogView } />
       <Route path='/counter' component = { PriceView } />
       <Route path='/docchef' component = { DocChefView } />
       <Route path='/test' component = { TestView } />

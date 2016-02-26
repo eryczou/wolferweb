@@ -1,5 +1,5 @@
 import React from 'react'
-import SimpleMDE from '../../../node_modules/simplemde/debug/simplemde'
+import SimpleMDE from '../../vendor/simplemde.min'
 import { connect } from 'react-redux'
 import { actions as MDEActions } from '../../redux/modules/mde'
 import classes from './MarkDownEditor.scss'

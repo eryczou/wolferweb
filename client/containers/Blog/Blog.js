@@ -11,7 +11,7 @@ class Blog extends React.Component {
 
     return (
       <div id='wfx-blog'>
-        <MDRender mdContent={mdContent} />
+        <MDRender mdContent={ mdContent } />
         <SimpleMDE />
       </div>
     )

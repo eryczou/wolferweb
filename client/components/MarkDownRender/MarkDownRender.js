@@ -16,9 +16,7 @@ class MarkDownRender extends React.Component {
     const { mdContent } = this.props
 
     return (
-      <div>
-        <div dangerouslySetInnerHTML={{__html: md.render(mdContent)}}>
-        </div>
+      <div dangerouslySetInnerHTML={{__html: md.render(mdContent)}}>
       </div>
     )
   }

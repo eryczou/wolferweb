@@ -1,9 +1,8 @@
 import React from 'react'
+import ArticleBox from '../../components/ArticleBox/ArticleBox'
 import classes from './HomeView.scss'
-import MarkDownRender from '../../components/MarkDownRender/MarkDownRender'
 
 const content = `
-# WolferX
 **Architecture**
 Nginx, Reactjs, Nodejs, MySQL
 
@@ -21,13 +20,12 @@ helps any great idea become a tangible product easier,
 faster, and reliable.
 `
 
-
 class HomeView extends React.Component {
 
   render() {
     return (
       <div className={ classes.homeView }>
-        <MarkDownRender mdContent={ content } />
+        <ArticleBox content={ content } />
       </div>
     )
   }

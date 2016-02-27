@@ -70,11 +70,13 @@ auth.post('/register', async (ctx, next) => {
   })
     .fetch()
     .then((model) => {
-      ctx.status = 202
-      ctx.body = {
-        errorCode: Constants.errorCode.AUTH_DUPLICAT_EMAIL
+      if (model != null) {
+        ctx.status = 202
+        ctx.body = {
+          errorCode: Constants.errorCode.AUTH_DUPLICAT_EMAIL
+        }
+        isEmailBeenTaken = true
       }
-      isEmailBeenTaken = true
     })
     .catch((error) => {
       ctx.status = 403

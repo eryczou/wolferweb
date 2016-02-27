@@ -1,44 +1,30 @@
 @import "../../styles/base/colors";
 @import "../../styles/base/variables";
 
-$wfx-navbar-height: 40px;
+$wfx-navbar-height: 45px;
 
 .wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  width: 90%;
   height: $wfx-navbar-height;
-  z-index: $wfx-zIndex-highest;
-  background-color: $color-bg-secondary;
+  border: solid #eee;
+  border-width: 1px 0;
 }
 
 .navbar {
   height: $wfx-navbar-height;
-  min-height: $wfx-navbar-height;
   max-width: $wfx-view-maxWidth;
   margin-bottom: 0;
-  background-color: $color-bg-secondary;
   border: none;
-}
-
-.brand {
-  height: 100%;
-  margin-left: -10px !important;
-  padding: 1px 40px 0 0;
-}
-
-.logo {
-  width: 60px;
-  height: 76px;
+  display: flex;
+  justify-content: center;
 }
 
 .link {
   height: $wfx-navbar-height;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
-  color: $color-text-secondary !important;
-  font-size: 20px;
+  font: 20px/1.6 "Coustard", Georgia, serif;
+  color: #333;
 }
 
 .button {

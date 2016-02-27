@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, IndexRoute, Redirect } from 'react-router'
 
 import WolferXApp from './apps/WolferX'
-import OneColumnLayout from './layouts/OneColumnLayout'
+import OneColumnLayout from './layouts/OneColumnLayout/OneColumnLayout'
 import HomeView from './views/HomeView/HomeView'
 import BlogView from './views/BlogView'
 import PriceView from './views/CounterView'

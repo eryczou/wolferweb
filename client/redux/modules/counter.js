@@ -30,8 +30,8 @@ export const incrementFromServer = () => (dispatch) => {
     .then(checkHttpStatus)
     .then(parseJSON)
     .then((res) => {
-        dispatch(increment(res.increment))
-      })
+      dispatch(increment(res.increment))
+    })
     .catch(::console.log)
 }
 

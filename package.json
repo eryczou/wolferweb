@@ -94,7 +94,7 @@
     "cookie-parser": "^1.4.1",
     "debug": "^2.2.0",
     "flow-bin": "^0.22.0",
-    "flow-interfaces": "^0.3.0",
+    "flow-interfaces": "^0.3.1",
     "history": "^2.0.0",
     "immutable": "^3.7.6",
     "isomorphic-fetch": "^2.2.1",
@@ -113,7 +113,7 @@
     "logfilename": "^0.1.3",
     "material-ui": "^0.14.4",
     "moment": "^2.11.2",
-    "mongoose": "^4.4.4",
+    "mongoose": "^4.4.5",
     "mysql": "^2.10.2",
     "path": "^0.12.7",
     "react": "^0.14.7",
@@ -124,7 +124,7 @@
     "react-motion": "^0.4.2",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
-    "react-router-redux": "^4.0.0-rc.2",
+    "react-router-redux": "^4.0.0",
     "react-tap-event-plugin": "^0.2.2",
     "redux": "^3.3.1",
     "redux-devtools": "^3.1.1",
@@ -137,7 +137,6 @@
     "underscore": "^1.8.3",
     "whatwg-fetch": "^0.11.0",
     "xml2js": "^0.4.16",
-    "yargs": "^4.1.0",
     "zxcvbn": "^4.2.0"
   },
   "devDependencies": {
@@ -145,7 +144,7 @@
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.1",
     "babel-eslint": "^5.0.0",
-    "babel-loader": "^6.2.3",
+    "babel-loader": "^6.2.4",
     "babel-plugin-lodash": "^2.1.0",
     "babel-plugin-transform-react-constant-elements": "^6.5.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.2.2",
@@ -171,9 +170,9 @@
     "eslint-config-standard-react": "^2.3.0",
     "eslint-loader": "^1.3.0",
     "eslint-plugin-babel": "^3.1.0",
-    "eslint-plugin-flow-vars": "^0.1.3",
+    "eslint-plugin-flow-vars": "^0.2.0",
     "eslint-plugin-promise": "^1.0.8",
-    "eslint-plugin-react": "^4.0.0",
+    "eslint-plugin-react": "^4.1.0",
     "eslint-plugin-standard": "^1.3.2",
     "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.0",
@@ -193,7 +192,7 @@
     "kerberos": "0.0.18",
     "mocha": "^2.4.5",
     "node-sass": "^3.4.2",
-    "nodemon": "^1.9.0",
+    "nodemon": "^1.9.1",
     "phantomjs-polyfill": "0.0.1",
     "phantomjs-prebuilt": "^2.1.4",
     "postcss-loader": "^0.8.1",
@@ -208,6 +207,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.5.1",
-    "webpack-hot-middleware": "^2.7.1"
+    "webpack-hot-middleware": "^2.7.1",
+    "yargs": "^4.2.0"
   }
 }

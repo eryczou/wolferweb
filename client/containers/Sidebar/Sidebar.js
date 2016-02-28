@@ -106,7 +106,7 @@ class Sidebar extends React.Component {
     }
 
     return (
-      <Motion style={{ sidebarWidth: spring(isToggled? 40 : 330, [120, 15]) }} >
+      <Motion style={{ sidebarWidth: spring(isToggled? 0 : 330, [120, 15]) }} >
         {
           ({ sidebarWidth }) =>
             <div className={sidebarClass}

@@ -4,16 +4,18 @@ import classes from './PageHeader.scss'
 
 function PageHeader ({ title, subTitle }) {
   return (
-    <div className={ classes.header }>
+    <div className={ classes.pageHeader }>
       <div className={ classes.contentWrapper }>
-        <div className={ classes.brand } >
-          <Link to='/' >
-            <img className={classes.logo} src={require('../../static/img/wolferx/wolferx_logo_hd.png')} />
-          </Link>
+        <div className={ classes.titleWrapper }>
+          <h1 className={ classes.title }>
+            { title }
+          </h1>
+          <div className={ classes.brand } >
+            <Link to='/' >
+              <img className={classes.logo} src={require('../../static/img/wolferx/wolferx_logo_hd.png')} />
+            </Link>
+          </div>
         </div>
-        <h1 className={ classes.title }>
-          { title }
-        </h1>
         <div className={ classes.subTitle }>
           { subTitle }
         </div>

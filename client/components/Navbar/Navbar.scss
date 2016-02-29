@@ -1,30 +1,40 @@
+@import "../../styles/base/breakdown";
 @import "../../styles/base/colors";
-@import "../../styles/base/variables";
+
 
 $wfx-navbar-height: 45px;
 
-.wrapper {
+.navbarContainer {
   width: 100%;
   height: $wfx-navbar-height;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
   border: solid #eee;
   border-width: 1px 0;
 }
 
-.navbar {
-  height: $wfx-navbar-height;
-  max-width: $wfx-view-maxWidth;
-  margin-bottom: 0;
-  border: none;
+.listWrapper {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .link {
   height: $wfx-navbar-height;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  padding-top: 6px;
   font: 20px/1.6 "Coustard", Georgia, serif;
   color: #333;
+
+  @include mixin-mq(medium) {
+    padding-top: 8px;
+    font-size: 18px;
+  }
+
+  @include mixin-mq(small) {
+    padding-top: 10px;
+    font-size: 14px;
+  }
 }
 
 .button {

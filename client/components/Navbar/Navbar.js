@@ -5,21 +5,16 @@ import classes from './Navbar.scss'
 class Navbar extends React.Component {
 
   render() {
-
     return (
-      <div className={'container ' + classes.wrapper} >
-        <nav className={ `navbar + ${classes.navbar}` } role='navigation'>
-          <div id='navbar' className='navbar-collapse collapse'>
-            <ul className='nav navbar-nav'>
-              <li><Link to='/' className={classes.link} >Home</Link></li>
-              <li><Link to='/blog' className={classes.link} >Blog</Link></li>
-              <li><Link to='/counter' className={classes.link} >Counter</Link></li>
-              <li><Link to='/docchef' className={classes.link} >DocChef</Link></li>
-              <li><Link to='/protected' className={classes.link} >Protected</Link></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
+      <nav className={ classes.navbarContainer }>
+        <div className={ classes.listWrapper }>
+          <Link to='/' className={ classes.link } >Home</Link>
+          <Link to='/blog' className={ classes.link } >Blog</Link>
+          <Link to='/counter' className={ classes.link } >Counter</Link>
+          <Link to='/docchef' className={ classes.link } >DocChef</Link>
+          <Link to='/protected' className={ classes.link } >Protected</Link>
+        </div>
+      </nav>
     )
   }
 }

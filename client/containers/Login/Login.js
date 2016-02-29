@@ -62,10 +62,6 @@ class Login extends React.Component {
     removeError: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props)
-  }
-
   submitHandler(e) {
     e.preventDefault()
     e.stopPropagation()

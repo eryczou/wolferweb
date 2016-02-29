@@ -69,12 +69,11 @@ const middlewareInit = (app) => {
     await next();
     const ms = new Date - start;
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`)
-  });
+  })
 
   // koa-proxy
   if (config.proxy && config.proxy.enabled) {
-    const options = config.proxy.options
-    app.use(convert(proxy(options)))
+    app.use(convert(proxy(config.proxy.options)))
   }
 
   // koa-bodyparser

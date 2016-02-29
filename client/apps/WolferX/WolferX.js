@@ -1,6 +1,7 @@
 import React from 'react'
-import '../styles/main.scss'
-import Sidebar from '../containers/Sidebar/Sidebar'
+import '../../styles/main.scss'
+import classes from './WolferX.scss'
+import Sidebar from '../../containers/Sidebar/Sidebar'
 
 class WolferX extends React.Component {
 
@@ -10,7 +11,7 @@ class WolferX extends React.Component {
 
   render() {
     return (
-      <div className='wfx-app-container wfx-theme-sciFiDark'>
+      <div className={ classes.appContainer }>
         <Sidebar />
         {this.props.children}
       </div>

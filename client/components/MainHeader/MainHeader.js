@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import classes from './PageHeader.scss'
+import classes from './MainHeader.scss'
 
-function PageHeader ({ title, subTitle }) {
+function MainHeader ({ title, subTitle }) {
   return (
     <div className={ classes.pageHeader }>
       <div className={ classes.contentWrapper }>
@@ -24,9 +24,9 @@ function PageHeader ({ title, subTitle }) {
   )
 }
 
-PageHeader.propTypes = {
+MainHeader.propTypes = {
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired
 }
 
-export default PageHeader
+export default MainHeader

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Motion, spring } from 'react-motion'
 import { connect } from 'react-redux'
 import classes from './OneColumnLayout.scss'
-import PageHeader from '../../components/PageHeader/PageHeader'
+import MainHeader from '../../components/MainHeader/MainHeader'
 import Navbar from '../../components/Navbar/Navbar'
 import { actions as SidebarActions } from '../../redux/modules/sidebar'
 
@@ -41,7 +41,7 @@ class OneColumnLayout extends React.Component {
               <div className={ classes.viewContainer }>
                 <header className={ classes.headerContainer }>
                   { showSidebarToggler(isSidebarToggled) }
-                  <PageHeader title='WolferX' subTitle='... life is sole, make it bloom and cheer it with the one loved' />
+                  <MainHeader title='WolferX' subTitle='... life is sole, make it bloom and cheer it with the one loved' />
                   <Navbar />
                 </header>
                 <div className={ classes.bodyContainer }>

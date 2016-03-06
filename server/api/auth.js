@@ -22,7 +22,7 @@ auth.post('/login', async (ctx, next) => {
       const isValidPassword = bcrypt.compareSync(password, hash)
 
       if (isValidPassword) {
-        const userId = model.get('id')
+        const userId = model.get('user_id')
         const token = generateToken(userId)
         const freshToken = generateRefreshToken(userId)
         const dateNow = Date.now()
@@ -93,11 +93,11 @@ auth.post('/register', async (ctx, next) => {
       await new User({
         email: email,
         password: hash,
-        created_at: dbTimeNow,
-        updated_at: dbTimeNow
+        time_created: dbTimeNow,
+        time_updated: dbTimeNow
       }).save()
         .then((model) => {
-          userId = model.get('id')
+          userId = model.get('user_id')
         })
         .catch((error) => {
           throw error
@@ -113,8 +113,8 @@ auth.post('/register', async (ctx, next) => {
           user_id: userId,
           device: '',
           refresh: hashedRefreshToken,
-          created_at: dbTimeNow,
-          updated_at: dbTimeNow
+          time_created: dbTimeNow,
+          time_updated: dbTimeNow
         })
           .save()
           .then(() => {

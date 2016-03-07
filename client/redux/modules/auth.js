@@ -69,7 +69,7 @@ export const loginUser = (email, password, rememberMe, redirect='/') => {
           if (typeof redirectLocation != 'undefined' && redirectLocation) {
             dispatch(routerActions.push(`${redirectLocation}`))
           }
-        } catch (e) {
+        } catch (error) {
           dispatch(authUserFailure({
             response: {
               status: 403,
@@ -101,7 +101,6 @@ export const registerUser = (email, password, redirect='/') => {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then((response) => {
-        console.log(response)
         if (response.errorCode == Constants.serverErrorCode.AUTH_DUPLICAT_EMAIL) {
           dispatch(authUserFailure({
             response: {
@@ -116,7 +115,7 @@ export const registerUser = (email, password, redirect='/') => {
             if (typeof redirectLocation != 'undefined' && redirectLocation) {
               dispatch(routerActions.push(`${redirectLocation}`))
             }
-          } catch (e) {
+          } catch (error) {
             dispatch(authUserFailure({
               response: {
                 status: 403,
@@ -169,7 +168,7 @@ export const isLoggedIn = () => {
       .catch((error) => {
         dispatch(authUserFailure({
           response: {
-            status: 403,
+            status: 401,
             statusText: 'Please login to access the protected content'
           }
         }))

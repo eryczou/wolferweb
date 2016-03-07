@@ -1,152 +1,98 @@
 import Router from 'koa-router'
 import jwt from 'koa-jwt'
-import moment from 'moment'
-import bcrypt from 'bcrypt'
 import config from '../../config'
+import { log } from '../utils/devUtils'
 import Constants from '../utils/constants'
-import { generateToken, generateRefreshToken } from '../utils/authUtils'
-import User from '../data/models/User'
-import Token from '../data/models/Token'
+import authUtils from '../utils/authUtils'
 
 const auth = new Router()
 
 auth.post('/login', async (ctx, next) => {
-  let { email, password, rememberMe } = ctx.request.body
-
-  await new User({
-    'email': email
-  })
-    .fetch()
-    .then((model) => {
-      const hash = model.get('password')
-      const isValidPassword = bcrypt.compareSync(password, hash)
-
-      if (isValidPassword) {
-        const userId = model.get('user_id')
-        const token = generateToken(userId)
-        const freshToken = generateRefreshToken(userId)
-        const dateNow = Date.now()
-
-        ctx.status = 200
-        ctx.body = {
-          payload: {
-            user: {
-              id: userId
-            }
-          }
+  const { email, password, rememberMe } = ctx.request.body
+  try {
+    const { userId, token } = await authUtils.loginUser(email, password)
+    ctx.status = 200
+    ctx.body = {
+      payload: {
+        user: {
+          user_id: userId
         }
-        if (rememberMe) {
-          ctx.cookies.set('wfx_token', token, {
-            httpOnly: true,
-            overwrite: true,
-            expires: new Date(dateNow + config.jwt.cookie_expire)
-          })
-          ctx.cookies.set('wfx_refresh', freshToken, {
-            httpOnly: true,
-            overwrite: true,
-            expires: new Date(dateNow + config.jwt.cookie_refresh_expire)
-          })
-        } else {
-          ctx.cookies.set('wfx_token', token, {
-            httpOnly: true,
-            overwrite: true
-          })
-        }
-      } else {
-        ctx.status = 403
       }
-    })
-    .catch((error) => {
-      ctx.status = 403
-    })
+    }
+
+    if (rememberMe) {
+      const refreshToken = await authUtils.upsertRefreshToken(userId)
+      ctx.cookies.set('wfx_token', token, {
+        httpOnly: true,
+        overwrite: true,
+        expires: authUtils.getTokenExpireDate()
+      })
+      ctx.cookies.set('wfx_refresh', refreshToken, {
+        httpOnly: true,
+        overwrite: true,
+        expires: authUtils.getRefreshTokenExpireDate()
+      })
+    } else {
+      ctx.cookies.set('wfx_token', token, {
+        httpOnly: true,
+        overwrite: true
+      })
+      ctx.cookies.set('wfx_refresh', '', {
+        httpOnly: true,
+        overwrite: true,
+        expires: new Date(Date.now() - 1)
+      })
+    }
+  } catch (error) {
+    log.error(`login user failed: ${error} for user ${email}`)
+    ctx.status = 403
+  }
 })
 
 auth.post('/register', async (ctx, next) => {
   let { email, password } = ctx.request.body
-
-  let isEmailBeenTaken = false
-  await new User({
-    'email': email
-  })
-    .fetch()
-    .then((model) => {
-      if (model != null) {
-        ctx.status = 202
-        ctx.body = {
-          errorCode: Constants.errorCode.AUTH_DUPLICAT_EMAIL
-        }
-        isEmailBeenTaken = true
+  try {
+    if (await authUtils.hasUser(email)) {
+      log.info(`register user failed: duplicate email for ${email}`)
+      ctx.status = 202
+      ctx.body = {
+        errorCode: Constants.errorCode.AUTH_DUPLICAT_EMAIL
       }
-    })
-    .catch((error) => {
-      ctx.status = 403
-    })
-
-  if (!isEmailBeenTaken) {
-    const dbTimeNow = moment().format("YYYY-MM-DD HH:mm:ss")
-    const salt = bcrypt.genSaltSync(8) + config.auth.secret
-    const hash = bcrypt.hashSync(password, salt)
-
-    if (hash) {
-      let userId = null
-
-      await new User({
-        email: email,
-        password: hash,
-        time_created: dbTimeNow,
-        time_updated: dbTimeNow
-      }).save()
-        .then((model) => {
-          userId = model.get('user_id')
-        })
-        .catch((error) => {
-          throw error
-        })
+    } else {
+      const userModel = await authUtils.registerUser(email, password)
+      const userId = userModel.get('user_id')
 
       if (userId) {
-        const token = generateToken(userId)
-        const freshToken = generateRefreshToken(userId)
-        const tokenSalt = bcrypt.genSaltSync(1)
-        const hashedRefreshToken = bcrypt.hashSync(freshToken, tokenSalt)
-
-        await new Token({
-          user_id: userId,
-          device: '',
-          refresh: hashedRefreshToken,
-          time_created: dbTimeNow,
-          time_updated: dbTimeNow
-        })
-          .save()
-          .then(() => {
-            ctx.status = 200
-            ctx.body = {
-              payload: {
-                user: {
-                  id: userId
-                }
-              }
+        const token = authUtils.generateToken(userId)
+        ctx.status = 200
+        ctx.body = {
+          payload: {
+            user: {
+              user_id: userId
             }
-            ctx.cookies.set('wfx_token', token, {
-              httpOnly: true,
-              overwrite: true
-            })
-          })
-          .catch((error) => {
-            throw error
-          })
+          }
+        }
+        ctx.cookies.set('wfx_token', token, {
+          httpOnly: true,
+          overwrite: true
+        })
       }
     }
+  } catch (error) {
+    log.error(`register user failed: ${error} for user ${email}`)
+    ctx.status = 403
   }
 })
 
-auth.get('/isLoggedIn', (ctx, next) => {
+auth.get('/isLoggedIn', async (ctx, next) => {
   const token = ctx.cookies.get('wfx_token')
   if (typeof token != 'undefined' && token) {
     try {
       jwt.verify(token, config.jwt.secret)
       ctx.status = 200
       ctx.body = { payload: 'User has already logged in' }
-    } catch (e) {
+    } catch (error) {
+      log.error(`check user login status failed: ${error}`)
       ctx.status = 401
     }
   } else {
@@ -156,16 +102,21 @@ auth.get('/isLoggedIn', (ctx, next) => {
       try {
         const decodeRefreshToken = jwt.verify(refreshToken, config.jwt.secret)
         const userId = decodeRefreshToken.userId
-        const token = generateToken(userId)
-        const dateNow = Date.now()
-        ctx.status = 200
-        ctx.body = { payload: 'User has already logged in' }
-        ctx.cookies.set('wfx_token', token, {
-          httpOnly: true,
-          overwrite: true,
-          expires: new Date(dateNow + config.jwt.cookie_expire)
-        })
-      } catch (e) {
+        const storedRefreshToken = await authUtils.getRefreshToken(userId)
+        if (storedRefreshToken == decodeRefreshToken) {
+          const newToken = authUtils.generateToken(userId)
+          ctx.status = 200
+          ctx.body = { payload: 'User has already logged in' }
+          ctx.cookies.set('wfx_token', newToken, {
+            httpOnly: true,
+            overwrite: true,
+            expires: authUtils.getTokenExpireDate()
+          })
+        } else {
+          ctx.status = 401
+        }
+      } catch (error) {
+        log.error(`check user login status failed: ${error}`)
         ctx.status = 401
       }
     } else {

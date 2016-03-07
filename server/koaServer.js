@@ -65,10 +65,10 @@ const middlewareInit = (app) => {
   // log api request
   app.use(async(ctx, next) => {
     const start = new Date;
-    log.debug(`${ctx.method} ${ctx.url} begins`)
+    log.info(`${ctx.method} ${ctx.url} begins`)
     await next();
     const ms = new Date - start;
-    log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`)
+    log.info(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`)
   })
 
   // koa-proxy

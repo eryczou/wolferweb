@@ -1,6 +1,9 @@
 exports.up = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists('relationship')
+    .dropTableIfExists('post_mark')
+    .dropTableIfExists('comment_mark')
+    .dropTableIfExists('mark')
     .dropTableIfExists('comment')
     .dropTableIfExists('post_detail')
     .dropTableIfExists('post')
@@ -11,7 +14,7 @@ exports.up = function(knex, Promise) {
       user_id int(10) unsigned NOT NULL AUTO_INCREMENT,
       email varchar(63) NOT NULL,
       username varchar(63) DEFAULT NULL,
-      password varchar(63) NOT NULL,
+      password varchar(255) NOT NULL,
       status smallint(1) NOT NULL DEFAULT '0',
       last_login datetime DEFAULT NULL,
       time_created datetime DEFAULT NULL,
@@ -24,8 +27,8 @@ exports.up = function(knex, Promise) {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE token (
       user_id int(10) unsigned NOT NULL,
-      device varchar(31) NOT NULL,
-      refresh varchar(63) DEFAULT NULL,
+      device varchar(63) NOT NULL,
+      refresh varchar(255) NOT NULL,
       time_created datetime DEFAULT NULL,
       time_updated datetime DEFAULT NULL,
       PRIMARY KEY (user_id, device),
@@ -33,8 +36,8 @@ exports.up = function(knex, Promise) {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE profile (
       user_id int(10) unsigned NOT NULL DEFAULT '0',
-      gender varchar(6) DEFAULT NULL,
-      birthday varchar(10) DEFAULT NULL,
+      gender varchar(7) DEFAULT NULL,
+      birthday varchar(11) DEFAULT NULL,
       headshot_url varchar(255) DEFAULT NULL,
       time_created datetime DEFAULT NULL,
       time_updated datetime DEFAULT NULL,
@@ -56,9 +59,10 @@ exports.up = function(knex, Promise) {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE post_detail (
       post_id int(10) unsigned NOT NULL,
-      post_body tinytext NOT NULL,
+      post_body text NOT NULL,
       PRIMARY KEY (post_id),
-      UNIQUE KEY post_id_UNIQUE (post_id)
+      UNIQUE KEY post_id_UNIQUE (post_id),
+      CONSTRAINT post_detail_post_id_foreign FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE comment (
       comment_id int(10) unsigned NOT NULL,
@@ -75,6 +79,41 @@ exports.up = function(knex, Promise) {
       CONSTRAINT comment_post_id_foreign FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
       CONSTRAINT comment_user_id_foreign FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
+    .raw(`CREATE TABLE mark (
+      mark_id tinyint(1) unsigned NOT NULL,
+      mark_type varchar(31) NOT NULL,
+      PRIMARY KEY (mark_id),
+      UNIQUE KEY mark_id_UNIQUE (mark_id),
+      UNIQUE KEY mark_type_UNIQUE (mark_type)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
+    .raw(`CREATE TABLE post_mark (
+      post_id int(10) unsigned NOT NULL,
+      user_id int(10) unsigned NOT NULL,
+      mark_id tinyint(1) unsigned NOT NULL,
+      status tinyint(1) DEFAULT NULL,
+      time_created datetime DEFAULT NULL,
+      time_updated datetime DEFAULT NULL,
+      PRIMARY KEY (post_id,user_id,mark_id),
+      KEY post_signature_user_id_foreign_idx (user_id),
+      KEY post_mark_mark_id_foreign_idx (mark_id),
+      CONSTRAINT post_mark_mark_id_foreign FOREIGN KEY (mark_id) REFERENCES mark (mark_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+      CONSTRAINT post_mark_post_id_foreign FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+      CONSTRAINT post_mark_user_id_foreign FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
+    .raw(`CREATE TABLE comment_mark (
+      comment_id int(10) unsigned NOT NULL,
+      user_id int(10) unsigned NOT NULL,
+      mark_id tinyint(1) unsigned NOT NULL,
+      status tinyint(1) DEFAULT NULL,
+      time_created datetime DEFAULT NULL,
+      time_updated datetime DEFAULT NULL,
+      PRIMARY KEY (comment_id,user_id,mark_id),
+      KEY user_id_idx (user_id),
+      KEY comment_mark_mark_id_foreign_idx (mark_id),
+      CONSTRAINT comment_mark_comment_id_foreign FOREIGN KEY (comment_id) REFERENCES comment (comment_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+      CONSTRAINT comment_mark_mark_id_foreign FOREIGN KEY (mark_id) REFERENCES mark (mark_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+      CONSTRAINT comment_mark_user_id_foreign FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE relationship (
       user_a int(10) unsigned NOT NULL,
       user_b int(10) unsigned NOT NULL,
@@ -88,7 +127,6 @@ exports.up = function(knex, Promise) {
       CONSTRAINT user_a_user_id_foreign FOREIGN KEY (user_a) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
       CONSTRAINT user_b_user_id_foreign FOREIGN KEY (user_b) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
-    .raw(``)
     .then(function() {
       console.log(`
       user table created
@@ -97,6 +135,9 @@ exports.up = function(knex, Promise) {
       post table created
       post_detail table created
       comment table created
+      mark table created
+      post_mark table created
+      comment_mark table created
       relationship table created
       `)
     })

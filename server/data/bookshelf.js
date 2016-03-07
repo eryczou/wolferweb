@@ -5,5 +5,3 @@ var bookshelf = require('bookshelf')(knex)
 bookshelf.plugin('registry')
 
 export default bookshelf
-
-require('./models/User');

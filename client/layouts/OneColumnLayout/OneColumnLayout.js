@@ -41,7 +41,7 @@ class OneColumnLayout extends React.Component {
               <div className={ classes.viewContainer }>
                 <header className={ classes.headerContainer }>
                   { showSidebarToggler(isSidebarToggled) }
-                  <MainHeader title='WolferX' subTitle='... life is sole, make it bloom and cheer it with the one loved' />
+                  <MainHeader title='WolferX' subTitle='...life is short, only sharing makes it bloom' />
                   <Navbar />
                 </header>
                 <div className={ classes.bodyContainer }>

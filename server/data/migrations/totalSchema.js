@@ -47,9 +47,9 @@ exports.up = function(knex, Promise) {
     .raw(`CREATE TABLE post (
       post_id int(10) unsigned NOT NULL AUTO_INCREMENT,
       user_id int(10) unsigned NOT NULL,
-      slug varchar(127) DEFAULT NULL,
       title varchar(127) DEFAULT NULL,
       tag varchar(63) DEFAULT NULL,
+      slug varchar(127) DEFAULT NULL,
       status tinyint(1) DEFAULT NULL,
       time_created datetime DEFAULT NULL,
       time_updated datetime DEFAULT NULL,

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
-import classes from './ListBlock.scss'
+import classes from './PostList.scss'
 import ListItem from '../ListItem/ListItem'
 
-function ListBlock ({ title, items }) {
+function PostList ({ title, items }) {
   return (
     <div className={`panel panel-default ${classes.listBlock}`} >
       <div className='panel-heading'>
@@ -30,9 +30,9 @@ function ListBlock ({ title, items }) {
   )
 }
 
-ListBlock.propTypes = {
+PostList.propTypes = {
   title: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired
 }
 
-export default ListBlock
+export default PostList

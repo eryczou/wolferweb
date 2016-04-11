@@ -82,7 +82,7 @@ exports.up = function(knex, Promise) {
       CONSTRAINT post_collection_user_id_foreign FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE music (
-      music_id int(10) unsigned NOT NULL,
+      music_id int(10) unsigned NOT NULL AUTO_INCREMENT,
       user_id int(10) unsigned NOT NULL,
       tag varchar(63) DEFAULT NULL,
       music_title varchar(127) NOT NULL,
@@ -110,7 +110,7 @@ exports.up = function(knex, Promise) {
       CONSTRAINT music_collection_user_id_foreign FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE comment (
-      comment_id int(10) unsigned NOT NULL,
+      comment_id int(10) unsigned NOT NULL AUTO_INCREMENT,
       user_id int(10) unsigned NOT NULL,
       post_id int(10) unsigned NOT NULL,
       music_id int(10) unsigned DEFAULT NULL,
@@ -125,7 +125,7 @@ exports.up = function(knex, Promise) {
       CONSTRAINT comment_music_id_foreign FOREIGN KEY (music_id) REFERENCES music (music_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE sub_comment (
-      sub_comment_id int(10) unsigned NOT NULL,
+      sub_comment_id int(10) unsigned NOT NULL AUTO_INCREMENT,
       comment_id int(10) unsigned NOT NULL,
       user_id int(10) unsigned NOT NULL,
       comment_body varchar(1023) NOT NULL,
@@ -174,7 +174,7 @@ exports.up = function(knex, Promise) {
       CONSTRAINT user_b_user_id_foreign FOREIGN KEY (user_b) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
     .raw(`CREATE TABLE notification (
-      notification_id bigint(1) NOT NULL,
+      notification_id bigint(1) NOT NULL AUTO_INCREMENT,
       user_id int(10) unsigned NOT NULL,
       target_user_id int(10) unsigned NOT NULL,
       notification_type tinyint(1) unsigned NOT NULL,

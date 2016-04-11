@@ -13,6 +13,7 @@ class Navbar extends React.Component {
           <Link to='/counter' className={ classes.link } >Counter</Link>
           <Link to='/docchef' className={ classes.link } >DocChef</Link>
           <Link to='/todo' className={ classes.link } >TodoList</Link>
+          <Link to='/post' className={ classes.link } >Post</Link>
           <Link to='/protected' className={ classes.link } >Protected</Link>
         </div>
       </nav>

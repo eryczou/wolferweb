@@ -14,6 +14,7 @@ export default (config) => ({
   globals: {
     ...config.globals,
     __PYTHON_API_URL__: JSON.stringify('http://ec2-54-85-109-102.compute-1.amazonaws.com:9999/api'),
-    __NODE_API_URL__: JSON.stringify(`http://${config.server_host}:${config.server_port}/api`)
+    __NODE_API_URL__: JSON.stringify(`http://${config.server_host}:${config.server_port}/api`),
+    __JAVA_API_URL__: JSON.stringify(`http://${config.server_host}:9010/api/v1`)
   }
 })

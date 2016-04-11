@@ -6,7 +6,7 @@ import OneColumnLayout from './layouts/OneColumnLayout/OneColumnLayout'
 import HomeView from './views/HomeView/HomeView'
 import BlogView from './views/BlogView'
 import PriceView from './views/CounterView'
-import DocChefView from './views/DocChefView'
+import PostView from './views/PostView'
 import TestView from './views/TestView'
 import TodoListView from './views/TodoListView'
 
@@ -19,7 +19,7 @@ export default (store) => (
       <IndexRoute component = { HomeView } />
       <Route path='/blog' component = { BlogView } />
       <Route path='/counter' component = { PriceView } />
-      <Route path='/docchef' component = { DocChefView } />
+      <Route path='/post' component = { PostView } />
       <Route path='/test' component = { TestView } />
       <Route path='/todo' component = { TodoListView } />
       <Route component = { AuthRequiredWrapper } >

@@ -62,39 +62,48 @@ class Login extends React.Component {
     removeError: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props)
+    this.inputHandler = this.inputHandler.bind(this)
+    this.submitHandler = this.submitHandler.bind(this)
+  }
+
   submitHandler(e) {
     e.preventDefault()
     e.stopPropagation()
+    const { updateError, loginUser } = this.props
+
     const email = $('#login-input-email').val()
     const password = $('#login-input-password').val()
     const rememberMe = $('#login-input-remember').is(':checked')
 
     let hasError = false
     if (!isValidEmail(email)) {
-      this.props.updateError(Constants.EMAIL_INPUT, Constants.NOT_VALID_EMAIL)
+      updateError(Constants.EMAIL_INPUT, Constants.NOT_VALID_EMAIL)
       hasError = true
     }
 
     if (!hasError) {
-      this.props.loginUser(email, password, rememberMe)
+      loginUser(email, password, rememberMe)
     }
   }
 
   inputHandler(e) {
-
-    const { error } = this.props
-
     e.stopPropagation()
+    const { error } = this.props
+    const { removeError } = this.props
+
+
     switch (e.target.name) {
       case 'email':
         if (error.EMAIL_INPUT) {
-          this.props.removeError(Constants.EMAIL_INPUT)
+          removeError(Constants.EMAIL_INPUT)
         }
         break
       case 'password':
       case 'passwordConfirm':
         if (error.PASSWORD_CONFIRM_INPUT) {
-          this.props.removeError(Constants.PASSWORD_CONFIRM_INPUT)
+          removeError(Constants.PASSWORD_CONFIRM_INPUT)
         }
         break
     }
@@ -118,7 +127,7 @@ class Login extends React.Component {
                    underlineStyle={styles.underlineStyle}
                    floatingLabelText='Email'
                    errorText={error.EMAIL_INPUT? error.EMAIL_INPUT : ''}
-                   onClick={this.inputHandler.bind(this)}
+                   onClick={this.inputHandler}
         />
         <TextField id='login-input-password'
                    name='password'
@@ -129,7 +138,7 @@ class Login extends React.Component {
                    floatingLabelStyle={styles.floatingLabelStyle}
                    errorStyle={styles.errorStyle}
                    underlineStyle={styles.underlineStyle}
-                   onClick={this.inputHandler.bind(this)}
+                   onClick={this.inputHandler}
                    floatingLabelText='Password'
         />
         <div className={classes.submitRow}>
@@ -137,7 +146,7 @@ class Login extends React.Component {
                       style={styles.submitButton}
                       labelStyle={styles.labelStyle}
                       disabled={isRequesting}
-                      onClick={this.submitHandler.bind(this)}
+                      onClick={this.submitHandler}
           />
           <Checkbox id='login-input-remember'
                     label='Remember Me'

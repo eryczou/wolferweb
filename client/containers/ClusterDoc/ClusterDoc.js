@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { actions as clusterDocActions } from '../../redux/modules/clusterDoc'
-import ListBlock from '../../components/ListBlock/ListBlock'
+import { actions as clusterDocActions } from '../../redux/modules/post'
+import ListBlock from '../../components/PostList/PostList'
 import classes from './ClusterDoc.scss'
 
 class ClusterDoc extends React.Component {
@@ -10,7 +10,7 @@ class ClusterDoc extends React.Component {
     fetchClusterDocData: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     statusText: PropTypes.string.isRequired,
-    docData: PropTypes.array.isRequired
+    postData: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -39,7 +39,7 @@ function mapStateToProps(state) {
   return {
     isFetching: state.clusterDoc.isFetching,
     statusText: state.clusterDoc.statusText,
-    docData: state.clusterDoc.docData
+    postData: state.clusterDoc.postData
   }
 }
 

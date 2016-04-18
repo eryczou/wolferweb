@@ -1,17 +1,19 @@
-/**
- * Created by zz232323 on 4/4/16.
- */
 import React from 'react';
+import Todo from '../containers/TodoList/Todo'
 
-export default class TodoListView extends React.Component {
+class TodoListView extends React.Component {
+  constructor() {
+    super();
+  }
+
   render(){
     return(
       <div>
-        <h1>This is a placeholder for TodoList</h1>
+        <Todo />
       </div>
     )
   }
 }
 
-
+export default TodoListView
 

@@ -5,7 +5,7 @@ import sidebar from './modules/sidebar'
 import auth from './modules/auth'
 import post from './modules/post'
 import mde from './modules/mde'
-import todolist_reducer from './modules/todolist_redux'
+import todolistReducer from './modules/todolist'
 
 export default combineReducers({
   counter,
@@ -14,6 +14,6 @@ export default combineReducers({
   post,
   mde,
   router,
-  todolist_reducer
+  todolistReducer
 })
 

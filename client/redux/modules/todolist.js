@@ -13,7 +13,7 @@ const initialState = {
 }
 
 //Reducer
-export default function todolist_reducer(state = initialState ,action) {
+export default function todolistReducer(state = initialState ,action) {
   switch(action.type) {
     case 'ADD_TODO':
       return Object.assign({}, state, {

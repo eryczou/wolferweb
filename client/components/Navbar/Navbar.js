@@ -11,6 +11,7 @@ class Navbar extends React.Component {
           <Link to='/' className={ classes.link } >Home</Link>
           <Link to='/blog' className={ classes.link } >Blog</Link>
           <Link to='/counter' className={ classes.link } >Counter</Link>
+          <Link to='/todo' className={ classes.link } >TodoList</Link>
           <Link to='/post' className={ classes.link } >Post</Link>
           <Link to='/protected' className={ classes.link } >Protected</Link>
         </div>

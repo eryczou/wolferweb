@@ -37,11 +37,6 @@ auth.post('/login', async (ctx, next) => {
         httpOnly: true,
         overwrite: true
       })
-      ctx.cookies.set('wfx_refresh', '', {
-        httpOnly: true,
-        overwrite: true,
-        expires: new Date(Date.now() - 1)
-      })
     }
   } catch (error) {
     log.error(`login user failed: ${error} for user ${email}`)

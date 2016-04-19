@@ -8,6 +8,7 @@ import BlogView from './views/BlogView'
 import PriceView from './views/CounterView'
 import PostView from './views/PostView'
 import TestView from './views/TestView'
+import TodoListView from './views/TodoListView'
 
 import AuthRequiredWrapper from './containers/AuthRequiredWrapper'
 import ProtectedView from './views/ProtectedView'
@@ -20,6 +21,7 @@ export default (store) => (
       <Route path='/counter' component = { PriceView } />
       <Route path='/post' component = { PostView } />
       <Route path='/test' component = { TestView } />
+      <Route path='/todo' component = { TodoListView } />
       <Route component = { AuthRequiredWrapper } >
         <Route path='/protected' component = { ProtectedView }/>
       </Route>

@@ -43,9 +43,9 @@ export const incrementIfOdd = () => (dispatch, getState) => {
   dispatch(increment(1))
 }
 
-export const doubleAsync = (): Function => {
-  return (dispatch: Function, getState: Function): Promise => {
-    return new Promise((resolve: Function) => {
+export const doubleAsync = () => {
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         dispatch(increment(getState().counter))
         resolve()

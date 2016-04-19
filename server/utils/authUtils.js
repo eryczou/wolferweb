@@ -66,23 +66,22 @@ export const registerUser = (email, password) => {
     const dbTimeNow = moment().format("YYYY-MM-DD HH:mm:ss")
     const salt = bcrypt.genSaltSync(8) + config.auth.secret
     const hash = bcrypt.hashSync(password, salt)
-    if (hash) {
-      new User({
-        email: email,
-        password: hash,
-        time_created: dbTimeNow,
-        time_updated: dbTimeNow
+
+    new User({
+      email: email,
+      password: hash,
+      time_created: dbTimeNow,
+      time_updated: dbTimeNow
+    })
+      .save()
+      .then((model) => {
+        log.info(`register user success: for email: ${email}, user: ${email}`)
+        resolve(model)
       })
-        .save()
-        .then((model) => {
-          log.info(`register user success: for email: ${email}, user: ${email}`)
-          resolve(model)
-        })
-        .catch((error) => {
-          log.error(`register user failed: ${error} for user ${email}`)
-          reject(error)
-        })
-    }
+      .catch((error) => {
+        log.error(`register user failed: ${error} for user ${email}`)
+        reject(error)
+      })
   })
 }
 

@@ -28,4 +28,4 @@ bower_components
 .DS_Store
 
 # Compiled files
-public/**/*
+public

@@ -1,6 +1,8 @@
 import React from 'react';
-import { addTodo } from '../../redux/modules/todolist'
+import { actions as TodoActions} from '../../redux/modules/todolist'
 import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import classes from './Todo.scss'
 
 class Todo extends React.Component {
   constructor() {
@@ -16,7 +18,15 @@ class Todo extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.dispatch(addTodo(this.state.text));
+    this.props.actions.addTodo(this.state.text);
+  }
+
+  handleTodoComplete(id) {
+    this.props.actions.toggleTodo(id);
+  }
+
+  handleTodoDelete(id) {
+    this.props.actions.deleteTodo(id);
   }
 
   render(){
@@ -27,7 +37,14 @@ class Todo extends React.Component {
         <ul>
           {
             this.props.todolistReducer.todos.map((todo) => {
-              return <li>{todo.text}</li>
+            let currentID = todo.id;
+            return (
+                  <div>
+                    <li className={todo.completed ?classes.strikethrough:''}>{todo.text}</li>
+                    <button onClick={()=>this.handleTodoComplete(currentID)}>Complete</button>
+                    <button onClick={()=>this.handleTodoDelete(currentID)}>Delete</button>
+                  </div>
+              )
             })
           }
         </ul>
@@ -40,5 +57,11 @@ function mapStateToProps(state) {
   return state;
 }
 
-export default connect(mapStateToProps)(Todo)
+function mapPropsToDispatch(dispatch) {
+  return {
+    actions: bindActionCreators(TodoActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapPropsToDispatch)(Todo)
 

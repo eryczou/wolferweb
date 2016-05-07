@@ -1,12 +1,7 @@
 import React from 'react';
-<<<<<<< HEAD:client/routes/TodoListView/containers/TodoList.js
-import { addTodo } from '../modules/todoList'
-=======
-import { actions as TodoActions} from '../../redux/modules/todolist'
->>>>>>> wolferian/master:client/containers/TodoList/Todo.js
+import { actions as TodoActions} from '../modules/todoList'
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
-import classes from './Todo.scss'
 
 class Todo extends React.Component {
   constructor() {
@@ -40,10 +35,6 @@ class Todo extends React.Component {
         <button onClick={this.handleSubmit.bind(this)}> Submit </button>
         <ul>
           {
-<<<<<<< HEAD:client/routes/TodoListView/containers/TodoList.js
-            this.props.todoList.todos.map((todo) => {
-              return <li>{todo.text}</li>
-=======
             this.props.todolistReducer.todos.map((todo) => {
             let currentID = todo.id;
             return (
@@ -53,7 +44,6 @@ class Todo extends React.Component {
                     <button onClick={()=>this.handleTodoDelete(currentID)}>Delete</button>
                   </div>
               )
->>>>>>> wolferian/master:client/containers/TodoList/Todo.js
             })
           }
         </ul>

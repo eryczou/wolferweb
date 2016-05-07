@@ -40,13 +40,8 @@ const initialState = {
 }
 
 //Reducer
-<<<<<<< HEAD:client/routes/TodoListView/modules/todoList.js
 const todoListReducer = (state = initialState ,action) => {
   switch(action.type) {
-=======
-export default function todolistReducer(state = initialState, action) {
-  switch (action.type) {
->>>>>>> wolferian/master:client/redux/modules/todolist.js
     case 'ADD_TODO':
       return Object.assign({}, state, {
         todos: [{

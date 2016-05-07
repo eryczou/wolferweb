@@ -1,22 +1,17 @@
 import React from 'react'
 import '../../styles/main.scss'
 import classes from './WolferX.scss'
-import Sidebar from '../../containers/Sidebar/Sidebar'
 
-class WolferX extends React.Component {
+export const WolferX = ({ children, sidebar }) => (
 
-  static propTypes = {
-    children: React.PropTypes.element.isRequired
-  };
+  <div className={classes.appContainer}>
+    {sidebar}
+    {children}
+  </div>
+)
 
-  render() {
-    return (
-      <div className={ classes.appContainer }>
-        <Sidebar />
-        {this.props.children}
-      </div>
-    )
-  }
+WolferX.propTypes = {
+  children: React.PropTypes.element.isRequired
 }
 
 export default WolferX

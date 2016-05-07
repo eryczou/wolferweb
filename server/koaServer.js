@@ -21,84 +21,75 @@ import { publicApi, privateApi } from './api'
 const debug = _debug('app:server')
 const log = _log(__filename, config.log)
 const paths = config.utils_paths
+const app = new Koa()
 
-const koaApp = () => {
-  let app = new Koa()
+debug("Init server middleware")
 
-  middlewareInit(app)
+// log api request
+app.use(async(ctx, next) => {
+  const start = new Date;
+  log.info(`${ctx.method} ${ctx.url} begins`)
+  await next();
+  const ms = new Date - start;
+  log.info(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`)
+})
 
-  // Custom 401 handling if you don't want to expose koa-jwt errors to users
-  app.use(httpRequestHandler())
-
-  // CORS
-  app.use(convert(cors({
-    origin: (ctx) => {
-      const originWhiteList = config.cors.origin
-      const origin = ctx.request.header.origin
-      if(typeof origin != 'undefined' && originWhiteList.indexOf(origin) != -1){
-        return origin
-      }
-    },
-    credentials: config.cors.credentials,
-    allowMethods: config.cors.allowMethods
-  })))
-
-  // public api
-  app.use(publicApi.routes())
-
-  // jwt validation
-  app.use(convert(jwt({ secret: config.jwt.secret, key: 'jwtdata' })))
-
-  // private api
-  app.use(privateApi.routes())
-
-  return app
+// koa-proxy
+if (config.proxy && config.proxy.enabled) {
+  app.use(convert(proxy(config.proxy.options)))
 }
 
-export default koaApp
+// koa-bodyparser
+app.use(bodyParser())
 
+// Rewrites all routes requests to the root /index.html file
+// Remove this, if you want to implement isomorphic rendering
+app.use(convert(historyApiFallback({
+  verbose: false
+})))
 
+// ------------------------------------
+// Apply Webpack HMR Middleware
+// ------------------------------------
+if (config.env === 'development') {
+  const compiler = webpack(webpackConfig)
 
-const middlewareInit = (app) => {
-  debug("Init server middleware")
+  // Enable webpack-dev and webpack-hot middleware
+  const { publicPath } = webpackConfig.output
 
-  // log api request
-  app.use(async(ctx, next) => {
-    const start = new Date;
-    log.info(`${ctx.method} ${ctx.url} begins`)
-    await next();
-    const ms = new Date - start;
-    log.info(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`)
-  })
+  app.use(webpackDevMiddleware(compiler, publicPath))
+  app.use(webpackHMRMiddleware(compiler))
 
-  // koa-proxy
-  if (config.proxy && config.proxy.enabled) {
-    app.use(convert(proxy(config.proxy.options)))
-  }
-
-  // koa-bodyparser
-  app.use(bodyParser())
-
-  // Rewrites all routes requests to the root /index.html file
-  // Remove this, if you want to implement isomorphic rendering
-  app.use(convert(historyApiFallback({
-    verbose: false
-  })))
-
-  // webpack HMR middleware for dev only
-  if (config.env === 'development') {
-    const compiler = webpack(webpackConfig)
-
-    // Enable webpack-dev and webpack-hot middleware
-    const { publicPath } = webpackConfig.output
-
-    app.use(webpackDevMiddleware(compiler, publicPath))
-    app.use(webpackHMRMiddleware(compiler))
-
-    app.use(convert(serve(paths.client('static'))))
-    debug('Server is running on development mode.')
-  } else {
-    debug('Server is running on production mode.')
-    app.use(convert(serve(paths.base(config.dir_dist))))
-  }
+  app.use(convert(serve(paths.client('static'))))
+  debug('Server is running on development mode.')
+} else {
+  debug('Server is running on production mode.')
+  app.use(convert(serve(paths.dist())))
 }
+
+// Custom 401 handling if you don't want to expose koa-jwt errors to users
+app.use(httpRequestHandler())
+
+// CORS
+app.use(convert(cors({
+  origin: (ctx) => {
+    const originWhiteList = config.cors.origin
+    const origin = ctx.request.header.origin
+    if(typeof origin != 'undefined' && originWhiteList.indexOf(origin) != -1){
+      return origin
+    }
+  },
+  credentials: config.cors.credentials,
+  allowMethods: config.cors.allowMethods
+})))
+
+// public api
+app.use(publicApi.routes())
+
+// jwt validation
+app.use(convert(jwt({ secret: config.jwt.secret, key: 'jwtdata' })))
+
+// private api
+app.use(privateApi.routes())
+
+export default app

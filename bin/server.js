@@ -6,7 +6,7 @@ const debug = _debug('app:bin:server')
 const port = config.server_port
 const host = config.server_host
 
-server().listen(port, (error) => {
+server.listen(port, (error) => {
   if (error) {
     debug (`Error:: @server start :: ${ error }`)
   } else {

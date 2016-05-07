@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react'
 import { Motion, spring } from 'react-motion'
 import { connect } from 'react-redux'
 import classes from './OneColumnLayout.scss'
-import MainHeader from '../../components/MainHeader/MainHeader'
-import Navbar from '../../components/Navbar/Navbar'
+import MainHeader from '../../components/MainHeader'
+import Navbar from '../../components/Navbar'
 import { actions as SidebarActions } from '../../redux/modules/sidebar'
 
 
@@ -14,6 +14,11 @@ class OneColumnLayout extends React.Component {
     isSidebarToggled: PropTypes.bool.isRequired
   };
 
+  constructor(props) {
+    super(props)
+    this.showSidebar = this.showSidebar.bind(this)
+  }
+
   showSidebar(e) {
     e.preventDefault()
     e.stopPropagation()
@@ -22,13 +27,13 @@ class OneColumnLayout extends React.Component {
 
   render() {
 
-    const { isSidebarToggled } = this.props
+    const { isSidebarToggled, children } = this.props
 
     const showSidebarToggler = (isSidebarToggled) => {
       if (isSidebarToggled) {
         return (
           <span className={`glyphicon glyphicon-list ${ classes.sidebarToggler }`}
-                onClick={ this.showSidebar.bind(this) } ></span>
+                onClick={this.showSidebar} ></span>
         )
       }
     }
@@ -45,7 +50,7 @@ class OneColumnLayout extends React.Component {
                   <Navbar />
                 </header>
                 <div className={ classes.bodyContainer }>
-                  {this.props.children}
+                  {children}
                 </div>
               </div>
             </div>

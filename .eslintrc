@@ -8,8 +8,7 @@
   ],
   "plugins": [
     "babel",
-    "react",
-    "flow-vars"
+    "react"
   ],
   "env": {
     "browser": true,     // browser global variables
@@ -23,7 +22,6 @@
     "shelljs": false     // shelljs global variables
   },
   "globals": {
-    "Action"       : false,
     "__DEV__"      : false,
     "__PROD__"     : false,
     "__DEBUG__"    : false,
@@ -69,8 +67,6 @@
     "react/jsx-uses-vars": 2,
     "react/prop-types": 1,
     "react/react-in-jsx-scope": 2,
-    "flow-vars/define-flow-type": 1,
-    "flow-vars/use-flow-type": 1,
 
     ////////// Styles ///////////////
     "quotes": [2, "single"],                   // specify whether double or single quotes should be used
